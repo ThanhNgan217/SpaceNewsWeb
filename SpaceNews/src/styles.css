@@ -1,0 +1,142 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  --viewH : 100vh;
+  --viewW : 100vw;
+  --blue: #259CD7;
+  --grey : #F5F5F5;
+  --white : #FFFF;
+  --ratio : calc(var(--viewW)/1440);
+}
+/* input login page */
+.login-form .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: #FAF9F7;
+}
+.mdc-text-field--filled .mdc-line-ripple::after {
+  border-bottom-color: var(--mdc-theme-primary, #259CD7);
+}
+.login-form .mat-mdc-form-field-focus-overlay {
+  background-color: #FAF9F7
+}
+
+
+
+
+/* search bar main page */
+.searchbar-main-header .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: #F2FBFF;
+}
+.searchbar-main-header .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+  border-bottom-color: #259CD7;
+  border-width: 3px;
+}
+.searchbar-main-header .mat-mdc-form-field-focus-overlay {
+  background-color: #FAF9F7
+}
+.mat-input-element{
+  caret-color: #259CD7;
+}
+.searchbar-main-header .mat-form-field-appearance-fill .mat-form-field-underline::before {
+  background-color: #259CD7;
+  height: 2px;
+}
+.mat-form-field.mat-focused .mat-form-field-ripple{
+  background-color: #259CD7;
+}
+.mat-form-field.mat-form-field-invalid .mat-form-field-ripple, .mat-form-field.mat-form-field-invalid .mat-form-field-ripple.mat-accent {
+  background-color: #f44336;
+}
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #259cd700;
+}
+.mat-form-field-wrapper {
+  padding-bottom: 15px;
+}
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  padding: 0 0.75em 0 0.75em !important;
+}
+
+/* Topic list */
+.mat-button-toggle .mat-button-toggle-ripple{
+  display: none;
+}
+/* .mat-button-toggle .mat-button-toggle-label-content{
+  padding: 0;
+  line-height: calc(60*var(--ratio));
+  text-align: center;
+  font-size: 14px;
+} */
+
+
+/* calendar */
+#customcalendar bs-datepicker-inline-container{
+  margin: calc(20.27*var(--ratio));
+}
+#customcalendar .bs-datepicker {
+  box-shadow: none;
+  position: relative;
+  z-index: 1;
+}
+#customcalendar .bs-datepicker-container {
+  padding: 0;
+}
+.theme-default .bs-datepicker-head {
+  background-color: white;
+
+}
+.bs-datepicker-head{
+  width: calc(369.46*var(--ratio));
+  padding: 0;
+}
+.bs-datepicker-head span{
+  color: black;
+  font-size: 14px;
+  font-weight: 650;
+}
+.bs-datepicker-head .previous span, .next span{
+  color: var(--blue);
+}
+.bs-datepicker-body, table{
+  padding: 0;
+  border: none;
+  height: calc(318.6*var(--ratio));
+  max-width: calc(369.46*var(--ratio));
+
+}
+.bs-datepicker-body table th{
+  color: black;
+  border-bottom: solid 0.2px #A7AFB2;
+  padding-bottom: 5px;
+}
+.bs-datepicker-body table td{
+  color: black;
+}
+/* .bs-datepicker table.days.weeks{
+  background-color: var(--blue);
+  width: calc(385*var(--ratio)) ;
+  height: calc(345*var(--ratio)) ;
+} */
+/* #customcalendar bs-datepicker-inline-container{
+  min-width: calc(440*var(--ratio)) ;
+  max-height: calc(410*var(--ratio)) ;
+}
+.bs-datepicker-container {
+  padding: 0;
+}
+.bs-datepicker-head, .bs-datepicker-body {
+  padding: 0;
+  border: none;
+  max-width: calc(399.45*var(--ratio));
+  max-height: calc(369.45*var(--ratio));
+}
+.bs-datepicker {
+  box-shadow: 0 0 0 0 #aaa;
+  position: relative;
+  z-index: 1;
+} */

@@ -1,0 +1,64 @@
+<div class="login-page-container">
+  <div class="block-left">
+    <!-- Logo -->
+    <div class="logo-block">
+      <img src="/assets/img/logo.png"/>
+      <p class="tma-text">NEWS DC19 PROGRAM 1</p>
+    </div>
+
+    <!-- Form Login -->
+    <div class="form-container">
+      <form class="login-form" [formGroup]="loginForm" autocomplete="off" (ngSubmit)="onSubmit()">
+        <h2>Login</h2>
+        <div class="row-control">
+          <mat-form-field appearance="fill">
+            <mat-label>Enter your email address</mat-label>
+            <input type="email" matInput formControlName="emailAddress">
+            <!-- <div *ngIf="loginForm.value.emailAddress.invalid && (loginForm.value.emailAddress.dirty || loginForm.value.emailAddress.touched)">
+              <mat-error *ngIf="loginForm.value.emailAddress.errors?.['email']">
+                Please enter a valid email address
+              </mat-error>
+            </div> -->
+            <mat-error *ngIf="emailAddress?.errors?.['required']">
+              Email address is required
+            </mat-error>
+            <mat-error *ngIf="emailAddress?.errors?.['email']">
+              Email address is invalid
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+        <div class="row-control">
+          <mat-form-field appearance="fill">
+            <mat-label>Enter your password</mat-label>
+            <input type="password" matInput formControlName="password">
+            <mat-error *ngIf="password?.errors?.['required']">
+              Password is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="row-control row-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+        </div>
+        <!-- <pre>{{ loginForm.value | json }}</pre> -->
+        <!-- input value -->
+        <!-- <pre>{{ loginForm.value | json }}</pre> -->
+      </form>
+    </div>
+
+  </div>
+
+
+  <div class="block-right">
+    <div class="welcome-block">
+      <h3>Welcome</h3>
+      <p>Welcome to TMA Solution<br/> DC19 Program 1</p>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+

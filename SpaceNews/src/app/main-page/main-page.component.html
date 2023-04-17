@@ -1,0 +1,40 @@
+<div class="main-container">
+  <!-- Header -->
+  <header class="main-header">
+    <!-- Logo -->
+    <div class="logo-main-header">
+        <img src="/assets/img/logo.png"/>
+        <p class="tma-text">NEWS DC19 PROGRAM 1</p>
+    </div>
+
+    <!-- Search bar -->
+    <div class="searchbar-main-header">
+      <mat-form-field class="searchbar-form-field" appearance="fill">
+        <input matInput type="text" placeholder="Search by topic, website, or RSS link">
+        <button matSuffix mat-icon-button aria-label="Search" fontIcon="search">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <!-- Login/Avatar (maybe use guard and custom service)-->
+    <div class="header-login">
+        <!-- <a class="header-login-btn" mat-stroked-button routerLink="login">LOGIN</a> -->
+        <!-- routerLink="login" routerLinkActive="active" -->
+        <button class="header-login-btn" mat-stroked-button routerLink="login">
+          LOGIN
+        </button>
+    </div>
+  </header>
+
+  <!-- content -->
+  <router-outlet></router-outlet>
+  <app-content></app-content>
+
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <p class="footer-text">Privacy Policy / Personal Information / Term of Service</p>
+  </footer>
+</div>
+
+

@@ -1,0 +1,137 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  --viewH : 100vh;
+  --viewW : 100vw;
+  --blue: #259CD7;
+  --grey : #F5F5F5;
+  --white : #FFFF;
+  --ratio : calc(var(--viewW)/1440);
+}
+
+.main-container{
+  position: relative;
+}
+
+/* <Header> */
+.main-header{
+  display: flex;
+  background-color: #F2FBFF;
+}
+
+/* <logo> */
+.logo-main-header{
+  margin-left: calc(47*var(--ratio));
+  margin-top: calc(8*var(--ratio));
+  margin-bottom: calc(9*var(--ratio));
+  margin-right: calc(61*var(--ratio));
+  height: calc(68*var(--ratio));
+}
+.logo-main-header img{
+  float: left;
+  /*  */
+  height: calc(68*var(--ratio));
+  width: calc(150.81*var(--ratio));
+  /*  */
+}
+.logo-main-header p{
+  float: left;
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: calc(25*var(--ratio));
+  line-height: calc(68*var(--ratio));
+  color: var(--blue);
+  /*  */
+  width: calc(320*var(--ratio));
+  height: calc(26.98*var(--ratio));
+  /*  */
+}
+/* </logo> */
+
+/* <search bar> */
+.searchbar-main-header{
+  width: calc(446*var(--ratio));
+  height: calc(31.85*var(--ratio));
+  margin: calc(25.58*var(--ratio)) calc(125*var(--ratio)) auto 0;
+  /* color: #A0A4A8; */
+  font-family: 'Montserrat', sans-serif;
+  margin-top: calc(9*var(--ratio));
+}
+.searchbar-main-header input{
+  font-size: calc(16*var(--ratio));
+  margin: 0 calc(86*var(--ratio)) calc(10*var(--ratio)) calc(9*var(--ratio));
+}
+.searchbar-main-header .searchbar-form-field{
+  width: 100%;
+}
+
+
+.searchbar-main-header button{
+  padding-top: 5px;
+}
+.mat-mdc-icon-button {
+  --mat-mdc-button-persistent-ripple-color: white;
+  --mat-mdc-button-ripple-color: none;
+}
+.searchbar-main-header mat-icon{
+  color: var(--blue);
+  /* height: 50px; */
+}
+/* </search bar> */
+
+/* <Login button> */
+.header-login{
+  margin: calc(12*var(--ratio)) calc(75*var(--ratio)) calc(15*var(--ratio)) 0;
+}
+.header-login .header-login-btn{
+  width: calc(195*var(--ratio));
+  height: calc(58*var(--ratio));
+  font-style: normal;
+  font-weight: 500;
+  font-size: calc(14*var(--ratio));
+  border-color: var(--blue);
+  border-radius: calc(36*var(--ratio));
+  border: solid 2px;
+  color: var(--blue);
+}
+
+/* </Login button> */
+
+/* </Header> */
+
+/* <Slider> */
+.main-slider{
+  width: 100%;
+  height: calc(670*var(--ratio));
+}
+/* </Slider> */
+
+
+/* <main-footer> */
+.main-footer{
+  position: relative;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(100*var(--ratio));
+  background-color: var(--blue);
+}
+
+.main-footer .footer-text{
+  position: absolute;
+  color: white;
+  font-size: calc(14*var(--ratio));
+  height: calc(18*var(--ratio));
+  width: calc(425.07*var(--ratio));
+  width: auto;
+  top: 50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
+/* </main-footer> */
+
+
+
+
