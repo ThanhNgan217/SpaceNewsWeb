@@ -1,0 +1,8 @@
+.post-container{
+  height: 900px;
+}
+img{
+  margin-top: 14px;
+  width: 100%;
+  height: calc(657*var(--ratio));
+}

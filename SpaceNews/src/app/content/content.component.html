@@ -20,7 +20,7 @@
         <div class="chips-list">
           <button class="chip" [class.topic-checked]="topicChecked == 0" (click)="topicChange(0)" [value]="0">All</button>
           <div class="ngForList" *ngFor="let t of ListTopic">
-            <button class="chip"[value]="t.id" (click)="topicChange(t.id)" [class.topic-checked]="topicChecked == t.id" routerLink="topic">{{t.subject}}</button>
+            <button class="chip"[value]="t.id" (click)="topicChange(t.id)" [class.topic-checked]="topicChecked == t.id" routerLink="">{{t.subject}}</button>
           </div>
         </div>
       </div>
