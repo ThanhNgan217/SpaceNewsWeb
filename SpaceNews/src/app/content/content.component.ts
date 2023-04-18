@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { Post, listPost } from '../post';
 
 @Component({
   selector: 'app-content',
@@ -8,20 +9,22 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
   styleUrls: ['./content.component.css']
 })
 export class ContentComponent {
-  listEvent=[
-    {
-      id: 1,
-      url:'/assets/img/event-img/event1.png'
-    },
-    {
-      id: 2,
-      url:'/assets/img/event-img/event2.png'
-    },
-    {
-      id: 3,
-      url:'/assets/img/event-img/event3.png'
-    }
-  ]
+  // listEvent=[
+  //   {
+  //     id: 1,
+  //     url:'/assets/img/event-img/event1.png'
+  //   },
+  //   {
+  //     id: 2,
+  //     url:'/assets/img/event-img/event2.png'
+  //   },
+  //   {
+  //     id: 3,
+  //     url:'/assets/img/event-img/event3.png'
+  //   }
+  // ]
+  listEvent = listPost.filter((p)=> p.piority == true);
+
   index = 0;
   idShow = this.listEvent[this.index].id; // 1
   urlShow = this.listEvent[this.index].url

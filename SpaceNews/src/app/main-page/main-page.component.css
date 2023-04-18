@@ -18,6 +18,8 @@
 .main-header{
   display: flex;
   background-color: #F2FBFF;
+  box-shadow:0px 4px 4px rgba(0, 0, 0, 0.19);
+  z-index: 3;
 }
 
 /* <logo> */
@@ -27,6 +29,9 @@
   margin-bottom: calc(9*var(--ratio));
   margin-right: calc(61*var(--ratio));
   height: calc(68*var(--ratio));
+}
+.logo-main-header:hover{
+  cursor: pointer;
 }
 .logo-main-header img{
   float: left;
@@ -44,8 +49,8 @@
   line-height: calc(68*var(--ratio));
   color: var(--blue);
   /*  */
-  width: calc(320*var(--ratio));
-  height: calc(26.98*var(--ratio));
+  max-width: calc(320*var(--ratio));
+  max-height: calc(26.98*var(--ratio));
   /*  */
 }
 /* </logo> */
@@ -53,7 +58,7 @@
 /* <search bar> */
 .searchbar-main-header{
   width: calc(446*var(--ratio));
-  height: calc(31.85*var(--ratio));
+  max-height: calc(31.85*var(--ratio));
   margin: calc(25.58*var(--ratio)) calc(125*var(--ratio)) auto 0;
   /* color: #A0A4A8; */
   font-family: 'Montserrat', sans-serif;

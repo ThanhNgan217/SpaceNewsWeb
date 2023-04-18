@@ -1,18 +1,18 @@
-<div class="list-event">
-    <div class="list-post">
-      <div class="post-container" *ngFor="let p of posts">
-        <div class="post" routerLink="post/{{p.id}}">
-          <img src="{{p.url}}">
-          <p class="list-post-title">{{p.title}}</p>
-          <pre class="list-post-description">{{p.time | date:'mediumDate'}}    {{p.author}}    {{p.counter}}</pre>
-          <div class="post-icon">
-            <mat-icon>star_border</mat-icon>
-            <mat-icon>share</mat-icon>
-            <mat-icon>more_vert</mat-icon>
-          </div>
+<div class="list-post-container">
+  <div class="list-post">
+    <div class="post-container" *ngFor="let p of posts">
+      <div class="post" routerLink="post/{{p.id}}" [class.piority]="p.piority" [class.upcomming]="isUpcomming(p.id)">
+        <img src="{{p.url}}">
+        <p class="list-post-title">{{p.title}}</p>
+        <pre class="list-post-description">{{p.time | date:'mediumDate'}}    {{p.author}}    {{p.counter}}</pre>
+        <div class="post-icon">
+          <mat-icon>star_border</mat-icon>
+          <mat-icon>share</mat-icon>
+          <mat-icon>more_vert</mat-icon>
         </div>
       </div>
     </div>
+  </div>
 
   <div class="block-paginator">
     <div class="paginator">

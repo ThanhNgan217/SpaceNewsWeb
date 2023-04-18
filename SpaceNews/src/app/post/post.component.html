@@ -1,4 +1,42 @@
 <div class="post-container">
-  <img src="{{PostShow?.url}}" alt="">
-  <h2 class="post-title">{{PostShow?.title}}</h2>
+  <img src="{{PostShow?.url}}" alt="{{PostShow?.title}}">
+  <div class="block-left">
+    <div class="post-content-block">
+      <p class="post-title">{{PostShow?.title}}</p>
+      <table class="post-description">
+        <td class="td-left">
+          <tr>Time:</tr>
+          <tr>Location:</tr>
+          <tr>Group:</tr>
+        </td>
+        <td class="td-right">
+          <tr>{{PostShow?.time | date:'dd/MM/yyyy'}}</tr>
+          <tr>{{PostShow?.location}}</tr>
+          <tr>{{PostShow?.group}}</tr>
+        </td>
+      </table>
+      <p class="post-content">{{PostShow?.content}}</p>
+      <!-- <pre class="post-content">{{PostShow?.content}}</pre> -->
+    </div>
+    <div class="another-posts">
+      <p>Another Event</p>
+      <div class="list-another-post">
+        <div class="post-container" *ngFor="let p of relatedPosts">
+          <div class="post" routerLink="post/{{p.id}}">
+            <img src="{{p.url}}">
+            <p class="another-post-title">{{p.title}}</p>
+            <pre class="another-post-description">{{p.time | date:'mediumDate'}}    {{p.author}}    {{p.counter}}</pre>
+            <div class="post-icon">
+              <mat-icon>star_border</mat-icon>
+              <mat-icon>share</mat-icon>
+              <mat-icon>more_vert</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="block-right">
+
+  </div>
 </div>

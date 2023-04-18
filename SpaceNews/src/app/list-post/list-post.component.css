@@ -97,7 +97,7 @@ mat-button-toggle{
  */
 
 /* list event */
-.list-event{
+.list-post-container{
   position: relative;
   background-color: white;
   margin: calc(15*var(--ratio)) 0;
@@ -116,6 +116,24 @@ mat-button-toggle{
   padding-left: calc(39*var(--ratio));
   padding-bottom: 0;
 }
+.list-post-title{
+  text-overflow: ellipsis;
+}
+.list-post .piority{
+  border-radius: 4px;
+  box-shadow: 0 1px 4px 1px  rgba(0, 0, 0, 0.25);
+}
+.list-post .piority p{
+  color: #FFE600;
+}
+.list-post .upcomming p {
+  color: #FF0000;
+}
+.list-post .upcomming{
+  border-radius: 4px;
+  box-shadow: 0 1px 1px 1px  rgba(0, 0, 0, 0.25);
+}
+
 .post{
   width: calc(245*var(--ratio));
   height: calc(329.32*var(--ratio));
