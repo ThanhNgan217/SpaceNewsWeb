@@ -102,7 +102,7 @@ Deserunt modi asperiores a tempora officia reiciendis natus, fugiat voluptatem. 
       title : "Rijeka begins year of European Capital of",
       idTopic : 3,
       url : '/assets/img/event-img/event3.png',
-      time : new Date('2023-4-21'), //9
+      time : new Date('2023-4-22'), //9
       author : 'EuroNews',
       counter : '4 min read',
       location : 'Meeting room c201',
@@ -153,6 +153,23 @@ Deserunt modi asperiores a tempora officia reiciendis natus, fugiat voluptatem. 
       title : "Rijeka begins year of European Capital of",
       idTopic : 2,
       url : '/assets/img/event-img/event2.png',
+      time : new Date('2022-7-19'),//12
+      author : 'EuroNews',
+      counter : '4 min read',
+      location : 'Meeting room c201',
+      group : 'Program c201',
+      content : 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo numquam aut dolorum perspiciatis dolor eaque neque ullam, sint culpa temporibus itaque aliquam! Quam, minus animi aperiam reiciendis est nobis inventore!\
+Delectus, placeat iure itaque hic harum labore quos repellat soluta aperiam cum quis numquam autem sint magni praesentium minus ducimus dolor quia cupiditate atque voluptas. Tempore iste dignissimos laborum debitis?\
+Ea in fuga quae officiis consequuntur reprehenderit dolor incidunt impedit cum vel, tempore beatae eaque, fugit quaerat voluptates dolorum necessitatibus ipsa asperiores doloribus recusandae. Nesciunt consequatur ut vitae blanditiis nobis.\
+Doloribus deleniti officia dicta velit voluptas est, odit numquam optio pariatur, doloremque, temporibus odio voluptatem voluptatibus ex. Omnis magnam saepe perferendis beatae id quo sed, quas, incidunt modi quia sequi.\
+Deserunt modi asperiores a tempora officia reiciendis natus, fugiat voluptatem. Repudiandae saepe cupiditate explicabo? Atque itaque quas aspernatur corporis quaerat in dolorum distinctio harum ea. Repudiandae ipsum quasi ad ullam.Deserunt modi asperiores a tempora officia reiciendis natus, fugiat voluptatem. Repudiandae saepe cupiditate explicabo? Atque itaque quas aspernatur corporis quaerat in dolorum distinctio harum ea. Repudiandae ipsum quasi ad ullam.',
+      piority : false
+    },
+    {
+      id : 10,
+      title : "Rijeka begins year of European Capital of",
+      idTopic : 3,
+      url : '/assets/img/event-img/event3.png',
       time : new Date('2023-7-19'),//12
       author : 'EuroNews',
       counter : '4 min read',

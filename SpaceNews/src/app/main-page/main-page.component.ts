@@ -47,6 +47,4 @@ export class MainPageComponent {
   //    navigateByUrl(url: string | UrlTree, extras: NavigationExtras = { skipLocationChange: false }): Promise<boolean>;
   // }
 
-
-
 }

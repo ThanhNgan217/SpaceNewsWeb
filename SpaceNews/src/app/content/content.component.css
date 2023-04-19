@@ -145,7 +145,6 @@
   top : calc(15*var(--ratio));
   right: 0;
   bottom : calc(15*var(--ratio));
-  /* min-width: calc(420*var(--ratio)); */
   max-width: calc(440*var(--ratio));
   height: calc(1275*var(--ratio));
 }

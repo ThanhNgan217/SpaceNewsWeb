@@ -75,20 +75,19 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 /* calendar */
-#customcalendar bs-datepicker-inline-container{
+.content-block-right bs-datepicker-inline-container{
   margin: calc(20.27*var(--ratio));
 }
-#customcalendar .bs-datepicker {
+.bs-datepicker {
   box-shadow: none;
   position: relative;
   z-index: 1;
 }
-#customcalendar .bs-datepicker-container {
+.content-block-right .bs-datepicker-container {
   padding: 0;
 }
 .theme-default .bs-datepicker-head {
   background-color: white;
-
 }
 .bs-datepicker-head{
   width: calc(369.46*var(--ratio));

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Post, listPost } from '../post';
 import { Observable } from 'rxjs';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-post',
@@ -93,40 +94,49 @@ export class PostComponent implements OnInit {
   //     counter : '4 min read'
   //   },
   // ]
-  relatedPosts : Post[] = [];
-  PostShow :Post | undefined;
-  constructor(private _route: ActivatedRoute) {}
-  ngOnInit(): void {
-    let PostId = this._route.snapshot.paramMap.get('id');
-    this.PostShow = listPost.find((p)=>p.id = Number(PostId))
-    // this.relatedPosts = listPost.filter((p,index,array:Post[])=>{p.idTopic == this.PostShow?.idTopic})
-    // listPost.forEach((p)=>{
-    //   let i = 0;
-    //   // let arr : Post[] = [];
-    //   if(p.idTopic == this.PostShow?.idTopic && p.id != this.PostShow.id){
-    //     this.relatedPosts?.push(p);
-    //     console.log('success')
-    //     console.log(this.relatedPosts)
-    //     i++;
-    //   }
-    //   if(i == 3)return this.relatedPosts;
-    //   else return this.relatedPosts;
-    // })
-    // console.log(this.relatedPosts)
-    let arr:Post[] = listPost.filter((p)=>{
-      return (p.idTopic == this.PostShow?.idTopic) ;
-    });
-    for(let i = 0; i<3;i++){
-      if(arr[i]) this.relatedPosts.push(arr[i]);
-      else return;
-    }
-    // this.relatedPosts.concat(arr);
-    // console.log(arr)
-    // listPost.forEach((p)=>{
-    //     let i = 0;
-    //     // let arr : Post[] = [];
-    //     if(Number(PostId.)==p.idTopic)
-    //   })
+  constructor(private _route: ActivatedRoute, private router: Router  ){
+    this.bsInlineRangeValue = [this.bsInlineValue, this.maxDate];
   }
 
+  PostId = this._route.snapshot.paramMap.get('id');
+  relatedPosts : Post[] = [];
+  PostShow :Post | undefined;
+
+
+  ngOnInit(): void {
+    this.loadPost(Number(this.PostId));
+  }
+
+  loadPost(id:number){
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+    this.relatedPosts = [];
+    this.PostShow = listPost.find((p)=>p.id == id)
+    // console.log(this.PostId, this.PostShow)
+    let arr:Post[] = listPost.filter((p)=>{
+      return ((p.idTopic == this.PostShow?.idTopic) && p.id != id) ;
+    });
+    arr = arr.sort((a, b)=>a.time.getTime() - b.time.getTime());
+    for(let i = 0; i<= arr.length && i < 3;i++){
+      if(arr[i]) {
+          this.relatedPosts.push(arr[i]);
+        }
+      else return;
+    }
+    // window.scroll(0,0);
+
+  }
+
+  //calendar handle
+  bsInlineValue = new Date();
+  bsInlineRangeValue: Date[];
+  maxDate = new Date();
+  bsConfig?: Partial<BsDatepickerConfig> = Object.assign({}, {
+    containerClass: 'theme-default',
+    showWeekNumbers: false,
+    // datePickerHead :'S, M, T, W, T, F, S'
+  });
 }

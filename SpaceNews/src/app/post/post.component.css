@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
+
 *{
   padding: 0;
   margin: 0;
@@ -18,24 +20,36 @@
   bottom: 0;
   left: 0;
   background-color: var(--grey);
+  margin-bottom: 0;
   width: 100%;
-  height: auto;
+  min-height: calc(var(--ratio)*1946);
 }
 .post-container img{
   width: 100%;
   height: calc(657*var(--ratio));
   border-radius: 4px;
 }
+.box-content{
+  position: relative;
+}
 
+/* BLOCK LEFT */
 .block-left{
   position: relative;
   top: calc(14*var(--ratio));
   right: calc(20*var(--ratio));
   bottom: calc(17*var(--ratio));
   left: 0;
+  min-height: calc(var(--ratio) *1275);
   max-width: calc(981*var(--ratio));
-  background-color: var(--white);
+  background-color: var(--grey);
+  margin-right: calc(var(--ratio)*20);
   /* margin: calc(14*var(--ratio)) calc(20*var(--ratio)) calc(17*var(--ratio)) 0; */
+}
+.block-left .block-content{
+  width: inherit;
+  min-height: calc(813*var(--ratio));
+  background-color: var(--white);
 }
 .block-left .post-content-block{
   position: relative;
@@ -43,7 +57,8 @@
   right: calc(18*var(--ratio));
   bottom: calc(20*var(--ratio));
   left: calc(32*var(--ratio));
-  min-height: calc(813*var(--ratio));
+  /* min-height: calc(813*var(--ratio)); */
+  background-color: var(--white);
   max-width: calc(931*var(--ratio));
   min-height: calc(757*var(--ratio));
   /* margin: calc(36*var(--ratio)) calc(18*var(--ratio)) calc(20*var(--ratio)) calc(32*var(--ratio)); */
@@ -67,21 +82,44 @@
   font-size: calc(var(--ratio) * 14);
   line-height: calc(var(--ratio) * 24);
 }
+/* another */
+.another-block{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
 .another-posts{
+  margin-bottom: 0;
   max-width: calc(981*var(--ratio));
   height: calc(var(--ratio)*445);
-  margin-bottom: 20px;
+  background-color: var(--white);
+  padding: calc(32*var(--ratio)) 0 calc(25*var(--ratio)) 0;
+}
+.another-posts .another-text{
+  color: #000000;
+  font-weight: 600;
+  margin-bottom: calc(45*var(--ratio));
+  margin-left: calc(38*var(--ratio));
+  font-size: calc(36*var(--ratio));
+  line-height: calc(24*var(--ratio));
 }
 .another-posts .list-another-post{
   display: grid;
   width: 100%;
-  max-width: calc(var(--ratio)*904.5);
   height: calc(var(--ratio)*320);
   grid-template-columns: auto auto auto;
   grid-row-gap: calc(35*var(--ratio));
   flex-wrap: wrap;
   padding-left: calc(39*var(--ratio));
   padding-bottom: 0;
+}
+.another-posts .post-block{
+  width: calc(var(--ratio)*245);
+  height: calc(var(--ratio)*320);
+}
+.another-posts .list-another-post div{
+  background-color: var(--white);
 }
 .another-posts .another-post-title{
   text-overflow: ellipsis;
@@ -92,7 +130,7 @@
   border-radius: 4px;
   /* box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.25); */
 }
-.another-posts .post:hover{
+.another-posts .post-router:hover{
   cursor: pointer;
 }
 .another-posts .post img{
@@ -128,3 +166,61 @@
   cursor: pointer;
 }
 
+
+/* BLOCK RIGHT */
+.block-right{
+  position: absolute;
+  float: left;
+  top : calc(var(--ratio)*14);
+  right: 0;
+  bottom : calc(15*var(--ratio));
+  max-width: calc(440*var(--ratio));
+  height: calc(810*var(--ratio));
+}
+.block-right .favourite-block{
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  max-width: calc(var(--ratio)*440);
+  height: calc(var(--ratio)*405);
+  background-color: var(--white);
+}
+.favourite-block p{
+  position: relative;
+  top: calc(var(--ratio)*26);
+  font-size: calc(var(--ratio) * 32);
+  line-height: calc(var(--ratio) * 24);
+  color: var(--blue);
+  z-index: 1;
+}
+.favourite-block table{
+  position: absolute;
+  width: auto;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000000;
+  font-weight: 700;
+  font-size: calc(var(--ratio) * 16);
+  line-height: calc(var(--ratio) * 24);
+  border-spacing: calc(var(--ratio)*18);
+  width: calc(var(--ratio)*262);
+}
+.favourite-block table th{
+  text-align: start;
+}
+.favourite-block table td{
+  text-align: end;
+}
+.favourite-table .color-blue{
+  color: var(--blue);
+}
+.favourite-table i{
+  font-size: 20px;
+}
+.favourite-table i:hover{
+  cursor: pointer;
+}

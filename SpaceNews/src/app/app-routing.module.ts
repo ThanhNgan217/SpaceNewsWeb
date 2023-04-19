@@ -12,7 +12,7 @@ const routes: Routes = [
     component:MainPageComponent,
     children:[
       {path:'', component:ContentComponent},
-      {path:'post/:id', component:PostComponent}
+      {path:'post/:id', component:PostComponent},
     ]
   },
   {path:'home',redirectTo:'', pathMatch:'full'},
