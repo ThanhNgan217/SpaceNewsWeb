@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
+
 *{
   padding: 0;
   margin: 0;
@@ -165,14 +167,21 @@ mat-button-toggle{
   width: calc(112*var(--ratio));
   height: calc(44*var(--ratio));
 }
-.post-icon mat-icon{
+/* .post-icon mat-icon{
     font-family: 'Material Icons' !important;
     color: #52575C;
     width: 24px;
     height: 24px;
     font-size: 25px;
+} */
+.post-icon i, span{
+  font-family: 'Material Icons' !important;
+  color: #52575C;
+  width: 20px;
+  height: 20px;
+  font-size: 22px;
 }
-.post-icon mat-icon:hover{
+.post-icon i:hover{
   cursor: pointer;
 }
 

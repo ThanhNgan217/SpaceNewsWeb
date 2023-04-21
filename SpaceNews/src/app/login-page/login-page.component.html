@@ -9,11 +9,11 @@
     <!-- Form Login -->
     <div class="form-container">
       <form class="login-form" [formGroup]="loginForm" autocomplete="off" (ngSubmit)="onSubmit()">
-        <h2>Login</h2>
+          <h2>Login</h2>
         <div class="row-control">
           <mat-form-field appearance="fill">
             <mat-label>Enter your email address</mat-label>
-            <input type="email" matInput formControlName="emailAddress">
+            <input (input)="clearErr()" type="email" matInput formControlName="emailAddress">
             <!-- <div *ngIf="loginForm.value.emailAddress.invalid && (loginForm.value.emailAddress.dirty || loginForm.value.emailAddress.touched)">
               <mat-error *ngIf="loginForm.value.emailAddress.errors?.['email']">
                 Please enter a valid email address
@@ -25,20 +25,21 @@
             <mat-error *ngIf="emailAddress?.errors?.['email']">
               Email address is invalid
             </mat-error>
-
           </mat-form-field>
         </div>
         <div class="row-control">
           <mat-form-field appearance="fill">
             <mat-label>Enter your password</mat-label>
-            <input type="password" matInput formControlName="password">
+            <input (input)="clearErr()" type="password" matInput formControlName="password">
             <mat-error *ngIf="password?.errors?.['required']">
               Password is required
             </mat-error>
           </mat-form-field>
         </div>
         <div class="row-control row-actions">
-          <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid||isErr" >Login</button>
+          <mat-error class="errMess" *ngIf="isErr">{{errorMessage}}</mat-error>
+
         </div>
         <!-- <pre>{{ loginForm.value | json }}</pre> -->
         <!-- input value -->

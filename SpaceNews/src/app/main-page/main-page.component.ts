@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { Account } from '../login-page/account';
+import { ApiService } from '../Service/api.service';
 
 @Component({
   selector: 'app-home-page',
@@ -17,7 +19,7 @@ export class MainPageComponent {
   //   // datePickerHead :'S, M, T, W, T, F, S'
   // });
 
-  constructor(private router : Router) {
+  constructor(private router : Router, private apiService:ApiService) {
 
   }
 
@@ -47,4 +49,7 @@ export class MainPageComponent {
   //    navigateByUrl(url: string | UrlTree, extras: NavigationExtras = { skipLocationChange: false }): Promise<boolean>;
   // }
 
+  searchClick(){
+    console.log(this.apiService.currUsser);
+  }
 }

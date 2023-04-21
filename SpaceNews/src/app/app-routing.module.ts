@@ -5,6 +5,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { ListPostComponent } from './list-post/list-post.component';
 import { PostComponent } from './post/post.component';
 import { ContentComponent } from './content/content.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path:'home',redirectTo:'', pathMatch:'full'},
   {path:'post/:id', component:PostComponent},
   {path:'login', component:LoginPageComponent},
+  {path:'**', component:PageNotFoundComponent},
   // {path:'/', component:ListPostComponent},
 ];
 

@@ -105,16 +105,21 @@
 }
 .login-form h2{
   font-size: calc(32*var(--ratio));
+  margin-bottom: 20px;
 }
 .login-form .row-control{
   width: 100%;
   height: calc(80*var(--ratio));
   margin: calc(5*var(--ratio)) ;
 }
+.row-control .errMess{
+  margin-top: 10px;
+}
 .row-control mat-form-field{
   width: calc(397.76*var(--ratio));
 }
 .row-control button{
+  margin-top: 0;
   width: calc(397.76*var(--ratio));
   height: calc(60*var(--ratio));
   border-radius: 25px;

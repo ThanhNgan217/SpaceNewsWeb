@@ -11,7 +11,7 @@
     <div class="searchbar-main-header">
       <mat-form-field class="searchbar-form-field" appearance="fill">
         <input matInput type="text" placeholder="Search by topic, website, or RSS link">
-        <button matSuffix mat-icon-button aria-label="Search" fontIcon="search">
+        <button matSuffix mat-icon-button aria-label="Search" fontIcon="search" (click)="searchClick()">
           <mat-icon>search</mat-icon>
         </button>
       </mat-form-field>

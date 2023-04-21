@@ -8,9 +8,13 @@
           <pre class="list-post-description">{{p.time | date:'mediumDate'}}    {{p.author}}    {{p.counter}}</pre>
         </div>
         <div class="post-icon">
-          <mat-icon>star_border</mat-icon>
-          <mat-icon>share</mat-icon>
-          <mat-icon>more_vert</mat-icon>
+          <!-- <mat-icon>star_border</mat-icon> -->
+          <!-- <span (click)="starClick(p.id)"><i class="bi bi-star" *ngIf="!isFavourite"></i><i class="bi bi-star-fill" *ngIf="isFavourite"></i></span> -->
+          <i class="bi bi-star" ></i>
+          <!-- <mat-icon>share</mat-icon> -->
+          <i class="bi bi-share"></i>
+          <!-- <mat-icon>more_vert</mat-icon> -->
+          <i class="bi bi-three-dots-vertical"></i>
         </div>
       </div>
     </div>

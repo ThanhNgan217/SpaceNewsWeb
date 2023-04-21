@@ -53,4 +53,9 @@ export class ListPostComponent implements OnInit{
     }
   }
 
+  isFavourite = false;
+  starClick(id : number){
+    this.isFavourite = !this.isFavourite;
+
+  }
 }

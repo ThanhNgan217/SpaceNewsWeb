@@ -94,7 +94,6 @@ export class ContentComponent {
     this.topicChecked = value;
   }
 
-
   //calendar handle
   bsInlineValue = new Date();
   bsInlineRangeValue: Date[];
@@ -102,6 +101,5 @@ export class ContentComponent {
   bsConfig?: Partial<BsDatepickerConfig> = Object.assign({}, {
     containerClass: 'theme-default',
     showWeekNumbers: false,
-    // datePickerHead :'S, M, T, W, T, F, S'
   });
 }

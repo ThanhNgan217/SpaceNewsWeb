@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { ApiService } from "../Service/api.service";
 import {
   FormBuilder,
@@ -6,7 +6,8 @@ import {
   FormGroup,
   Validators
 } from "@angular/forms";
-import { User } from "./user";
+import { Account } from "./account";
+import { Router } from "@angular/router";
 
 // import { NoWhitespaceValidator } from "../validators/no-whitespace.validator";
 
@@ -22,10 +23,19 @@ export class LoginPageComponent implements OnInit {
 
   });
 
+  errorMessage = '';
+  isErr = false;
 
-  constructor(private fb: FormBuilder, private apiServide: ApiService) {}
+  userAccount : Account | undefined;
+  isLogin = false;
+  userId = '';
+  auth_token = '';
+
+  constructor(private fb: FormBuilder, private apiService: ApiService, private router : Router) {}
 
   ngOnInit(): void {
+    this.isErr = false;
+    this.errorMessage = '';
     this.loginForm = this.fb.group({
       emailAddress:[
         "",
@@ -43,24 +53,41 @@ export class LoginPageComponent implements OnInit {
           // Validators.pattern(/^(?=.*[!@#$%^&*]+)[a-z0-9!@#$%^&*]{6,32}$/)
         ])
       ],
-
     });
 
+    // this.apiServide.getPosts()
+    // .subscribe((data) => {
+    //   console.log(data);});
     new FormControl("", Validators.required);
   }
+
+  clearErr(){
+    this.isErr = false;
+    this.errorMessage ='';
+  }
+
   onSubmit(): void {
     let username = this.loginForm.get('emailAddress')?.value;
     let password = this.loginForm.get('password')?.value;
-
-    let user :User = {
+    let user  = {
       username : username,
       password : password
     }
-    this.apiServide.login(user).subscribe(()=>{
-      alert("success");
-    },
-
-    );
+    this.apiService.login(user)
+    .subscribe({
+      next:data =>{
+        // this.userAccount = data;
+        this.userAccount = data;
+        this.router.navigate(['/'])
+        this.apiService.loged(this.userAccount);
+      },
+      error: error => {
+        this.isErr = true;
+        this.errorMessage = (error.error.login_failure[0]);
+        // console.log(error.error)
+        // console.log(this.errorMessage)
+      }
+    });
     // this.apiServide.getPost().subscribe((data)=>{console.log(data)});
   }
 
