@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Post, listPost } from '../post';
+import { ApiService } from '../Service/api.service';
 
 @Component({
   selector: 'app-content',
@@ -25,12 +26,19 @@ export class ContentComponent {
   // ]
   listEvent = listPost.filter((p)=> p.piority == true);
 
+  logged = false;
+  user = {
+    id : '',
+    auth_token : ''
+  }
+
+  //slider
   index = 0;
   idShow = this.listEvent[this.index].id; // 1
   urlShow = this.listEvent[this.index].url
   counter = this.listEvent.length;
 
-  constructor(private router : Router) {
+  constructor(private router : Router, private apiService: ApiService) {
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsInlineRangeValue = [this.bsInlineValue, this.maxDate];
   }
@@ -42,8 +50,10 @@ export class ContentComponent {
       this.idShow = this.listEvent[this.index].id;
       this.urlShow = this.listEvent[this.index].url
     }, 4000);
-
+    this.setUser();
+    console.log(this.logged, this.user);
   }
+
   //slider handle
   changeImg(){
     clearInterval;
@@ -71,6 +81,24 @@ export class ContentComponent {
 
     this.idShow = this.listEvent[this.index].id;
     this.urlShow = this.listEvent[this.index].url
+  }
+  //logged
+  setUser(){
+    let arr:string[] =[];
+    this.apiService.currUsser.subscribe((__value: string[]) => {
+      arr.push(__value[0]);
+      arr.push(__value[1]);
+    })
+    if(arr[0]) {
+      this.user.id = arr[0];
+      this.user.auth_token = arr[1];
+      this.logged = true;
+    }
+    else{
+      this.logged = false;
+      this.user.id = '';
+      this.user.auth_token = '';
+    }
   }
 
   //list topic handle

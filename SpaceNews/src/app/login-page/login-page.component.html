@@ -14,11 +14,6 @@
           <mat-form-field appearance="fill">
             <mat-label>Enter your email address</mat-label>
             <input (input)="clearErr()" type="email" matInput formControlName="emailAddress">
-            <!-- <div *ngIf="loginForm.value.emailAddress.invalid && (loginForm.value.emailAddress.dirty || loginForm.value.emailAddress.touched)">
-              <mat-error *ngIf="loginForm.value.emailAddress.errors?.['email']">
-                Please enter a valid email address
-              </mat-error>
-            </div> -->
             <mat-error *ngIf="emailAddress?.errors?.['required']">
               Email address is required
             </mat-error>

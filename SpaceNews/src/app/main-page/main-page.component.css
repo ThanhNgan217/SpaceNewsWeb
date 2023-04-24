@@ -88,7 +88,13 @@
 
 /* <Login button> */
 .header-login{
-  margin: calc(12*var(--ratio)) calc(75*var(--ratio)) calc(15*var(--ratio)) 0;
+  /* margin: calc(12*var(--ratio)) calc(75*var(--ratio)) calc(15*var(--ratio)) 0; */
+  position: absolute;
+  top: calc(var(--ratio)*15);
+  right: calc(var(--ratio)*95);
+  bottom: calc(var(--ratio)*15);
+  width: auto;
+  height: calc(var(--ratio)*58);
 }
 .header-login .header-login-btn{
   width: calc(195*var(--ratio));
@@ -102,6 +108,61 @@
   color: var(--blue);
 }
 
+.header-login .header-avt,.header-avt img{
+  width: calc(var(--ratio)*55);
+  /* margin-right: calc(var(--ratio)*10); */
+  height: calc(var(--ratio)*55);
+  border: none;
+  border-radius: 50%;
+  border-color: #F2FBFF;
+}
+.header-avt:hover{
+  cursor: pointer;
+}
+.header-login .triangle-up.show {
+  z-index: 50;
+  position: relative;
+  left:50%;
+  transform:translateX(-50%);
+	border-left: 25px solid transparent;
+	border-right: 25px solid transparent;
+	border-bottom: 20px solid white
+}
+.header-login .menu{
+  display: none;
+}
+.header-login .menu.show{
+  display: block;
+  position: absolute;
+  top: calc(var(--ratio)*75);
+  right: 0;
+  width: calc(var(--ratio)*206);
+  height: calc(var(--ratio)*144);
+  background-color: var(--white);
+  border: solid 1px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  z-index: 50;
+  text-align: center;
+  font-size:calc(var(--ratio)*20);
+  line-height: calc((var(--ratio)*24));
+  transform: translateX(10%);
+}
+.menu.show li{
+  list-style-type: none;
+  margin-top: calc(var(--ratio)*13);
+}
+.menu.show a{
+  text-decoration: none;
+  color: #000;
+}
+.menu.show .menu-logout{
+  height: calc(var(--ratio)*47);
+  padding: calc(var(--ratio)*27) 0 calc(var(--ratio)*14) 0;
+  /* padding: auto 0; */
+}
+.menu-logout a{
+  margin: auto 0;
+}
 /* </Login button> */
 
 /* </Header> */

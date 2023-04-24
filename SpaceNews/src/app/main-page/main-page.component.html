@@ -20,9 +20,28 @@
     <div class="header-login">
         <!-- <a class="header-login-btn" mat-stroked-button routerLink="login">LOGIN</a> -->
         <!-- routerLink="login" routerLinkActive="active" -->
-        <button class="header-login-btn" mat-stroked-button routerLink="login">
+        <button class="header-login-btn" mat-stroked-button routerLink="login" *ngIf="logged">
           LOGIN
         </button>
+        <button class="header-avt" *ngIf="!logged"  (click)="menuShow = !menuShow">
+          <img src="/assets/img/avt.png" alt="">
+        </button>
+        <div class="triangle-up" [class.show]="menuShow"></div>
+        <div class="menu" [class.show]="menuShow">
+          <div class="menu-admin" [class.show]="">
+            <ul>
+              <li>
+                <a href="" class="menu-item">Group</a>
+              </li>
+              <li>
+                <a href="" class="menu-item">Posts</a>
+              </li>
+            </ul>
+          </div>
+          <div class="menu-logout">
+            <a href="" class="menu-item">Log out</a>
+          </div>
+        </div>
     </div>
   </header>
 

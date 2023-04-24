@@ -12,13 +12,14 @@ export class ApiService {
   private apiUrl = 'https://localhost:7136';
 
   userAccount : Account | undefined;
-  private Isloged = new BehaviorSubject([false, {}]);
+  private Isloged = new BehaviorSubject<string[]>([]);
 
   currUsser = this.Isloged.asObservable();
 
-  loged(user: Account) {
-    this.Isloged.next([true, user]);
-    alert('doit')
+  logged(id:string, auth:string) {
+    this.Isloged.next([id, auth]);
+
+    // alert('doit')
   }
 
   private httpOptions = {

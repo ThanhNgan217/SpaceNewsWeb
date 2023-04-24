@@ -79,7 +79,7 @@ export class LoginPageComponent implements OnInit {
         // this.userAccount = data;
         this.userAccount = data;
         this.router.navigate(['/'])
-        this.apiService.loged(this.userAccount);
+        this.apiService.logged(this.userAccount.id, this.userAccount.auth_token);
       },
       error: error => {
         this.isErr = true;
