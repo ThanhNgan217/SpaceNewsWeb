@@ -119,7 +119,7 @@ Deserunt modi asperiores a tempora officia reiciendis natus, fugiat voluptatem. 
       title : "Rijeka begins year of European Capital of",
       idTopic : 2,
       url : '/assets/img/event-img/event2.png',
-      time : new Date('2023-7-1'), // 10
+      time : new Date('2023-4-26'), // 10
       author : 'EuroNews',
       counter : '4 min read',
       location : 'Meeting room c201',
@@ -136,7 +136,7 @@ Deserunt modi asperiores a tempora officia reiciendis natus, fugiat voluptatem. 
       title : "Rijeka begins year of European Capital of",
       idTopic : 3,
       url : '/assets/img/event-img/event3.png',
-      time : new Date('2023-7-9'),//11
+      time : new Date('2023-4-28'),//11
       author : 'EuroNews',
       counter : '4 min read',
       location : 'Meeting room c201',
@@ -153,7 +153,7 @@ Deserunt modi asperiores a tempora officia reiciendis natus, fugiat voluptatem. 
       title : "Rijeka begins year of European Capital of",
       idTopic : 2,
       url : '/assets/img/event-img/event2.png',
-      time : new Date('2022-7-19'),//12
+      time : new Date('2023-4-27'),//12
       author : 'EuroNews',
       counter : '4 min read',
       location : 'Meeting room c201',

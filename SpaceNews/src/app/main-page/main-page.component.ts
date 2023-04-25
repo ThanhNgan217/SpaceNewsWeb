@@ -70,11 +70,12 @@ export class MainPageComponent implements OnInit, OnChanges{
   toLogin(){
     this.router.navigate(['/login']);
   }
-
-  searchClick(){
+  Logout(){
     // test logout
     this.apiService.logged('', '');
     this.setUser();
+  }
+  searchClick(){
     // console.log(this.user)
     // console.log(this.logged)
 

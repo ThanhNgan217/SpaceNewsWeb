@@ -1,0 +1,49 @@
+<div class="post-container">
+  <button mat-button mat-dialog-close class="close">X</button>
+  <h2 mat-dialog-title class="title">{{data.title}}</h2>
+  <mat-dialog-content class="content-post">
+    <div class="content-left">
+      <img src="{{data.url}}" alt="">
+      <table class="post-description">
+        <tr>
+          <th>Time : </th>
+          <td>{{data.time | date:'dd/MM/yyyy'}}</td>
+        </tr>
+        <tr>
+          <th>Location : </th>
+          <td>{{data.location}}</td>
+        </tr>
+        <tr>
+          <th>Group : </th>
+          <td>{{data.group}}</td>
+        </tr>
+      </table>
+      <div class="post-icon">
+        <mat-icon>star_border</mat-icon>
+        <mat-icon>share</mat-icon>
+        <mat-icon>more_vert</mat-icon>
+      </div>
+    </div>
+
+    <div class="content-right">
+      <p class="post-content">{{data.content}}</p>
+      <!-- <pre class="post-content">{{data.content}}</pre> -->
+    </div>
+    <!-- <img src="{{data.url}}" alt="">
+    <table class="post-description">
+      <tr>
+        <th>Time : </th>
+        <td>{{data.time | date:'dd/MM/yyyy'}}</td>
+      </tr>
+      <tr>
+        <th>Location : </th>
+        <td>{{data.location}}</td>
+      </tr>
+      <tr>
+        <th>Group : </th>
+        <td>{{data.group}}</td>
+      </tr>
+    </table>
+    <p class="post-content">{{data.content}}</p> -->
+  </mat-dialog-content>
+</div>

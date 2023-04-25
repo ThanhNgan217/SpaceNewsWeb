@@ -17,13 +17,13 @@
       </mat-form-field>
     </div>
     <!-- Login/Avatar (maybe use guard and custom service)-->
-    <div class="header-login">
+    <div class="header-login" [class.logged]="logged" >
         <!-- <a class="header-login-btn" mat-stroked-button routerLink="login">LOGIN</a> -->
         <!-- routerLink="login" routerLinkActive="active" -->
-        <button class="header-login-btn" mat-stroked-button routerLink="login" *ngIf="logged">
+        <button class="header-login-btn" mat-stroked-button routerLink="login" *ngIf="!logged">
           LOGIN
         </button>
-        <button class="header-avt" *ngIf="!logged"  (click)="menuShow = !menuShow">
+        <button class="header-avt" *ngIf="logged"  (click)="menuShow = !menuShow">
           <img src="/assets/img/avt.png" alt="">
         </button>
         <div class="triangle-up" [class.show]="menuShow"></div>
@@ -33,13 +33,15 @@
               <li>
                 <a href="" class="menu-item">Group</a>
               </li>
+              <li class="line"></li>
               <li>
                 <a href="" class="menu-item">Posts</a>
               </li>
             </ul>
           </div>
+          <div class="line"></div>
           <div class="menu-logout">
-            <a href="" class="menu-item">Log out</a>
+            <a href="" class="menu-item" (click)="Logout()">Log out</a>
           </div>
         </div>
     </div>

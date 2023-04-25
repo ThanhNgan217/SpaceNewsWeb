@@ -96,6 +96,10 @@
   width: auto;
   height: calc(var(--ratio)*58);
 }
+.header-login.logged{
+  width: calc(var(--ratio)*45);
+
+}
 .header-login .header-login-btn{
   width: calc(195*var(--ratio));
   height: calc(58*var(--ratio));
@@ -155,13 +159,29 @@
   text-decoration: none;
   color: #000;
 }
+.menu.show .menu-admin{
+  margin-bottom: calc(var(--ratio)*18);
+}
 .menu.show .menu-logout{
   height: calc(var(--ratio)*47);
-  padding: calc(var(--ratio)*27) 0 calc(var(--ratio)*14) 0;
+  margin-top: calc(var(--ratio)*9);
+  margin-bottom: calc(var(--ratio)*14);
+  /* padding: calc(var(--ratio)*27) 0 calc(var(--ratio)*14) 0; */
   /* padding: auto 0; */
 }
 .menu-logout a{
   margin: auto 0;
+}
+.menu div.line{
+  width: inherit;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.menu li.line{
+  width: calc(var(--ratio)*108);
+  height: 1px;
+  margin: calc(var(--ratio)*5) auto calc(var(--ratio)*13) auto;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 /* </Login button> */
 

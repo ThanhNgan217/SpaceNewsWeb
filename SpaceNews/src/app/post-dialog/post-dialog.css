@@ -1,0 +1,95 @@
+/* .mat-dialog-container{
+  padding-right: 0 !important;
+  background-color: #F5F5F5;
+} */
+
+*{
+
+  --viewH : 100vh;
+  --viewW : 100vw;
+  --blue: #259CD7;
+  --grey : #F5F5F5;
+  --white : #FFFF;
+  --ratio : calc(var(--viewW)/1440);
+}
+
+.post-container{
+  width: 100%;
+  position: relative;
+  top: 0;
+}
+mat-dialog-content{
+  padding-right: 0;
+  width: 100%;
+  height: calc((var(--ratio)*550));
+  /* overflow: hidden */
+  /* margin: 0 10px; */
+}
+
+.post-container .close{
+  position: absolute;
+  right: 0;
+  top: -22px;
+  right: 2px;
+  width: 5%;
+}
+
+.content-left{
+  width: 45%;
+  max-height: calc((var(--ratio)*500));
+  float: left;
+  /* position: fixed; */
+}
+img{
+  width: 95%;
+  height: 55%;
+  border-radius: 5px;
+}
+table{
+  height: 70px;
+  text-align: left;
+  margin: 10px 0;
+}
+table td{
+  padding-left: 10px;
+}
+table tr{
+  margin-top: 5px;
+}
+.post-icon{
+  display: flex;
+  max-width: 118px;
+}
+.post-icon mat-icon{
+  font-family: 'Material Icons' !important;
+  color: #52575C;
+  width: 24px;
+  height: 24px;
+  font-size: 25px;
+  margin-right: 10px;
+}
+.post-icon mat-icon:hover{
+  cursor: pointer;
+}
+
+
+
+.content-right{
+  background-color: white;
+  width: 55%;
+  max-height: calc((var(--ratio)*500));
+  float: left;
+  overflow: auto;
+  line-height: 24px;
+  border-radius: 5px;
+  padding: 0 10px 10px 10px;
+  /* float: right; */
+}
+
+
+
+/* img{
+  width: 80%;
+  height: 60%;
+} */
+

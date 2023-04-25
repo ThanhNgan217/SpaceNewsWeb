@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Post, listPost } from '../post';
 import { ApiService } from '../Service/api.service';
+import { PostDialog } from '../list-post/list-post.component'
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-content',
@@ -38,7 +40,7 @@ export class ContentComponent {
   urlShow = this.listEvent[this.index].url
   counter = this.listEvent.length;
 
-  constructor(private router : Router, private apiService: ApiService) {
+  constructor(private router : Router, private apiService: ApiService, public dialog: MatDialog) {
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsInlineRangeValue = [this.bsInlineValue, this.maxDate];
   }
@@ -81,6 +83,12 @@ export class ContentComponent {
 
     this.idShow = this.listEvent[this.index].id;
     this.urlShow = this.listEvent[this.index].url
+  }
+  showDialog(id : number){
+    let post = this.listEvent.find(p => p.id == id);
+    const dialogRef = this.dialog.open(PostDialog, {
+      data : post,
+    });
   }
   //logged
   setUser(){

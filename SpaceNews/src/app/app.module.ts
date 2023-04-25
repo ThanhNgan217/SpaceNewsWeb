@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { ContentComponent } from './content/content.component';
-import { ListPostComponent } from './list-post/list-post.component';
+import { ListPostComponent, PostDialog } from './list-post/list-post.component';
 import { PostComponent } from './post/post.component';
 
 import { HttpClientModule } from '@angular/common/http';
@@ -20,6 +20,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
@@ -31,7 +33,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     LoginPageComponent,
     ListPostComponent,
     PostComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    PostDialog
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     MatIconModule,
     MatChipsModule,
     MatButtonToggleModule,
+    MatDialogModule,
     AppRoutingModule,
     HttpClientModule,
     MatNativeDateModule,

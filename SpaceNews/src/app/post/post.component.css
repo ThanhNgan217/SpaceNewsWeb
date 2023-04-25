@@ -161,6 +161,7 @@
     width: 24px;
     height: 24px;
     font-size: 25px;
+    margin-right: 10px;
 }
 .post-icon mat-icon:hover{
   cursor: pointer;

@@ -88,7 +88,7 @@
   width: 100%;
   height: calc(1275*var(--ratio));
   background-color: var(--grey);
-  margin-bottom: calc(15*var(--ratio));
+  /* margin-bottom: calc(15*var(--ratio)); */
 }
 .content-block-left{
   position: relative;
@@ -201,7 +201,7 @@
   background-color: white;
   max-width: calc(440*var(--ratio));
   /* min-width: calc(420*var(--ratio)); */
-  height: calc(410*var(--ratio));
+  height: calc(420*var(--ratio));
 }
 
 /* </main-content> */

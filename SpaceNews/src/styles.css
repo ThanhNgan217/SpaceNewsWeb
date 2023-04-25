@@ -14,6 +14,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --white : #FFFF;
   --ratio : calc(var(--viewW)/1440);
 }
+
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #F2FBFF;
+  border-radius: 5px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: gray;
+  border-radius: 5px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  width: 15px;
+}
+
+
 /* input login page */
 .login-form .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: #FAF9F7;
@@ -66,12 +87,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-button-toggle .mat-button-toggle-ripple{
   display: none;
 }
-/* .mat-button-toggle .mat-button-toggle-label-content{
-  padding: 0;
-  line-height: calc(60*var(--ratio));
-  text-align: center;
-  font-size: 14px;
-} */
 
 
 /* calendar */
@@ -116,26 +131,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .bs-datepicker-body table td{
   color: black;
 }
-/* .bs-datepicker table.days.weeks{
-  background-color: var(--blue);
-  width: calc(385*var(--ratio)) ;
-  height: calc(345*var(--ratio)) ;
-} */
-/* #customcalendar bs-datepicker-inline-container{
-  min-width: calc(440*var(--ratio)) ;
-  max-height: calc(410*var(--ratio)) ;
+
+/* post dialog */
+.mat-dialog-container{
+  padding-right: 0 !important;
+  background-color: #F5F5F5;
 }
-.bs-datepicker-container {
-  padding: 0;
-}
-.bs-datepicker-head, .bs-datepicker-body {
-  padding: 0;
-  border: none;
-  max-width: calc(399.45*var(--ratio));
-  max-height: calc(369.45*var(--ratio));
-}
-.bs-datepicker {
-  box-shadow: 0 0 0 0 #aaa;
-  position: relative;
-  z-index: 1;
-} */
