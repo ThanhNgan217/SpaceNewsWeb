@@ -119,6 +119,11 @@ mat-button-toggle{
   padding-bottom: 0;
 }
 .list-post-title{
+  height: calc(var(--ratio)*43.1);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   text-overflow: ellipsis;
 }
 .list-post .piority{

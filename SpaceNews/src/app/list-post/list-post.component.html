@@ -1,12 +1,12 @@
 <div class="list-post-container">
   <div class="list-post">
     <div class="post-container" *ngFor="let p of posts">
-      <div class="post" [class.piority]="p.piority" [class.upcomming]="isUpcomming(p.id)">
+      <div class="post" [class.piority]="p.priority" [class.upcomming]="isUpcomming(p.id)">
         <!-- <div class="post-router" routerLink="post/{{p.id}}"> -->
           <div class="post-router" (click)="showDialog(p.id)">
-          <img src="{{p.url}}">
+          <img src="{{p.image}}">
           <p class="list-post-title">{{p.title}}</p>
-          <pre class="list-post-description">{{p.time | date:'mediumDate'}}    {{p.author}}    {{p.counter}}</pre>
+          <pre class="list-post-description">{{p.time | date:'mediumDate'}}    EuroNews    4 min read</pre>
         </div>
         <div class="post-icon">
           <!-- <mat-icon>star_border</mat-icon> -->

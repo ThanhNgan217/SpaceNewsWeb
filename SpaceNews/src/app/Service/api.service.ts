@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { BehaviorSubject, Observable, catchError, map } from 'rxjs';
 import { User } from '../../app/login-page/user';
 import { Account } from '../login-page/account';
+import { Topic } from '../Topic';
+import { Post } from '../PostEvent';
 
 @Injectable({
   providedIn: 'root'
@@ -39,11 +41,17 @@ export class ApiService {
     return this.http.post<Account>(`${this.apiUrl}/api/Auth/login`, body, this.httpOptions)
   }
 
-  getPosts(){
-    // return this.http.get<any>('https://6440baf2792fe886a894b034.mockapi.io/api/posts');
+  getTopic(){
+    return this.http.get<Topic[]>(`${this.apiUrl}/api/Topics`);
+  }
 
-    // return this.http.get('https://localhost:7136/api/Posts?topicId=1&pageIndex=0&pageSize=10', {headers:{'accept': 'text/plain','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuZ2FuQGdtYWlsLmNvbSIsImp0aSI6IjA1OWMyYzI3LWJiNDYtNDA4NC1iMzA1LWYwMzhhNjQ3ZTA3OSIsImlhdCI6MTY4MTk4MDQxMiwicm9sIjoiYXBpX2FjY2VzcyIsImlkIjoiZjZiOWExOGMtZGM3NC00OWVjLTk5MmItNTNmYTdhYjYzNzEwIiwibmJmIjoxNjgxOTgwNDEyLCJleHAiOjE2ODE5ODc2MTIsImlzcyI6IndlYkFwaSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDQ0OTMvIn0.VKQx0VNWkQ1C6N9YfrUTvocDxUYUJ72np5gWQvjKrYE'}});
-    return this.http.get('https://localhost:7136/api/Posts?topicId=1&pageIndex=0&pageSize=10');
+  getPosts(idTopic : number = 0){
+    if(idTopic == 0){
+      return this.http.get<Post[]>('https://localhost:7136/api/Posts?pageIndex=0&pageSize=10');
+    }
+    else{
+      return this.http.get<Post[]>(`https://localhost:7136/api/Posts?topicId=${idTopic}&pageIndex=0&pageSize=10`)
+    }
   }
 
 

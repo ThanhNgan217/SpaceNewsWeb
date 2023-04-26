@@ -1,6 +1,8 @@
 import { Component, Inject, Input, OnInit, SimpleChanges } from '@angular/core';
-import { Post, listPost } from '../post';
+// import { Post, listPost } from '../post';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Post } from '../PostEvent';
+import { ApiService } from '../Service/api.service';
 
 @Component({
   selector: 'app-list-post',
@@ -10,55 +12,109 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 export class ListPostComponent implements OnInit{
   @Input() topicChecked = 0;
 
-  constructor(public dialog: MatDialog){}
+  listPost : Post[] = [];
+  constructor(public dialog: MatDialog, private apiService:ApiService){}
 
-  posts : Post[] = listPost;//will show
-  upcommingPost : Post[]= []
+  posts : Post[] = [];//will show
+  upcommingPost : Post[]= [];
+
   ngOnInit(): void{
-    let currDate = new Date();
-    let upcommingTime = new Date();
-    this.posts = listPost.sort((a, b)=>a.time.getTime() - b.time.getTime()); // will show
-    this.posts = this.posts.filter((p)=>p.time.getTime() > currDate.getTime())//filter events pass
-    // console.log('sorted')
-    // if(this.posts[0].time.getMonth() == currDate.getMonth() && this.posts[0].time.getFullYear() == currDate.getFullYear()){
-    //   if(this.posts[0].time.getDate() - currDate.getDate() <= 3) upcommingTime = this.posts[0].time;
-    //   // console.log(this.posts[0].time.getDate() , currDate.getDate());
-    // }
-    this.posts.forEach(p=>{
-      if(p.time.getMonth() == currDate.getMonth() && p.time.getFullYear() == currDate.getFullYear()){
-        if(p.time.getDate() - currDate.getDate() <= 3) upcommingTime = p.time;
-      }
-    })
-
-    this.upcommingPost = this.posts.filter((p)=> p.time <= upcommingTime);
+    this.getListPost(this.topicChecked);
+    // this.posts = this.listPost;
     // this.upcommingPost.forEach((p)=>this.posts.unshift(p))
-  }
-  isUpcomming(id : number){
-    if(this.upcommingPost.find((p)=>p.id == id)) return true;
-    else return false;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('topicChecked' in changes){
       let currDate = new Date();
-      this.posts = this.posts.filter((p)=>p.time.getTime() > currDate.getTime())
+      this.posts = this.posts.filter((p)=>{
+        // p.time.getTime() > currDate.getTime()
+        let x = new Date(p.time);
+        return x.getTime() > currDate.getTime();
+      })
       const topic = Number(changes['topicChecked'].currentValue);
       this.topicChecked = topic;
       this.ChangeTopic(topic);
     }
   }
 
+  getListPost(topicId = 0){
+    this.apiService.getPosts(topicId).subscribe({
+      next:data =>{
+        this.listPost = data;
+        // this.posts = data;
+        this.handlePosts();
+      }
+    })
 
-  ChangeTopic(id:number){
-    let currDate = new Date();
-    if(id == 0){
-      this.posts = listPost.filter((p)=>p.time.getTime() > currDate.getTime())
-    }
-    else{
-      this.posts = listPost.filter(post => post.idTopic == id && post.time.getTime() > currDate.getTime())
-    }
   }
 
+  handlePosts(){
+    let currDate = new Date();
+    let upcommingTime = new Date();
+    let i = 0;
+    let list: Post[] = [];
+    // this.listPost.forEach(p =>{
+    //   console.log(new Date(p.time).getTime());
+    // })
+    this.listPost.forEach(p=>{
+      if(i <= 8) {
+        list.push(p);
+        i++;
+      }
+      else return;
+    })
+    this.posts = list.sort((a, b)=>{
+      // a.time.getTime() - b.time.getTime()
+      let x = new Date(a.time).getTime();
+      let y = new Date(b.time).getTime();
+      return x - y;
+    }); // will show
+    this.posts = this.posts.filter((p)=>{
+      // new Date(p.time).getTime() > currDate.getTime()
+      let x = new Date(p.time).getTime();
+      return x > currDate.getTime();
+    })//filter events pass
+    this.posts.forEach(p=>{
+      let x = new Date(p.time);
+      if(x.getMonth() == currDate.getMonth() && x.getFullYear() == currDate.getFullYear()){
+        if(x.getDate() - currDate.getDate() <= 3) upcommingTime = x;
+      }
+    })
+    this.upcommingPost = this.posts.filter((p)=> {
+      let x = new Date(p.time);
+      if(x <= upcommingTime) return p;
+      else return;
+    });
+  }
+
+  isUpcomming(id : number){
+    if(this.upcommingPost.find((p)=>p.id == id)) return true;
+    else return false;
+  }
+
+
+  ChangeTopic(id:number){
+    // let currDate = new Date();
+    // if(id == 0){
+    //   this.posts = this.listPost.filter((p)=>{
+    //     // p.time.getTime() > currDate.getTime()
+    //     let x = new Date(p.time);
+    //     return x.getTime() > currDate.getTime();
+    //   })
+    // }
+    // else{
+    //   this.posts = this.listPost.filter(post => {
+    //     // post.topicID == id && post.time.getTime() > currDate.getTime()
+    //     let x = new Date(post.time);
+    //     if(post.topicID == id && x.getTime() > currDate.getTime()) return post;
+    //     else return;
+    //   })
+    // }
+    this.getListPost(id);
+  }
+
+  // favourite
   isFavourite = false;
   starClick(id : number){
     this.isFavourite = !this.isFavourite;

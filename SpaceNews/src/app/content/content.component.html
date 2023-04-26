@@ -4,9 +4,9 @@
       <div class="slide-show" [id] = 'idShow'>
         <div class="slider-icon nav-prev" (click)="toPrev()"><mat-icon>arrow_back_ios</mat-icon></div>
         <div class="slider-icon nav-next" (click)="toNext()"><mat-icon>arrow_forward_ios</mat-icon></div>
-        <img [src]="urlShow" alt="" class="event-img" (click)="showDialog(idShow)">
+        <img [src]="urlShow" alt="" [title]="title" class="event-img" (click)="showDialog(idShow)">
         <div class="span-nav-group">
-          <span class="span-nav" [class.showed]="e.id == idShow" *ngFor="let e of listEvent" (click)="toEvent(e.id)" [id]="e.id" ></span>
+          <span class="span-nav" [class.showed]="e.id == idShow" *ngFor="let e of postsSlider" (click)="toEvent(e.id)" [id]="e.id" ></span>
         </div>
       </div>
     </div>
@@ -17,14 +17,14 @@
     <div class="content-block-left">
       <!-- ListPost conponent -->
       <div class="list-topic">
-        <div class="chips-list">
-          <button class="chip" [class.topic-checked]="topicChecked == 0" (click)="topicChange(0)" [value]="0">All</button>
-          <div class="ngForList" *ngFor="let t of ListTopic">
-            <button class="chip"[value]="t.id" (click)="topicChange(t.id)" [class.topic-checked]="topicChecked == t.id" routerLink="">{{t.subject}}</button>
-          </div>
+        <div class="chips-list" id="list-topic">
+          <button class="chip" [class.topic-checked]="idTopic == 0" (click)="topicChange(0)" [value]="0">All</button>
+          <!-- <div class="ngForList" *ngFor="let t of ListTopic"> -->
+          <button class="chip" *ngFor="let t of ListTopic" [value]="t.id" (click)="topicChange(t.id)" [class.topic-checked]="idTopic == t.id">{{t.name}}</button>
+          <!-- </div> -->
         </div>
       </div>
-      <app-list-post [topicChecked] = "topicChecked"></app-list-post>
+      <app-list-post [topicChecked] = "idTopic"></app-list-post>
       <!-- <app-event-list [topicChecked] = "topicChecked"></app-event-list> -->
       <!-- CLICK A POST -->
         <!-- Post component -->

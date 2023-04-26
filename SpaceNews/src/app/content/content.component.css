@@ -105,7 +105,7 @@
   position: relative;
   background-color: white;
   width: calc(980*var(--ratio));
-  height: calc(70*var(--ratio));
+  height: calc(75*var(--ratio));
 }
 .chips-list{
   position: absolute;
@@ -113,13 +113,19 @@
   border: none;
   margin: calc(5*var(--ratio)) 0;
   width: 100%;
-  height: calc(60*var(--ratio));
+  max-height: calc(60*var(--ratio));
+  overflow-x : auto;
+  overflow-y: hidden;
 }
+.chips-list::-webkit-scrollbar{
+  width: 5px;
+}
+
 .chips-list .chip{
   position: relative;
   display: inline-block;
-  width: calc(100*var(--ratio));
-  height: calc(60*var(--ratio));
+  min-width: calc(100*var(--ratio));
+  min-height: calc(60*var(--ratio));
   margin-left: calc(30*var(--ratio));
   line-height: calc(60*var(--ratio));
   text-align: center;

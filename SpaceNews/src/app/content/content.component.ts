@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { Post, listPost } from '../post';
+// import { Post, listPost } from '../post';
+import { Post } from '../PostEvent';
 import { ApiService } from '../Service/api.service';
 import { PostDialog } from '../list-post/list-post.component'
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Topic } from '../Topic';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-content',
@@ -26,7 +29,10 @@ export class ContentComponent {
   //     url:'/assets/img/event-img/event3.png'
   //   }
   // ]
-  listEvent = listPost.filter((p)=> p.piority == true);
+  ListTopic : Topic[] = [];
+  idTopic = 0;
+
+  postsSlider : Post[] = [];
 
   logged = false;
   user = {
@@ -36,31 +42,49 @@ export class ContentComponent {
 
   //slider
   index = 0;
-  idShow = this.listEvent[this.index].id; // 1
-  urlShow = this.listEvent[this.index].url
-  counter = this.listEvent.length;
+  idShow = 1; // 1
+  urlShow = '';
+  title = '';
+  counter = 0;
 
-  constructor(private router : Router, private apiService: ApiService, public dialog: MatDialog) {
+  constructor(private router : Router, private apiService: ApiService, private http: HttpClient, public dialog: MatDialog) {
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsInlineRangeValue = [this.bsInlineValue, this.maxDate];
   }
   ngOnInit(){
-    setInterval(() => {
-      if(this.index == this.counter-1) this.index = 0;
-      else this.index++;
+    this.LoadSlider();
+    this.LoadTopics();
 
-      this.idShow = this.listEvent[this.index].id;
-      this.urlShow = this.listEvent[this.index].url
-    }, 4000);
     this.setUser();
     console.log(this.logged, this.user);
   }
 
-  //slider handle
+  //slider handle'
+  LoadSlider(){
+    this.apiService.getPosts().subscribe({
+      next:data =>{
+        this.postsSlider= data.filter(d=>d.priority == 1)
+        this.index = 0;
+        this.idShow = this.postsSlider[this.index].id; // 1
+        this.urlShow = this.postsSlider[this.index].image;
+        this.title = this.postsSlider[this.index].title;
+        this.counter = this.postsSlider.length;
+      }
+    })
+
+
+    setInterval(() => {
+      if(this.index == this.counter-1) this.index = 0;
+      else this.index++;
+
+      this.idShow = this.postsSlider[this.index].id;
+      this.urlShow = this.postsSlider[this.index].image
+    }, 4000);
+  }
   changeImg(){
     clearInterval;
-    for (let e of this.listEvent){
-      if(e.id == this.idShow) this.urlShow = e.url;
+    for (let e of this.postsSlider){
+      if(e.id == this.idShow) this.urlShow = e.image;
     }
   }
   toEvent(id:number){
@@ -73,19 +97,19 @@ export class ContentComponent {
     if(this.index == 0) this.index = this.counter-1;
     else this.index--;
 
-    this.idShow = this.listEvent[this.index].id;
-    this.urlShow = this.listEvent[this.index].url
+    this.idShow = this.postsSlider[this.index].id;
+    this.urlShow = this.postsSlider[this.index].image
   }
   toNext(){
     clearInterval;
     if(this.index == this.counter-1) this.index = 0;
     else this.index++;
 
-    this.idShow = this.listEvent[this.index].id;
-    this.urlShow = this.listEvent[this.index].url
+    this.idShow = this.postsSlider[this.index].id;
+    this.urlShow = this.postsSlider[this.index].image
   }
   showDialog(id : number){
-    let post = this.listEvent.find(p => p.id == id);
+    let post = this.postsSlider.find(p => p.id == id);
     const dialogRef = this.dialog.open(PostDialog, {
       data : post,
     });
@@ -110,24 +134,16 @@ export class ContentComponent {
   }
 
   //list topic handle
-  ListTopic = [
-    {
-      id : 1,
-      subject : 'Subject 1'
-    },
-    {
-      id : 2,
-      subject : 'Subject 2'
-    },
-    {
-      id : 3,
-      subject : 'Subject 3'
-     },
-  ]
-  topicChecked = 0;
+  LoadTopics(){
+    this.apiService.getTopic().subscribe({
+      next:data =>{
+        this.ListTopic = data;
+      }
+    })
+  }
 
   topicChange(value : number){
-    this.topicChecked = value;
+    this.idTopic = value;
   }
 
   //calendar handle
