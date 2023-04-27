@@ -77,7 +77,6 @@
   transform: translateY(-50%);
   left:50%;
   transform:translate(-50%,0%);
-;
 }
 
 
@@ -106,6 +105,8 @@
   background-color: white;
   width: calc(980*var(--ratio));
   height: calc(75*var(--ratio));
+  overflow-x : auto;
+  overflow-y: hidden;
 }
 .chips-list{
   position: absolute;
@@ -114,11 +115,13 @@
   margin: calc(5*var(--ratio)) 0;
   width: 100%;
   max-height: calc(60*var(--ratio));
-  overflow-x : auto;
-  overflow-y: hidden;
 }
-.chips-list::-webkit-scrollbar{
-  width: 5px;
+.list-topic::-webkit-scrollbar{
+  height: 5px;
+}
+.list-topic::-webkit-scrollbar-thumb {
+  background: rgb(207, 202, 202);
+  border-radius: 25px;
 }
 
 .chips-list .chip{
@@ -129,7 +132,7 @@
   margin-left: calc(30*var(--ratio));
   line-height: calc(60*var(--ratio));
   text-align: center;
-  border: var(--blue) solid 2px;
+  border: var(--blue) solid 3px;
   border-radius: calc(36*var(--ratio));
   background-color: #FAF9F7;
   color: var(--blue);

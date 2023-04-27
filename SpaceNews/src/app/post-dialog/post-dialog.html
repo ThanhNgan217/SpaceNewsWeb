@@ -1,8 +1,8 @@
 <div class="post-container">
   <button mat-button mat-dialog-close class="close">X</button>
-  <h2 mat-dialog-title class="title">{{data.title}}</h2>
+  <!-- <h2 mat-dialog-title class="title">{{data.title}}</h2> -->
   <mat-dialog-content class="content-post">
-    <div class="content-left">
+    <!-- <div class="content-left">
       <img src="{{data.image}}" alt="">
       <table class="post-description">
         <tr>
@@ -27,9 +27,10 @@
 
     <div class="content-right">
       <p class="post-content">{{data.content}}</p>
-      <!-- <pre class="post-content">{{data.content}}</pre> -->
-    </div>
-    <!-- <img src="{{data.url}}" alt="">
+      <pre class="post-content">{{data.content}}</pre>
+    </div> -->
+    <img src="{{data.image}}" alt="">
+    <h2 class="post-title">Title TitleTitleTitleTitleTitle TitleTitleTitleTitle Title Title Title Title Title</h2>
     <table class="post-description">
       <tr>
         <th>Time : </th>
@@ -41,9 +42,9 @@
       </tr>
       <tr>
         <th>Group : </th>
-        <td>{{data.group}}</td>
+        <td>{{data.Group}}</td>
       </tr>
     </table>
-    <p class="post-content">{{data.content}}</p> -->
+    <p class="post-content">{{data.content}}</p>
   </mat-dialog-content>
 </div>
