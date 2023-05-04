@@ -112,7 +112,8 @@
   position: absolute;
   display: flex;
   border: none;
-  margin: calc(5*var(--ratio)) 0;
+  top: 50%;
+  transform: translateY(-50%);
   width: 100%;
   max-height: calc(60*var(--ratio));
 }
@@ -132,7 +133,7 @@
   margin-left: calc(30*var(--ratio));
   line-height: calc(60*var(--ratio));
   text-align: center;
-  border: var(--blue) solid 3px;
+  border: var(--blue) solid calc(3*var(--ratio));
   border-radius: calc(36*var(--ratio));
   background-color: #FAF9F7;
   color: var(--blue);
@@ -145,6 +146,81 @@
 .chips-list .topic-checked{
   background-color: #B2E5FE;
 }
+
+/* Paginator */
+.block-paginator{
+  height: calc(80*var(--ratio));
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  position: absolute;
+}
+.paginator{
+  position: relative;
+  width: calc(844*var(--ratio));
+  height: calc(60.06*var(--ratio));
+  margin: 0 auto;
+  margin-bottom: calc(11.05*var(--ratio));
+}
+.paginator mat-icon{
+  font-family: 'Material Icons' !important;
+  color: var(--blue);
+  font-size: 25px;
+  font-weight: 300;
+}
+.paginator .pag-prev{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(25*var(--ratio));
+  width: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.paginator .pag-next{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: calc(25*var(--ratio));
+  width: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.paginator .num-page-block{
+  position: relative;
+  left: 0;
+  right: 0;
+  min-width: calc(338*var(--ratio));
+  max-width: calc(600*var(--ratio));
+  width: auto;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+}
+.num-page-block .num-page{
+  width: calc(74*var(--ratio));
+  height: calc(60.06*var(--ratio));
+  border: var(--blue) calc(3*var(--ratio)) solid;
+  border-radius: calc(24*var(--ratio));
+  font-size: calc(32*var(--ratio));
+  color: var(--blue);
+  font-family: 'Montserrat';
+  background-color: white;
+  text-decoration: underline var(--blue);
+  font-weight: 600;
+}
+.num-page-block .num-page.checked{
+  background-color: rgba(121, 162, 238, 0.2);
+}
+.num-page-block .num-page:hover{
+  cursor: pointer;
+  background-color: var(--grey);
+}
+.paginator .pag-next:hover, .paginator .pag-prev{
+  cursor: pointer;
+}
+
+
 
 .content-block-right{
   position: absolute;

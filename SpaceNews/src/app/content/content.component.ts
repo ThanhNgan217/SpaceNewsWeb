@@ -31,7 +31,7 @@ export class ContentComponent {
   // ]
   ListTopic : Topic[] = [];
   idTopic = 0;
-
+  pageIndex = 0;
   postsSlider : Post[] = [];
 
   logged = false;
@@ -46,6 +46,15 @@ export class ContentComponent {
   urlShow = '';
   title = '';
   counter = 0;
+
+  //calendar handle
+  bsInlineValue = new Date();
+  bsInlineRangeValue: Date[];
+  maxDate = new Date();
+  bsConfig?: Partial<BsDatepickerConfig> = Object.assign({}, {
+    containerClass: 'theme-default',
+    showWeekNumbers: false,
+  });
 
   constructor(private router : Router, private apiService: ApiService, private http: HttpClient, public dialog: MatDialog) {
     this.maxDate.setDate(this.maxDate.getDate() + 7);
@@ -146,12 +155,21 @@ export class ContentComponent {
     this.idTopic = value;
   }
 
-  //calendar handle
-  bsInlineValue = new Date();
-  bsInlineRangeValue: Date[];
-  maxDate = new Date();
-  bsConfig?: Partial<BsDatepickerConfig> = Object.assign({}, {
-    containerClass: 'theme-default',
-    showWeekNumbers: false,
-  });
+  // handle page number
+  changePage(value:number){
+    this.pageIndex = value;
+    console.log(value)
+  }
+  pagePrev(){
+    if(this.pageIndex > 0)this.pageIndex -= 1;
+    else return;
+    console.log(this.pageIndex)
+  }
+  pageNext(){
+    if(this.pageIndex < 9)this.pageIndex += 1;
+    else return;
+    // console.log(this.pageIndex)
+  }
+
+
 }

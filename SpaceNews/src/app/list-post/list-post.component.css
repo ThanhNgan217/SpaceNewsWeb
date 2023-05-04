@@ -119,12 +119,14 @@ mat-button-toggle{
   padding-bottom: 0;
 }
 .list-post-title{
-  height: calc(var(--ratio)*43.1);
+  max-height: calc(var(--ratio)*43.1);
+  width: calc(100%);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .list-post .piority{
   border-radius: 4px;
@@ -140,10 +142,13 @@ mat-button-toggle{
   border-radius: 4px;
   box-shadow: 0 1px 1px 1px  rgba(0, 0, 0, 0.25);
 }
+.list-post .passed{
+  opacity: 0.7;
+}
 
 .post{
   width: calc(245*var(--ratio));
-  height: calc(329.32*var(--ratio));
+  min-height: calc(320.32*var(--ratio));
   border-radius: 4px;
   /* box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.25); */
 }
@@ -190,71 +195,3 @@ mat-button-toggle{
   cursor: pointer;
 }
 
-
-/* paginator */
-.block-paginator{
-  height: calc(80*var(--ratio));
-  bottom: 0;
-  left: 0;
-  right: 0;
-  position: absolute;
-}
-.paginator{
-  position: relative;
-  width: calc(844*var(--ratio));
-  height: calc(60.06*var(--ratio));
-  margin: 0 auto;
-  margin-bottom: calc(11.05*var(--ratio));
-}
-.paginator mat-icon{
-  font-family: 'Material Icons' !important;
-  color: var(--blue);
-  font-size: 25px;
-  font-weight: 300;
-}
-.paginator .pag-prev{
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(25*var(--ratio));
-  width: auto;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.paginator .pag-next{
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: calc(25*var(--ratio));
-  width: auto;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.paginator .num-page-block{
-  position: relative;
-  left: 0;
-  right: 0;
-  width: calc(338*var(--ratio));
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-around;
-}
-.num-page-block .num-page{
-  width: calc(74*var(--ratio));
-  height: calc(60.06*var(--ratio));
-  border: var(--blue) 2px solid;
-  border-radius: calc(24*var(--ratio));
-  font-size: calc(32*var(--ratio));
-  color: var(--blue);
-  font-family: 'Montserrat';
-  background-color: white;
-  text-decoration: underline var(--blue);
-  font-weight: 600;
-}
-.num-page-block .num-page:hover{
-  cursor: pointer;
-  background-color: var(--grey);
-}
-.paginator .pag-next:hover, .paginator .pag-prev{
-  cursor: pointer;
-}

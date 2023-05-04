@@ -1,11 +1,11 @@
 <div class="list-post-container">
   <div class="list-post">
     <div class="post-container" *ngFor="let p of posts">
-      <div class="post" [class.piority]="p.priority" [class.upcomming]="isUpcomming(p.id)">
+      <div class="post" [class.piority]="p.priority" [class.upcomming]="isUpcomming(p.id)" [class.passed]="isPassed(p.id)">
         <!-- <div class="post-router" routerLink="post/{{p.id}}"> -->
           <div class="post-router" (click)="showDialog(p.id)">
           <img src="{{p.image}}">
-          <p class="list-post-title">{{p.title}}</p>
+          <p class="list-post-title">{{Testtitle}}</p>
           <pre class="list-post-description">{{p.time | date:'mediumDate'}}    EuroNews    4 min read</pre>
         </div>
         <div class="post-icon">
@@ -21,7 +21,7 @@
     </div>
   </div>
 
-  <div class="block-paginator">
+  <!-- <div class="block-paginator">
     <div class="paginator">
       <div class="paginator-icon pag-prev" ><mat-icon>arrow_back_ios</mat-icon></div>
       <div class="paginator-icon pag-next" ><mat-icon>arrow_forward_ios</mat-icon></div>
@@ -32,6 +32,6 @@
         <button class="num-page">...</button>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
 

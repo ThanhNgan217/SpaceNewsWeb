@@ -45,12 +45,12 @@ export class ApiService {
     return this.http.get<Topic[]>(`${this.apiUrl}/api/Topics`);
   }
 
-  getPosts(idTopic : number = 0){
+  getPosts(idTopic : number = 0, pageNumber = 0){
     if(idTopic == 0){
-      return this.http.get<Post[]>('https://localhost:7136/api/Posts?pageIndex=0&pageSize=10');
+      return this.http.get<Post[]>(`https://localhost:7136/api/Posts?pageIndex=${pageNumber}&pageSize=9`);
     }
     else{
-      return this.http.get<Post[]>(`https://localhost:7136/api/Posts?topicId=${idTopic}&pageIndex=0&pageSize=10`)
+      return this.http.get<Post[]>(`https://localhost:7136/api/Posts?topicId=${idTopic}&pageIndex=${pageNumber}&pageSize=9`)
     }
   }
 

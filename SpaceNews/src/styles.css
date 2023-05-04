@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: 'Montserrat', sans-serif; }
 
 *{
   padding: 0;
@@ -87,15 +87,15 @@ html *::-webkit-scrollbar-thumb {
 
 
 /* calendar */
-.content-block-right bs-datepicker-inline-container{
+.content-block-right .calendar bs-datepicker-inline-container{
   margin: calc(20.27*var(--ratio));
 }
-.bs-datepicker {
+.calendar .bs-datepicker {
   box-shadow: none;
   position: relative;
   z-index: 1;
 }
-.content-block-right .bs-datepicker-container {
+.content-block-right .calendar .bs-datepicker-container {
   padding: 0;
 }
 .theme-default .bs-datepicker-head {
@@ -118,7 +118,7 @@ html *::-webkit-scrollbar-thumb {
   border: none;
   height: calc(318.6*var(--ratio));
   max-width: calc(369.46*var(--ratio));
-
+  /* min-width: calc(300*var(--ratio)); */
 }
 .bs-datepicker-body table th{
   color: black;
@@ -133,6 +133,8 @@ html *::-webkit-scrollbar-thumb {
 .mat-dialog-container{
   padding-right: 0 !important;
   max-width: calc(var(--ratio)*720) !important;
-  min-height: calc(var(--ratio)*900) !important;
+  min-height: calc(var(--ratio)*800) !important;
+  max-height: calc(var(--ratio)*950) !important;
   background-color: #F5F5F5!important;
+  overflow:unset !important;
 }

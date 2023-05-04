@@ -108,7 +108,7 @@
   font-size: calc(14*var(--ratio));
   border-color: var(--blue);
   border-radius: calc(36*var(--ratio));
-  border: solid 2px;
+  border: solid calc(3*var(--ratio));
   color: var(--blue);
 }
 
