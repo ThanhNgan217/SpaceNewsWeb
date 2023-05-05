@@ -13,6 +13,12 @@ export class ApiService {
 
   private apiUrl = 'https://localhost:7136';
 
+  // search results
+  private search = new BehaviorSubject<boolean>(false);
+  key : string| undefined = '';
+  showSearch = this.search.asObservable();
+
+
   userAccount : Account | undefined;
   private Isloged = new BehaviorSubject<string[]>([]);
 
@@ -37,7 +43,7 @@ export class ApiService {
 
   login(user : User){
     let body = JSON.stringify(user);
-    console.log(body)
+    // console.log(body)
     return this.http.post<Account>(`${this.apiUrl}/api/Auth/login`, body, this.httpOptions)
   }
 
@@ -45,14 +51,33 @@ export class ApiService {
     return this.http.get<Topic[]>(`${this.apiUrl}/api/Topics`);
   }
 
-  getPosts(idTopic : number = 0, pageNumber = 0){
-    if(idTopic == 0){
-      return this.http.get<Post[]>(`https://localhost:7136/api/Posts?pageIndex=${pageNumber}&pageSize=9`);
+  getPosts(idTopic : number = 0, pageNumber = 0, slider = false, keyWord = ''){
+    if(slider){
+      return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?pageIndex=0&pageSize=999`);
+    }
+    else if(idTopic == 0){
+      return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?pageIndex=${pageNumber}&pageSize=9`);
     }
     else{
-      return this.http.get<Post[]>(`https://localhost:7136/api/Posts?topicId=${idTopic}&pageIndex=${pageNumber}&pageSize=9`)
+      return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?topicId=${idTopic}&pageIndex=${pageNumber}&pageSize=9`)
     }
   }
 
+  searchPost(key: string|undefined){
+    if(key != ''){
+      this.key = key;
+      // console.log(key)
+      this.search.next(true);
+    }
+    else this.stopSearch();
+  }
+  getSearchResults(pageNumber = 0, key =''){
+    return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?keyword=${key}&pageIndex=${pageNumber}&pageSize=9`)
+  }
+
+  stopSearch(){
+    this.search.next(false);
+    this.key = '';
+  }
 
 }

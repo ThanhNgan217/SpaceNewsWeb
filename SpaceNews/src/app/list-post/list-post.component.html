@@ -5,8 +5,8 @@
         <!-- <div class="post-router" routerLink="post/{{p.id}}"> -->
           <div class="post-router" (click)="showDialog(p.id)">
           <img src="{{p.image}}">
-          <p class="list-post-title">{{Testtitle}}</p>
-          <pre class="list-post-description">{{p.time | date:'mediumDate'}}    EuroNews    4 min read</pre>
+          <p class="list-post-title">{{p.title}}</p>
+          <pre class="list-post-description">{{p.time | date:'MMM d, y            h:mm a'}}</pre>
         </div>
         <div class="post-icon">
           <!-- <mat-icon>star_border</mat-icon> -->

@@ -13,6 +13,7 @@ export class ListPostComponent implements OnInit{
   @Input() topicChecked = 0;
   @Input() pageIndex = 0;
   @Output() changePage = new EventEmitter();
+  @Output() topicChange = new EventEmitter();
 
   listPost : Post[] = [];
   constructor(public dialog: MatDialog, private apiService:ApiService){}
@@ -20,34 +21,74 @@ export class ListPostComponent implements OnInit{
   posts : Post[] = [];//will show
   upcommingPost : Post[]= [];
   passedEvent : Post[] = [];
-  Testtitle = 'Title title title '
+
+  // search results
+  showSearch = false;
+  searchResults: Post[] = [];
+  keyWord : string|undefined;
 
   ngOnInit(): void{
-    this.getListPost(this.topicChecked, this.pageIndex);
+    this.apiService.showSearch.subscribe({
+      next:data => {
+        this.showSearch = data;
+        console.log(this.showSearch)
+        if(this.showSearch){
+          this.keyWord = this.apiService.key;
+          this.pageIndex = 0
+          this.changePage.emit(this.pageIndex);
+          this.topicChecked = 0;
+          this.topicChange.emit(0);
+          this.getListPost(undefined, this.pageIndex, this.keyWord)
+        }
+        // this.posts = this.apiService.searchResults;
+      }
+    })
+    this.getListPost(this.topicChecked, this.pageIndex, this.keyWord);
+
     // this.posts = this.listPost;
     // this.upcommingPost.forEach((p)=>this.posts.unshift(p))
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('topicChecked' in changes){
-      this.pageIndex = 0;
-      // this.changePage.emit(this.pageIndex);
-      const topic = Number(changes['topicChecked'].currentValue);
-      this.topicChecked = topic;
-      this.ChangeTopic(topic);
+      if(this.showSearch == true && this.topicChecked == 0){
+        this.showSearch = false;
+      }
+      else{
+        this.pageIndex = 0;
+        // this.changePage.emit(this.pageIndex);
+        const topic = Number(changes['topicChecked'].currentValue);
+        this.topicChecked = topic;
+        this.apiService.stopSearch();
+        this.ChangeTopic(topic);
+      }
     }
     if('pageIndex' in changes){
-      this.getListPost(this.topicChecked, this.pageIndex)
+      this.getListPost(this.topicChecked, this.pageIndex, this.keyWord)
     }
   }
 
-  getListPost(topicId = 0, pagenum = 0){
-    this.apiService.getPosts(topicId, pagenum).subscribe({
-      next:data =>{
-        this.listPost = data;
-        this.handlePosts();
-      }
-    })
+  // getsearchPost(numpage = 0, key = ''){
+  //   this.apiService.getSearchResults(numpage, key)
+  // }
+
+  getListPost(topicId = 0, pagenum = 0, key =''){
+    if(this.showSearch){
+      this.apiService.getSearchResults(pagenum, key).subscribe({
+        next:data =>{
+          this.listPost = data;
+          this.handlePosts();
+        }
+      })
+    }
+    else{
+      this.apiService.getPosts(topicId, pagenum).subscribe({
+        next:data =>{
+          this.listPost = data;
+          this.handlePosts();
+        }
+      })
+    }
   }
 
   handlePosts(){

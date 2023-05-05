@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 // import { Post, listPost } from '../post';
@@ -29,6 +29,7 @@ export class ContentComponent {
   //     url:'/assets/img/event-img/event3.png'
   //   }
   // ]
+
   ListTopic : Topic[] = [];
   idTopic = 0;
   pageIndex = 0;
@@ -70,7 +71,7 @@ export class ContentComponent {
 
   //slider handle'
   LoadSlider(){
-    this.apiService.getPosts().subscribe({
+    this.apiService.getPosts(undefined,undefined,true).subscribe({
       next:data =>{
         this.postsSlider= data.filter(d=>d.priority == 1)
         this.index = 0;
@@ -150,7 +151,6 @@ export class ContentComponent {
       }
     })
   }
-
   topicChange(value : number){
     this.idTopic = value;
   }
@@ -158,12 +158,11 @@ export class ContentComponent {
   // handle page number
   changePage(value:number){
     this.pageIndex = value;
-    console.log(value)
   }
   pagePrev(){
     if(this.pageIndex > 0)this.pageIndex -= 1;
     else return;
-    console.log(this.pageIndex)
+    // console.log(this.pageIndex)
   }
   pageNext(){
     if(this.pageIndex < 9)this.pageIndex += 1;

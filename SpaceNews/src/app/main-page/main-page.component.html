@@ -8,14 +8,14 @@
     </div>
 
     <!-- Search bar -->
-    <div class="searchbar-main-header">
-      <mat-form-field class="searchbar-form-field" appearance="fill">
-        <input matInput type="text" placeholder="Search by topic, website, or RSS link">
-        <button matSuffix mat-icon-button aria-label="Search" fontIcon="search" (click)="searchClick()">
+    <form class="searchbar-main-header" [formGroup]="searchForm" autocomplete="off" (ngSubmit)="searchClick()">
+      <mat-form-field class="searchbar-form-field" appearance="fill" >
+        <input matInput type="text" placeholder="Search by topic, website, or RSS link" formControlName="keyWord">
+        <button matSuffix mat-icon-button aria-label="Search" fontIcon="search" type="submit">
           <mat-icon>search</mat-icon>
         </button>
       </mat-form-field>
-    </div>
+    </form>
     <!-- Login/Avatar (maybe use guard and custom service)-->
     <div class="header-login" [class.logged]="logged" >
         <!-- <a class="header-login-btn" mat-stroked-button routerLink="login">LOGIN</a> -->

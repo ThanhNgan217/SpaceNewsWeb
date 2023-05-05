@@ -4,6 +4,8 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Account } from '../login-page/account';
 import { ApiService } from '../Service/api.service';
 import { __values } from 'tslib';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Post } from '../PostEvent';
 
 @Component({
   selector: 'app-home-page',
@@ -11,9 +13,21 @@ import { __values } from 'tslib';
   styleUrls: ['./main-page.component.css']
 })
 export class MainPageComponent implements OnInit, OnChanges{
-  constructor(private router : Router, private apiService:ApiService) {
-
+  searchForm = new FormGroup({
+    keyWord : new FormControl<string>("")
+  });
+  // postsSearch : Post[] = [];
+  // showSearch = false;
+  constructor(private router : Router, private apiService:ApiService, private fb: FormBuilder) {
   }
+
+  ngOnInit():void{
+    this.setUser();
+    this.searchForm = this.fb.group({
+      keyWord:""
+    })
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if('this.logged' in changes){
     }
@@ -26,9 +40,6 @@ export class MainPageComponent implements OnInit, OnChanges{
 
   menuShow = false;
 
-  ngOnInit(): void {
-    this.setUser();
-  }
 
   setUser(){
     let arr:string[] =[];
@@ -76,15 +87,11 @@ export class MainPageComponent implements OnInit, OnChanges{
     this.setUser();
   }
   searchClick(){
-    // console.log(this.user)
-    // console.log(this.logged)
-
-    //GET USER AUTH
-    // let arr: (string | boolean)[][]=[];
-    // // console.log(this.apiService.currUsser.getValue());
-    // this.apiService.currUsser.subscribe(__values => {
-    //   arr.push(__values);
-    // })
-    // arr.forEach(i =>{console.log(i)});
+    // this.showSearch = true;
+    let key = this.searchForm.get('keyWord')?.value;
+    key = key?.replace(/ /g,'%20');
+    // console.log("hello",key)
+    this.searchForm.reset({keyWord: ''});
+    this.apiService.searchPost(key)
   }
 }
