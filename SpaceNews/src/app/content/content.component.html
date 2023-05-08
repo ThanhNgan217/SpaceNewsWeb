@@ -24,7 +24,7 @@
           <!-- </div> -->
         </div>
       </div>
-      <app-list-post [topicChecked] = "idTopic" [pageIndex]="pageIndex" (changePage)="changePage($event)" (topicChange)="topicChange($event)"></app-list-post>
+      <app-list-post [keyWord]="keyWord" [topicChecked] = "idTopic" [pageIndex]="pageIndex" (changePage)="changePage($event)" (topicChange)="topicChange($event)"></app-list-post>
       <!-- <app-event-list [topicChecked] = "topicChecked"></app-event-list> -->
       <div class="block-paginator">
         <div class="paginator">

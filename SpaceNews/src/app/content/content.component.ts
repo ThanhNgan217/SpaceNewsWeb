@@ -41,6 +41,11 @@ export class ContentComponent {
     auth_token : ''
   }
 
+  // search results
+  showSearch = false;
+  searchResults: Post[] = [];
+  keyWord : string|undefined = '';
+
   //slider
   index = 0;
   idShow = 1; // 1
@@ -62,16 +67,27 @@ export class ContentComponent {
     this.bsInlineRangeValue = [this.bsInlineValue, this.maxDate];
   }
   ngOnInit(){
+    this.apiService.showSearch.subscribe({
+      next:data => {
+        this.showSearch = data;
+        if(this.showSearch){
+          this.keyWord = this.apiService.key;
+          this.idTopic = 0;
+          this.pageIndex = 0;
+        }
+        else return;
+      }
+    })
     this.LoadSlider();
     this.LoadTopics();
 
     this.setUser();
-    console.log(this.logged, this.user);
+    // console.log(this.logged, this.user);
   }
 
   //slider handle'
   LoadSlider(){
-    this.apiService.getPosts(undefined,undefined,true).subscribe({
+    this.apiService.getSlider().subscribe({
       next:data =>{
         this.postsSlider= data.filter(d=>d.priority == 1)
         this.index = 0;
@@ -81,29 +97,25 @@ export class ContentComponent {
         this.counter = this.postsSlider.length;
       }
     })
-
-
-    setInterval(() => {
-      if(this.index == this.counter-1) this.index = 0;
-      else this.index++;
-
-      this.idShow = this.postsSlider[this.index].id;
-      this.urlShow = this.postsSlider[this.index].image
-    }, 4000);
+    this.autoChangeSlider;
+    // this.autoChangeSlider = setInterval(this.myInterval, 3500);
   }
   changeImg(){
-    clearInterval;
+    clearInterval(this.autoChangeSlider);
+    this.autoChangeSlider = setInterval(this.myInterval, 3500);
     for (let e of this.postsSlider){
       if(e.id == this.idShow) this.urlShow = e.image;
     }
   }
   toEvent(id:number){
-    clearInterval;
+    clearInterval(this.autoChangeSlider);
+    this.autoChangeSlider = setInterval(this.myInterval, 3500);
     this.idShow = id;
     this.changeImg();
   }
   toPrev(){
-    clearInterval;
+    clearInterval(this.autoChangeSlider);
+    this.autoChangeSlider = setInterval(this.myInterval, 3500);
     if(this.index == 0) this.index = this.counter-1;
     else this.index--;
 
@@ -111,7 +123,9 @@ export class ContentComponent {
     this.urlShow = this.postsSlider[this.index].image
   }
   toNext(){
-    clearInterval;
+    clearInterval(this.autoChangeSlider);
+    this.autoChangeSlider = setInterval(this.myInterval, 3500);
+
     if(this.index == this.counter-1) this.index = 0;
     else this.index++;
 
@@ -124,6 +138,16 @@ export class ContentComponent {
       data : post,
     });
   }
+  myInterval= () => {
+    if(this.index == this.counter-1) this.index = 0;
+    else this.index++;
+
+    this.idShow = this.postsSlider[this.index].id;
+    this.urlShow = this.postsSlider[this.index].image;
+    this.title = this.postsSlider[this.index].title;
+  }
+  autoChangeSlider = setInterval(this.myInterval, 3500);
+
   //logged
   setUser(){
     let arr:string[] =[];
@@ -153,10 +177,14 @@ export class ContentComponent {
   }
   topicChange(value : number){
     this.idTopic = value;
+    this.pageIndex = 0;
+    this.keyWord = '';
+    this.apiService.stopSearch();
   }
 
   // handle page number
   changePage(value:number){
+    this.idTopic = this.idTopic;
     this.pageIndex = value;
   }
   pagePrev(){

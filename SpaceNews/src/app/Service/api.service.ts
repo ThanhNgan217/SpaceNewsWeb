@@ -51,11 +51,12 @@ export class ApiService {
     return this.http.get<Topic[]>(`${this.apiUrl}/api/Topics`);
   }
 
-  getPosts(idTopic : number = 0, pageNumber = 0, slider = false, keyWord = ''){
-    if(slider){
-      return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?pageIndex=0&pageSize=999`);
-    }
-    else if(idTopic == 0){
+  getSlider(){
+    return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?pageIndex=0&pageSize=999`);
+  }
+
+  getPosts(idTopic : number = 0, pageNumber = 0){
+    if(idTopic == 0){
       return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?pageIndex=${pageNumber}&pageSize=9`);
     }
     else{
@@ -78,6 +79,14 @@ export class ApiService {
   stopSearch(){
     this.search.next(false);
     this.key = '';
+  }
+
+  getGroup(){
+    return this.http.get('https://localhost:7136/api/Groups').subscribe({
+      next:data =>{
+        console.log(data);
+      }
+    })
   }
 
 }

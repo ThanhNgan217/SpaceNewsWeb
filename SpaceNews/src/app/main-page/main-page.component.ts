@@ -88,10 +88,13 @@ export class MainPageComponent implements OnInit, OnChanges{
   }
   searchClick(){
     // this.showSearch = true;
-    let key = this.searchForm.get('keyWord')?.value;
-    key = key?.replace(/ /g,'%20');
-    // console.log("hello",key)
-    this.searchForm.reset({keyWord: ''});
-    this.apiService.searchPost(key)
+    let key = this.searchForm.get('keyWord')?.value?.trim();
+
+      key = key?.replace(/ /g,'%20');
+      // console.log("hello",key)
+      this.searchForm.reset({keyWord: ''});
+      this.apiService.searchPost(key)
+
+
   }
 }

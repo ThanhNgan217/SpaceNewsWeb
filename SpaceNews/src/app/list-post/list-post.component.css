@@ -118,6 +118,13 @@ mat-button-toggle{
   padding-left: calc(39*var(--ratio));
   padding-bottom: 0;
 }
+.search-text{
+  position: relative;
+  font-weight: 500;
+  top: -20px;
+  left: calc(34*var(--ratio));
+}
+
 .list-post-title{
   max-height: calc(var(--ratio)*43.1);
   width: calc(100%);

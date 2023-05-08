@@ -12,9 +12,11 @@ import { ApiService } from '../Service/api.service';
 export class ListPostComponent implements OnInit{
   @Input() topicChecked = 0;
   @Input() pageIndex = 0;
+  @Input() keyWord : string|undefined;
   @Output() changePage = new EventEmitter();
   @Output() topicChange = new EventEmitter();
 
+  keyWordOrigin : string |undefined;
   listPost : Post[] = [];
   constructor(public dialog: MatDialog, private apiService:ApiService){}
 
@@ -23,26 +25,12 @@ export class ListPostComponent implements OnInit{
   passedEvent : Post[] = [];
 
   // search results
-  showSearch = false;
-  searchResults: Post[] = [];
-  keyWord : string|undefined;
+  // showSearch = false;
+  // searchResults: Post[] = [];
+  // keyWord : string|undefined;
 
   ngOnInit(): void{
-    this.apiService.showSearch.subscribe({
-      next:data => {
-        this.showSearch = data;
-        console.log(this.showSearch)
-        if(this.showSearch){
-          this.keyWord = this.apiService.key;
-          this.pageIndex = 0
-          this.changePage.emit(this.pageIndex);
-          this.topicChecked = 0;
-          this.topicChange.emit(0);
-          this.getListPost(undefined, this.pageIndex, this.keyWord)
-        }
-        // this.posts = this.apiService.searchResults;
-      }
-    })
+
     this.getListPost(this.topicChecked, this.pageIndex, this.keyWord);
 
     // this.posts = this.listPost;
@@ -51,20 +39,23 @@ export class ListPostComponent implements OnInit{
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('topicChecked' in changes){
-      if(this.showSearch == true && this.topicChecked == 0){
-        this.showSearch = false;
-      }
-      else{
         this.pageIndex = 0;
         // this.changePage.emit(this.pageIndex);
         const topic = Number(changes['topicChecked'].currentValue);
         this.topicChecked = topic;
         this.apiService.stopSearch();
         this.ChangeTopic(topic);
-      }
+    }
+    if('keyWord' in changes){
+      let str = /%20/g;
+      this.keyWordOrigin = this.keyWord?.replace(str,' ');
+      this.getListPost(this.topicChecked,this.pageIndex, this.keyWord);
     }
     if('pageIndex' in changes){
-      this.getListPost(this.topicChecked, this.pageIndex, this.keyWord)
+      if(this.keyWord){
+        this.getListPost(this.topicChecked, this.pageIndex, this.keyWord)
+      }
+      else this.getListPost(this.topicChecked, this.pageIndex, '');
     }
   }
 
@@ -72,8 +63,9 @@ export class ListPostComponent implements OnInit{
   //   this.apiService.getSearchResults(numpage, key)
   // }
 
-  getListPost(topicId = 0, pagenum = 0, key =''){
-    if(this.showSearch){
+  getListPost(topicId = 0, pagenum = 0, key :string|undefined = ''){
+    if(key){
+      console.log('key:', key)
       this.apiService.getSearchResults(pagenum, key).subscribe({
         next:data =>{
           this.listPost = data;
@@ -198,23 +190,7 @@ export class ListPostComponent implements OnInit{
 
 
   ChangeTopic(id:number){
-    // let currDate = new Date();
-    // if(id == 0){
-    //   this.posts = this.listPost.filter((p)=>{
-    //     // p.time.getTime() > currDate.getTime()
-    //     let x = new Date(p.time);
-    //     return x.getTime() > currDate.getTime();
-    //   })
-    // }
-    // else{
-    //   this.posts = this.listPost.filter(post => {
-    //     // post.topicID == id && post.time.getTime() > currDate.getTime()
-    //     let x = new Date(post.time);
-    //     if(post.topicID == id && x.getTime() > currDate.getTime()) return post;
-    //     else return;
-    //   })
-    // }
-    this.changePage.emit(this.pageIndex);
+    // this.changePage.emit(this.pageIndex);
     this.getListPost(id);
   }
 
