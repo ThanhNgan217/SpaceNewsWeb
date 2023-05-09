@@ -32,7 +32,6 @@ export class ListPostComponent implements OnInit{
   ngOnInit(): void{
 
     this.getListPost(this.topicChecked, this.pageIndex, this.keyWord);
-
     // this.posts = this.listPost;
     // this.upcommingPost.forEach((p)=>this.posts.unshift(p))
   }
@@ -202,8 +201,9 @@ export class ListPostComponent implements OnInit{
   }
   showDialog(id : number){
     let post = this.posts.find(p => p.id == id);
+    // post.groupname = post?.Group.name
     const dialogRef = this.dialog.open(PostDialog, {
-      data : post,
+      data : post
     });
   }
 }
@@ -217,9 +217,11 @@ export class PostDialog implements OnInit{
   constructor(
     public dialogRef: MatDialogRef<PostDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Post,
+    private apiService : ApiService
   ) {}
+  key = "name";
+  post = this.data;
+
   ngOnInit(): void {
-
   }
-
 }

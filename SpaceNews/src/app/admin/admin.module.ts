@@ -1,10 +1,51 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AddEventComponent } from './add-event/add-event.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { Route, RouterModule, Routes } from '@angular/router';
+
+import {MatMenuModule} from '@angular/material/menu';
+import {MatTableModule} from '@angular/material/table';
+import {MatListModule} from '@angular/material/list';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { NgxEditorModule } from 'ngx-editor';
+import {MatInputModule} from '@angular/material/input';
+import {MatIconModule} from '@angular/material/icon';
+import { MatOptionModule } from '@angular/material/core';
+
+const routes: Routes = [
+  { path: 'admin',
+    component: AddEventComponent,
+    children: [
+
+    ]
+  }
+];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    AddEventComponent
+  ],
   imports: [
-    CommonModule
-  ]
+    RouterModule.forChild(routes),
+    CommonModule,
+    FormsModule,
+    NgxEditorModule,
+
+    MatMenuModule,
+    MatTableModule,
+    MatListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSlideToggleModule,
+    MatInputModule,
+    MatIconModule,
+    MatOptionModule,
+    ReactiveFormsModule
+  ],
+
 })
 export class AdminModule { }

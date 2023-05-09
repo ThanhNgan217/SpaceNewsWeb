@@ -35,7 +35,7 @@ namespace News.api.Controllers
 
         //GET : Api/posts/get_groups
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
         {
             if (_context.Groups == null)

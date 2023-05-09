@@ -27,9 +27,10 @@ export class LoginPageComponent implements OnInit {
   isErr = false;
 
   userAccount : Account | undefined;
-  isLogin = false;
-  userId = '';
-  auth_token = '';
+  // isLogin = false;
+  // userId = '';
+  // auth_token = '';
+  // user_role = '';
 
   constructor(private fb: FormBuilder, private apiService: ApiService, private router : Router) {}
 
@@ -78,8 +79,9 @@ export class LoginPageComponent implements OnInit {
       next:data =>{
         // this.userAccount = data;
         this.userAccount = data;
+        console.log('useraccount', this.userAccount)
+        this.apiService.logged(this.userAccount.id, this.userAccount.auth_token, this.userAccount.role);
         this.router.navigate(['/'])
-        this.apiService.logged(this.userAccount.id, this.userAccount.auth_token);
       },
       error: error => {
         this.isErr = true;

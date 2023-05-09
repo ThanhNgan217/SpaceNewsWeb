@@ -190,19 +190,20 @@
   position: relative;
   left: 0;
   right: 0;
-  min-width: calc(338*var(--ratio));
-  max-width: calc(600*var(--ratio));
+  min-width: calc(290*var(--ratio));
+  max-width: calc(550*var(--ratio));
   width: auto;
   margin: 0 auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 }
 .num-page-block .num-page{
-  width: calc(74*var(--ratio));
-  height: calc(60.06*var(--ratio));
+  margin: 0 10px;
+  width: calc(60*var(--ratio));
+  height: calc(50*var(--ratio));
   border: var(--blue) calc(3*var(--ratio)) solid;
-  border-radius: calc(24*var(--ratio));
-  font-size: calc(32*var(--ratio));
+  border-radius: calc(18*var(--ratio));
+  font-size: calc(24*var(--ratio));
   color: var(--blue);
   font-family: 'Montserrat';
   background-color: white;
@@ -210,7 +211,8 @@
   font-weight: 600;
 }
 .num-page-block .num-page.checked{
-  background-color: rgba(121, 162, 238, 0.2);
+  /* background-color: rgba(121, 162, 238, 0.2); */
+  background-color: #B2E5FE;
 }
 .num-page-block .num-page:hover{
   cursor: pointer;

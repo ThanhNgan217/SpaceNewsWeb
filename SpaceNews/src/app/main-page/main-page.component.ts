@@ -23,6 +23,7 @@ export class MainPageComponent implements OnInit, OnChanges{
 
   ngOnInit():void{
     this.setUser();
+    console.log(this.user);
     this.searchForm = this.fb.group({
       keyWord:""
     })
@@ -35,7 +36,8 @@ export class MainPageComponent implements OnInit, OnChanges{
   logged = false;
   user = {
     id : '',
-    auth_token : ''
+    auth_token : '',
+    role:''
   }
 
   menuShow = false;
@@ -44,18 +46,22 @@ export class MainPageComponent implements OnInit, OnChanges{
   setUser(){
     let arr:string[] =[];
     this.apiService.currUsser.subscribe(__value => {
+      // console.log('value',__value)
       arr.push(__value[0]);
       arr.push(__value[1]);
+      arr.push(__value[2]);
     })
     if(arr[0]) {
       this.user.id = arr[0];
       this.user.auth_token = arr[1];
+      this.user.role = arr[2];
       this.logged = true;
     }
     else{
       this.logged = false;
       this.user.id = '';
       this.user.auth_token = '';
+      this.user.role = '';
     }
   }
 
@@ -83,9 +89,12 @@ export class MainPageComponent implements OnInit, OnChanges{
   }
   Logout(){
     // test logout
-    this.apiService.logged('', '');
-    this.setUser();
+    this.apiService.logged('', '','');
+    // this.setUser();
+    this.router.navigate(['']);
   }
+
+  // search posts
   searchClick(){
     // this.showSearch = true;
     let key = this.searchForm.get('keyWord')?.value?.trim();

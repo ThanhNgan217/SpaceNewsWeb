@@ -26,24 +26,35 @@
         <button class="header-avt" *ngIf="logged"  (click)="menuShow = !menuShow">
           <img src="/assets/img/avt.png" alt="">
         </button>
-        <div class="triangle-up" [class.show]="menuShow"></div>
-        <div class="menu" [class.show]="menuShow">
-          <div class="menu-admin" [class.show]="">
-            <ul>
-              <li>
-                <a href="" class="menu-item">Group</a>
-              </li>
-              <li class="line"></li>
-              <li>
-                <a href="" class="menu-item">Posts</a>
-              </li>
-            </ul>
-          </div>
-          <div class="line"></div>
-          <div class="menu-logout">
-            <a href="" class="menu-item" (click)="Logout()">Log out</a>
+        <div class="admin" *ngIf="logged && user.role == '1' ">
+          <div class="triangle-up" [class.show]="menuShow"></div>
+          <div class="menu" [class.show]="menuShow">
+            <div class="menu-admin" [class.show]="">
+              <ul>
+                <li>
+                  <a href="" class="menu-item">Group</a>
+                </li>
+                <li class="line"></li>
+                <li>
+                  <a href="" class="menu-item">Posts</a>
+                </li>
+              </ul>
+            </div>
+            <div class="line"></div>
+            <div class="menu-logout">
+              <a href="" class="menu-item" (click)="Logout()">Log out</a>
+            </div>
           </div>
         </div>
+        <div class="user" *ngIf="logged && user.role =='0'">
+          <div class="triangle-up" [class.show]="menuShow"></div>
+          <div class="menu" [class.show]="menuShow">
+            <div class="menu-logout">
+              <a href="" class="menu-item" (click)="Logout()">Log out</a>
+            </div>
+          </div>
+        </div>
+
     </div>
   </header>
 

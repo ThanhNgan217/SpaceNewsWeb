@@ -183,6 +183,12 @@
   margin: calc(var(--ratio)*5) auto calc(var(--ratio)*13) auto;
   background-color: rgba(0, 0, 0, 0.2);
 }
+.header-login .user .menu.show{
+  width: calc(146*var(--ratio));
+  height: 50px;
+}
+
+
 /* </Login button> */
 
 /* </Header> */

@@ -29,7 +29,7 @@ namespace News.api.Controllers
             int pageIndex = 0, 
             int pageSize = 10)
         {
-            var query = _context.Posts.Include(s => s.Topic).AsQueryable();
+            var query = _context.Posts.Include(s => s.Topic).Include(s => s.Group).AsQueryable();
 
             if (topicId != null)
             {

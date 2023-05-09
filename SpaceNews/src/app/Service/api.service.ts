@@ -5,6 +5,7 @@ import { User } from '../../app/login-page/user';
 import { Account } from '../login-page/account';
 import { Topic } from '../Topic';
 import { Post } from '../PostEvent';
+import { Group } from '../Group';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,8 @@ export class ApiService {
 
   currUsser = this.Isloged.asObservable();
 
-  logged(id:string, auth:string) {
-    this.Isloged.next([id, auth]);
+  logged(id:string, auth:string, role : string) {
+    this.Isloged.next([id, auth, role]);
   }
 
   private httpOptions = {
@@ -81,12 +82,12 @@ export class ApiService {
     this.key = '';
   }
 
+
   getGroup(){
-    return this.http.get('https://localhost:7136/api/Groups').subscribe({
-      next:data =>{
-        console.log(data);
-      }
-    })
+    return this.http.get<Group[]>('https://localhost:7136/api/Groups');
   }
 
+  addPost(val: any){
+    return this.http.post(`${this.apiUrl}/api/Posts`, val);
+  }
 }

@@ -24,6 +24,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AdminModule } from './admin/admin.module';
+
 
 @NgModule({
   declarations: [
@@ -34,7 +36,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ListPostComponent,
     PostComponent,
     PageNotFoundComponent,
-    PostDialog
+    PostDialog,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +49,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     MatChipsModule,
     MatButtonToggleModule,
     MatDialogModule,
+    AdminModule,
     AppRoutingModule,
     HttpClientModule,
     MatNativeDateModule,

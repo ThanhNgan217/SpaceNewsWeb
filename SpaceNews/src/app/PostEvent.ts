@@ -11,5 +11,9 @@ export interface Post{
   content: string,
   showInSlider: boolean,
   topicID: number,
-  Group : number
+  group : {
+    id: number,
+    name : string,
+    email : string
+  }
 }

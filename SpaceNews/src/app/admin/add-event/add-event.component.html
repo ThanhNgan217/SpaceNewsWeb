@@ -1,0 +1,92 @@
+<div class="add-event-container">
+  <div class="logo">
+    <img src ="/assets/img/logo.png">
+    <p>NEWS DC19 PROGRAM 1</p>
+  </div>
+  <div class="add-event-form-block">
+    <h3 class="add-event-title">Add Event</h3>
+  <div class="home-content-container">
+  <form (ngSubmit)="addEvent()" #eventForm="ngForm">
+  <!-- <form #eventForm="ngForm"> -->
+    <div class="title">
+      <label id="title">Title</label>
+      <!-- <input type="text"
+          class="form-control" id="title-input"
+          required
+          [(ngModel)]="event.name" name="title"
+          > -->
+      <input type="text"
+          class="form-control"
+          id="title-input"
+          required
+          >
+    </div>
+    <div class="type">
+      <label id="type">Event Type</label>
+      <select class="form-control" id="type">
+          <option *ngFor="let type of ListTopic" [value]="type.id">{{type.name}}</option>
+      </select>
+          <!-- <div [hidden]="type.valid || type.pristine" class="alert alert-danger">
+            Type is required
+          </div> -->
+    </div>
+    <div class="date-time">
+      <div class="date">
+        <label id="date">Date</label>
+        <input formControlName="dateObjectControl" type="date" id="date-input" />
+      </div>
+      <div class="time">
+        <label id="time">Time</label>
+        <input type="time" id="time-input" name="week" min="09:00" max="18:00"/>
+      </div>
+    </div>
+    <div class="location">
+      <label id="location">Location</label>
+      <!-- <input type="text"
+          class="form-control"
+          [(ngModel)]="event.location"
+          [ngModelOptions]="{standalone:true}"
+          id="location-input"> -->
+          <input type="text"
+          class="form-control"
+          id="location-input">
+    </div>
+    <div class="image">
+      <label id="image">Image</label>
+      <input id="image-input" type="file" onchange="console.log(event.target.files)">
+    </div>
+    <div class="priority">
+      <label id="priority">Priority</label>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="group">
+      <label id="group">Relevant group</label>
+      <select class="form-control" id="group" name="group">
+        <option *ngFor="let group of ListGroups" [value]="group.id">{{group.name}}</option>
+      </select>
+          <!-- <div [hidden]="group.valid || group.pristine" class="alert alert-danger">
+            Group is required
+          </div> -->
+    </div>
+    <div class="content">
+      <label id="content">Content</label>
+      <div class="ngxEditor_wrapper" *ngIf="editor">
+        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+        <ngx-editor
+              [editor]="editor"
+              [ngModel]="html"
+              [ngModelOptions]="{standalone:true}"
+              [disabled]="false">
+        </ngx-editor>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="createEvent()" >Add Now</button>
+  </form>
+  </div>
+  </div>
+
+
+</div>
