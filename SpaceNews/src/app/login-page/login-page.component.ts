@@ -59,7 +59,7 @@ export class LoginPageComponent implements OnInit {
     // this.apiServide.getPosts()
     // .subscribe((data) => {
     //   console.log(data);});
-    new FormControl("", Validators.required);
+    // new FormControl("", Validators.required);
   }
 
   clearErr(){

@@ -101,8 +101,15 @@ table tr{
   overflow: hidden;
   text-overflow: ellipsis;
 } */
-.post-content{
+pre.post-content{
   /* height: calc((var(--ratio)*500)); */
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  font-size: 16px;
+  letter-spacing: normal;
   width: auto;
   overflow-y: auto;
   line-height: 24px;

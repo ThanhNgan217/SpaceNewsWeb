@@ -138,3 +138,22 @@ html *::-webkit-scrollbar-thumb {
   background-color: #F5F5F5!important;
   overflow:unset !important;
 }
+
+
+/* add event */
+.ngxEditor_wrapper .NgxEditor__Content{
+  min-height: 192px;
+}
+ngx-editor .NgxEditor{
+  border: none;
+  border-top: 1px solid #B9B9B9;
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #fff;
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
+  transform: translate3d(36px, 0, 0);
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background-color: var(--blue);
+}

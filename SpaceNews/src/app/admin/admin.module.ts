@@ -15,6 +15,7 @@ import { NgxEditorModule } from 'ngx-editor';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 const routes: Routes = [
   { path: 'admin',
@@ -33,8 +34,10 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     NgxEditorModule,
-
+    MatFormFieldModule,
+    MatInputModule,
     MatMenuModule,
     MatTableModule,
     MatListModule,

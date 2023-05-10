@@ -4,88 +4,145 @@
     <p>NEWS DC19 PROGRAM 1</p>
   </div>
   <div class="add-event-form-block">
-    <h3 class="add-event-title">Add Event</h3>
-  <div class="home-content-container">
-  <form (ngSubmit)="addEvent()" #eventForm="ngForm">
-  <!-- <form #eventForm="ngForm"> -->
-    <div class="title">
-      <label id="title">Title</label>
-      <!-- <input type="text"
-          class="form-control" id="title-input"
-          required
-          [(ngModel)]="event.name" name="title"
-          > -->
-      <input type="text"
-          class="form-control"
-          id="title-input"
-          required
-          >
-    </div>
-    <div class="type">
-      <label id="type">Event Type</label>
-      <select class="form-control" id="type">
-          <option *ngFor="let type of ListTopic" [value]="type.id">{{type.name}}</option>
-      </select>
-          <!-- <div [hidden]="type.valid || type.pristine" class="alert alert-danger">
-            Type is required
-          </div> -->
-    </div>
-    <div class="date-time">
-      <div class="date">
-        <label id="date">Date</label>
-        <input formControlName="dateObjectControl" type="date" id="date-input" />
+    <p class="add-event-title">Add Event</p>
+  <div class="form-content-container">
+    <form class="add-event-form" [formGroup]="addEventForm" autocomplete="off" (ngSubmit)="onSubmit()">
+      <!-- <div class="row-control">
+
       </div>
-      <div class="time">
-        <label id="time">Time</label>
-        <input type="time" id="time-input" name="week" min="09:00" max="18:00"/>
+      <div class="row-control">
+
       </div>
-    </div>
-    <div class="location">
-      <label id="location">Location</label>
-      <!-- <input type="text"
-          class="form-control"
-          [(ngModel)]="event.location"
-          [ngModelOptions]="{standalone:true}"
-          id="location-input"> -->
-          <input type="text"
-          class="form-control"
-          id="location-input">
-    </div>
-    <div class="image">
-      <label id="image">Image</label>
-      <input id="image-input" type="file" onchange="console.log(event.target.files)">
-    </div>
-    <div class="priority">
-      <label id="priority">Priority</label>
-      <label class="switch">
-        <input type="checkbox">
-        <span class="slider round"></span>
-      </label>
-    </div>
-    <div class="group">
-      <label id="group">Relevant group</label>
-      <select class="form-control" id="group" name="group">
-        <option *ngFor="let group of ListGroups" [value]="group.id">{{group.name}}</option>
-      </select>
-          <!-- <div [hidden]="group.valid || group.pristine" class="alert alert-danger">
-            Group is required
-          </div> -->
-    </div>
-    <div class="content">
-      <label id="content">Content</label>
-      <div class="ngxEditor_wrapper" *ngIf="editor">
-        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
-        <ngx-editor
-              [editor]="editor"
-              [ngModel]="html"
-              [ngModelOptions]="{standalone:true}"
-              [disabled]="false">
-        </ngx-editor>
+      <div class="row-control">
+          <div class="date">
+
+          </div>
+          <div class="time">
+
+          </div>
       </div>
+      <div class="row-control">
+      </div>
+      <div class="row-control">
+      </div>
+      <div class="row-control">
+
+      </div>
+      <div class="row-control">
+
+      </div>
+      <div class="row-control">
+
+      </div>
+      <div class="row-control">
+        <button mat-raised-button color="primary" type="submit" >Add</button>
+      </div> -->
+      <table style="border:none">
+        <tr class="row-control">
+          <td class="td-left">
+            <div>
+              <label for="title" class="title">Title</label>
+            </div>
+          </td>
+          <td class="td-right">
+            <input class="set-height" name="title" type="text" formControlName="eventTitle">
+          </td>
+        </tr>
+        <tr class="row-control">
+          <td class="td-left">
+            <label for="type" class="type">Event Type</label>
+          </td>
+          <td class="td-right">
+            <select class="set-height" name="type" formControlName="eventType" [(ngModel)]="selectedTopic">
+              <option *ngFor="let type of listTopic" [selected]="type.id == selectedTopic" [value]="type.id">{{type.name}}</option>
+            </select>
+          </td>
+        </tr>
+        <tr class="row-control">
+          <td class="td-left">
+            <label for="date" class="date">Date</label>
+          </td>
+          <td class="td-right">
+            <div style="display: flex; justify-content: space-between;">
+              <input type="date" class="set-height" name="date" formControlName="eventDate"/>
+            <label for="week" class="time" style="margin: auto 0;">Time</label>
+            <input class="set-height" name="time" formControlName="eventTime" type="time" name="week" min="09:00" max="18:00"/>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-control">
+          <td class="td-left">
+            <label class="location" for="location">Location</label>
+          </td>
+          <td class="td-right">
+            <input class="set-height" formControlName="eventLocation" name="location" type="text">
+          </td>
+        </tr>
+        <tr class="row-control">
+          <td class="td-left">
+            <label class="image">Image</label>
+          </td>
+          <td class="td-right">
+            <label for="choose-file" id="img-label">Choose file
+            <input type="file" name="img" formControlName="eventImg" id="choose-file">
+          </label>
+            <!-- <input id="choose-file" formControlName="eventImg" name="image" type="file" onchange="console.log(event.target.files)"> -->
+          </td>
+        </tr>
+        <tr class="row-control">
+          <td class="td-left">
+            <label class="priority">Priority</label>
+          </td>
+          <td class="td-right">
+            <!-- <mat-slide-toggle ></mat-slide-toggle> -->
+            <div class="piority-toggle" [class.checked]="checked" (click)="checked = !checked">
+              <span class="piority-thumb" [class.checked]="checked"></span>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-control">
+          <td class="td-left">
+            <label for="group" class="group">Relevant group</label>
+          </td>
+          <td class="td-right">
+            <select class="set-height" formControlName="eventGroup" name="group" [(ngModel)]="selectedGroup">
+              <option *ngFor="let group of ListGroups" [value]="group.id">{{group.name}}</option>
+            </select>
+          </td>
+        </tr>
+        <tr class="row-control">
+          <td class="td-left" style="vertical-align: top;">
+            <div class="box"></div>
+            <label class="content">Content</label>
+          </td>
+          <td class="td-right" style="vertical-align: top;">
+            <div class="box"></div>
+            <div class="ngxEditor_wrapper" *ngIf="editor" >
+              <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+              <ngx-editor
+                formControlName="eventContent"
+                [editor]="editor"
+                [ngModel]="html"
+                [disabled]="false"
+                [placeholder] = "''">
+
+              </ngx-editor>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-control">
+          <td class="td-left"></td>
+          <td class="td-right" style="text-align: right;">
+            <div style="height: 24px;"></div>
+            <div class="submit-btn">
+              <button type="submit">Add now</button>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+    </form>
     </div>
-    <button type="submit" class="btn btn-primary" (click)="createEvent()" >Add Now</button>
-  </form>
-  </div>
   </div>
 
 
