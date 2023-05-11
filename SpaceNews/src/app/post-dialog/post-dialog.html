@@ -45,7 +45,7 @@
         <td>{{post.group.name}}</td>
       </tr>
     </table>
-    <pre class="post-content">{{post.content}}</pre>
+    <pre class="post-content" [innerHTML]="post.content"></pre>
   </mat-dialog-content>
 </div>
 

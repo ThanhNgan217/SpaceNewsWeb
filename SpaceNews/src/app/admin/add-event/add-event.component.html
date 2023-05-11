@@ -1,5 +1,5 @@
 <div class="add-event-container">
-  <div class="logo">
+  <div class="logo" routerLink="/">
     <img src ="/assets/img/logo.png">
     <p>NEWS DC19 PROGRAM 1</p>
   </div>
@@ -66,7 +66,7 @@
             <div style="display: flex; justify-content: space-between;">
               <input type="date" class="set-height" name="date" formControlName="eventDate"/>
             <label for="week" class="time" style="margin: auto 0;">Time</label>
-            <input class="set-height" name="time" formControlName="eventTime" type="time" name="week" min="09:00" max="18:00"/>
+            <input class="set-height" name="time" formControlName="eventTime" type="time" />
             </div>
           </td>
         </tr>
@@ -84,7 +84,7 @@
           </td>
           <td class="td-right">
             <label for="choose-file" id="img-label">Choose file
-            <input type="file" name="img" formControlName="eventImg" id="choose-file">
+            <input (change)="onFileSelected(imageInput)" #imageInput type="file" name="img" formControlName="eventImg" id="choose-file" accept="image/*">
           </label>
             <!-- <input id="choose-file" formControlName="eventImg" name="image" type="file" onchange="console.log(event.target.files)"> -->
           </td>

@@ -6,6 +6,7 @@ import { Account } from '../login-page/account';
 import { Topic } from '../Topic';
 import { Post } from '../PostEvent';
 import { Group } from '../Group';
+import { __values } from 'tslib';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,13 @@ export class ApiService {
   private Isloged = new BehaviorSubject<string[]>([]);
 
   currUsser = this.Isloged.asObservable();
-
+  isAdmin(){
+    let result = false;
+    this.currUsser.subscribe(__values=>{
+      if(__values[2] == '1') result = true;
+    })
+    return result;
+  }
   logged(id:string, auth:string, role : string) {
     this.Isloged.next([id, auth, role]);
   }
@@ -41,6 +48,8 @@ export class ApiService {
   };
 
   constructor(private http:HttpClient) { }
+
+
 
   login(user : User){
     let body = JSON.stringify(user);

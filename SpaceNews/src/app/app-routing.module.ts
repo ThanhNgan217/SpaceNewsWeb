@@ -7,6 +7,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { ContentComponent } from './content/content.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PreloadAllModules } from '@angular/router';
+import { CanLoginGuard } from './Guard/can-login.guard';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
   {
     path:'login',
     component:LoginPageComponent,
+    canActivate:[CanLoginGuard]
     // loadChildren : ()=>import('./admin/admin.module').then((m)=>m.AdminModule)
   },
   {path:'**', component:PageNotFoundComponent},

@@ -11,6 +11,12 @@ import { Group } from 'src/app/Group';
 import { Time } from '@angular/common';
 import Image from 'ngx-editor/lib/commands/Image';
 import { toDoc } from 'ngx-editor';
+import { timer } from 'rxjs';
+import { HandlePostService } from 'src/app/Service/handle-post.service';
+
+class ImageSnippet {
+  constructor(public src: string, public file: File) {}
+}
 
 @Component({
   selector: 'app-add-event',
@@ -18,6 +24,8 @@ import { toDoc } from 'ngx-editor';
   styleUrls: ['./add-event.component.css']
 })
 export class AddEventComponent implements OnInit, OnDestroy{
+  fileName = '';
+  selectedFile: ImageSnippet | undefined;
 
   checked = false;
   listTopic : Topic[] = [];
@@ -28,8 +36,8 @@ export class AddEventComponent implements OnInit, OnDestroy{
   addEventForm = new FormGroup({
     eventTitle: new FormControl(''),
     eventType: new FormControl(1),
-    eventDate: new FormControl(''),
-    eventTime: new FormControl(''),
+    eventDate: new FormControl(Date),
+    eventTime: new FormControl(Date),
     eventLocation: new FormControl(''),
     eventImg: new FormControl(''),
     eventPiority: new FormControl(0),
@@ -38,7 +46,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
   });
 
 
-  constructor(private fb: FormBuilder, private apiService: ApiService, private router : Router) {}
+  constructor(private fb: FormBuilder, private apiService: ApiService, private postService:HandlePostService, private router : Router) {}
 
 
   editor = new Editor;
@@ -55,8 +63,8 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.addEventForm = this.fb.group({
       eventTitle: ['', Validators.required],
       eventType: [1],
-      eventDate: ['', Validators.required],
-      eventTime: ['', Validators.required],
+      eventDate: [Date, Validators.required],
+      eventTime: [Date, Validators.required],
       eventLocation: ['', Validators.required],
       eventImg: ['', Validators.required],
       eventPiority: [0],
@@ -64,28 +72,6 @@ export class AddEventComponent implements OnInit, OnDestroy{
       eventContent: ['', Validators.required]
     })
 
-    // this.addEventForm = this.fb.group({
-    //   eventTitle:['', Validators.compose([Validators.required])],
-    //   eventType : [''],
-    //   eventDate : ['', Validators.compose([Validators.required])],
-    //   eventTime : ['', Validators.compose([Validators.required])],
-    //   eventLocation : ['', Validators.compose([Validators.required])],
-    //   eventImg : ['', Validators.compose([Validators.required])],
-    //   eventPiority : [0],
-    //   eventGroup : [''],
-    //   eventContent : ['', Validators.compose([Validators.required])]
-    // });
-    // this.form = this.fb.group({
-    //   title: [this.currentEvent.title, Validators.required],
-    //   type: this.currentEvent.topicID,
-    //   date: [this.currentEvent.date, Validators.required],
-    //   time: this.currentEvent.time,
-    //   location: this.currentEvent.location,
-    //   image: this.currentEvent.image,
-    //   priority: this.currentEvent.priority,
-    //   group: this.currentEvent.group,
-    //   content: this.currentEvent.content
-    // });
     this.editor = new Editor();
     this.LoadTopics();
     this.LoadGroups();
@@ -97,7 +83,6 @@ export class AddEventComponent implements OnInit, OnDestroy{
   //destory the editor
   ngOnDestroy(): void {
     this.editor.destroy();
-
   }
 
   //list topic handle
@@ -123,7 +108,28 @@ export class AddEventComponent implements OnInit, OnDestroy{
     if(this.checked) this.addEventForm.patchValue({eventPiority:1})
     else this.addEventForm.patchValue({eventPiority:0})
     // this.addEventForm.patchValue({eventContent:this.html})
-    console.log(this.addEventForm.getRawValue())
-    console.log(this.addEventForm.get('eventContent')?.value)
+    // console.log(Object(this.addEventForm.value))
+    // let data = {};
+    let data = Object(this.addEventForm.value);
+
+    console.log(this.addEventForm.get('eventTime')?.value)
+    this.addEventForm.reset();
+
+    this.selectedTopic = 1;
+    this.selectedGroup = 1;
+
+    this.postService.addPost(data).subscribe({
+      next:data=>{
+        alert('Success');
+      },
+      error:err=>{console.log(err)}
+    })
+  }
+
+  // upload img
+  fileUpload(){
+    console.log('file uploaded')
+  }
+  onFileSelected(imageInput:any){
   }
 }

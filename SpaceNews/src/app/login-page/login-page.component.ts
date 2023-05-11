@@ -79,6 +79,9 @@ export class LoginPageComponent implements OnInit {
       next:data =>{
         // this.userAccount = data;
         this.userAccount = data;
+        localStorage.setItem('userID',data.id);
+        localStorage.setItem('auth_token',data.auth_token);
+        localStorage.setItem('userRole',data.role);
         console.log('useraccount', this.userAccount)
         this.apiService.logged(this.userAccount.id, this.userAccount.auth_token, this.userAccount.role);
         this.router.navigate(['/'])

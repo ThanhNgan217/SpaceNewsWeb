@@ -16,13 +16,16 @@ import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { CanActivateGuard } from '../Guard/can-activate-guard.guard';
 
 const routes: Routes = [
   { path: 'admin',
     component: AddEventComponent,
+    canActivate: [CanActivateGuard],
     children: [
 
     ]
+
   }
 ];
 

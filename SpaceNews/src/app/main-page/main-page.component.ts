@@ -7,6 +7,12 @@ import { __values } from 'tslib';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Post } from '../PostEvent';
 
+interface User{
+  id : string|null,
+  auth_token : string |null,
+  role : string | null
+}
+
 @Component({
   selector: 'app-home-page',
   templateUrl: './main-page.component.html',
@@ -30,11 +36,10 @@ export class MainPageComponent implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if('this.logged' in changes){
-    }
+
   }
   logged = false;
-  user = {
+  user : User = {
     id : '',
     auth_token : '',
     role:''
@@ -44,24 +49,22 @@ export class MainPageComponent implements OnInit, OnChanges{
 
 
   setUser(){
-    let arr:string[] =[];
-    this.apiService.currUsser.subscribe(__value => {
-      // console.log('value',__value)
-      arr.push(__value[0]);
-      arr.push(__value[1]);
-      arr.push(__value[2]);
-    })
-    if(arr[0]) {
-      this.user.id = arr[0];
-      this.user.auth_token = arr[1];
-      this.user.role = arr[2];
+    // let arr:string[] =[];
+    // this.apiService.currUsser.subscribe(__value => {
+    //   // console.log('value',__value)
+    //   arr.push(__value[0]);
+    //   arr.push(__value[1]);
+    //   arr.push(__value[2]);
+    // })
+
+    if(localStorage.getItem('userID')) {
+      this.user.id = localStorage.getItem('userID');
+      this.user.auth_token = localStorage.getItem('auth_token');
+      this.user.role = localStorage.getItem('userRole');
       this.logged = true;
     }
     else{
       this.logged = false;
-      this.user.id = '';
-      this.user.auth_token = '';
-      this.user.role = '';
     }
   }
 
@@ -88,8 +91,9 @@ export class MainPageComponent implements OnInit, OnChanges{
     this.router.navigate(['/login']);
   }
   Logout(){
+    localStorage.clear();
     // test logout
-    this.apiService.logged('', '','');
+    // this.apiService.logged('', '','');
     // this.setUser();
     this.router.navigate(['']);
   }

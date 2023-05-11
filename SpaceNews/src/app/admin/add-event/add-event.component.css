@@ -21,6 +21,9 @@
   width: calc(471*var(--ratio));
   margin: 40px 0 0 50px;
 }
+.logo:hover{
+  cursor: pointer;
+}
 .logo img{
   float: left;
   width: calc(150.81*var(--ratio));
