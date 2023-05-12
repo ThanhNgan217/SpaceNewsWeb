@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddEventComponent } from './add-event/add-event.component';
+import { PostsManageComponent } from './posts-manage/posts-manage.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Route, RouterModule, Routes } from '@angular/router';
@@ -19,19 +21,29 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CanActivateGuard } from '../Guard/can-activate-guard.guard';
 
 const routes: Routes = [
-  { path: 'admin',
+  { path: 'posts',
+    component: PostsManageComponent,
+    // canActivate: [CanActivateGuard],
+    children: [
+    ]
+  },
+  {
+    path:'posts/add',
+    component: AddEventComponent,
+    // canActivate: [CanActivateGuard],
+  }
+  ,
+  {
+    path: 'Groups',
     component: AddEventComponent,
     canActivate: [CanActivateGuard],
-    children: [
-
-    ]
-
   }
 ];
 
 @NgModule({
   declarations: [
-    AddEventComponent
+    AddEventComponent,
+    PostsManageComponent
   ],
   imports: [
     RouterModule.forChild(routes),

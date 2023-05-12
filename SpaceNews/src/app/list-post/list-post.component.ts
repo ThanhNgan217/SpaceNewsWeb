@@ -64,7 +64,7 @@ export class ListPostComponent implements OnInit{
 
   getListPost(topicId = 0, pagenum = 0, key :string|undefined = ''){
     if(key){
-      console.log('key:', key)
+      // console.log('key:', key)
       this.apiService.getSearchResults(pagenum, key).subscribe({
         next:data =>{
           this.listPost = data;
@@ -133,47 +133,6 @@ export class ListPostComponent implements OnInit{
     });
 
     this.posts = this.posts.concat(passEvent);
-    // console.log(this.posts)
-    // if(false){
-    //   this.listPost.forEach(p=>{
-    //   let x = new Date(p.time).getTime();
-    //   if(i <= 8 && x > currDate.getTime()) {
-    //     list.push(p);
-    //     i++;
-    //   }
-    //   else {
-    //     return;
-    //   }
-    // })
-
-    // will show
-    // this.posts = list.sort((a, b)=>{
-    //   // a.time.getTime() - b.time.getTime()
-    //   let x = new Date(a.time).getTime();
-    //   let y = new Date(b.time).getTime();
-    //   return x - y;
-    // });
-
-    // filter events pass
-    // this.posts = this.posts.filter((p)=>{
-    //   // new Date(p.time).getTime() > currDate.getTime()
-    //   let x = new Date(p.time).getTime();
-    //   return x > currDate.getTime();
-    // })
-
-    // this.posts.forEach(p=>{
-    //   let x = new Date(p.time);
-    //   if(x.getMonth() == currDate.getMonth() && x.getFullYear() == currDate.getFullYear()){
-    //     if(x.getDate() - currDate.getDate() <= 3) upcommingTime = x;
-    //   }
-    // })
-
-    // this.upcommingPost = this.posts.filter((p)=> {
-    //   let x = new Date(p.time);
-    //   if(x <= upcommingTime) return p;
-    //   else return;
-    // });}
-
   }
 
   isPassed(id : number){

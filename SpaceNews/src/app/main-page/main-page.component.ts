@@ -57,10 +57,10 @@ export class MainPageComponent implements OnInit, OnChanges{
     //   arr.push(__value[2]);
     // })
 
-    if(localStorage.getItem('userID')) {
-      this.user.id = localStorage.getItem('userID');
-      this.user.auth_token = localStorage.getItem('auth_token');
-      this.user.role = localStorage.getItem('userRole');
+    if(sessionStorage.getItem('userID')) {
+      this.user.id = sessionStorage.getItem('userID');
+      this.user.auth_token = sessionStorage.getItem('auth_token');
+      this.user.role = sessionStorage.getItem('userRole');
       this.logged = true;
     }
     else{
@@ -91,7 +91,9 @@ export class MainPageComponent implements OnInit, OnChanges{
     this.router.navigate(['/login']);
   }
   Logout(){
-    localStorage.clear();
+    sessionStorage.removeItem('userID');
+    sessionStorage.removeItem('auth_token');
+    sessionStorage.removeItem('userRole');
     // test logout
     // this.apiService.logged('', '','');
     // this.setUser();

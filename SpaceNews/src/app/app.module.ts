@@ -7,7 +7,6 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { ContentComponent } from './content/content.component';
 import { ListPostComponent, PostDialog } from './list-post/list-post.component';
-import { PostComponent } from './post/post.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -34,7 +33,6 @@ import { AdminModule } from './admin/admin.module';
     ContentComponent,
     LoginPageComponent,
     ListPostComponent,
-    PostComponent,
     PageNotFoundComponent,
     PostDialog,
   ],

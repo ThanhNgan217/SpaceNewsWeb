@@ -12,11 +12,10 @@ export class CanActivateGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ){
-    if(!localStorage.getItem('userRole')){
-      this.router.navigateByUrl('');
-      return false;
+    if(sessionStorage.getItem('userRole') == '1'){
+      return true;
     }
-    else return true;
+    else return false;
 
   }
 

@@ -71,7 +71,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
       eventGroup: [1],
       eventContent: ['', Validators.required]
     })
-
+    console.log(this.router.url)
     this.editor = new Editor();
     this.LoadTopics();
     this.LoadGroups();

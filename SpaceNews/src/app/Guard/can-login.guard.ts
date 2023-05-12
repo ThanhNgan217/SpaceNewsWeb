@@ -16,7 +16,7 @@ export class CanLoginGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-      if(!localStorage.getItem('userID')) return true;
+      if(!sessionStorage.getItem('userID')) return true;
       else return false;
     }
 }

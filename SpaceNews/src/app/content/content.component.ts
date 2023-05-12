@@ -100,18 +100,22 @@ export class ContentComponent {
     this.autoChangeSlider;
     // this.autoChangeSlider = setInterval(this.myInterval, 3500);
   }
-  changeImg(){
-    clearInterval(this.autoChangeSlider);
-    this.autoChangeSlider = setInterval(this.myInterval, 3500);
-    for (let e of this.postsSlider){
-      if(e.id == this.idShow) this.urlShow = e.image;
-    }
-  }
+
   toEvent(id:number){
     clearInterval(this.autoChangeSlider);
+    let index = 0;
+    for (let e of this.postsSlider){
+      if(e.id == id) {
+        this.urlShow = e.image;
+        this.idShow = e.id;
+        this.title = e.title;
+        this.index = index;
+      }
+      index++;
+    }
     this.autoChangeSlider = setInterval(this.myInterval, 3500);
-    this.idShow = id;
-    this.changeImg();
+
+    // this.changeImg();
   }
   toPrev(){
     clearInterval(this.autoChangeSlider);
@@ -134,14 +138,13 @@ export class ContentComponent {
   }
   showDialog(id : number){
     let post = this.postsSlider.find(p => p.id == id);
-    const dialogRef = this.dialog.open(PostDialog, {
+    this.dialog.open(PostDialog, {
       data : post,
     });
   }
   myInterval= () => {
     if(this.index == this.counter-1) this.index = 0;
     else this.index++;
-
     this.idShow = this.postsSlider[this.index].id;
     this.urlShow = this.postsSlider[this.index].image;
     this.title = this.postsSlider[this.index].title;
