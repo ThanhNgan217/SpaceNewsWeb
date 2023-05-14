@@ -1,0 +1,39 @@
+<div class="posts-manage-container">
+    <header class="posts-manage-header">
+        <!-- Logo -->
+        <div class="logo-block" routerLink="/">
+            <img src="/assets/img/logo.png" />
+            <p class="tma-text">NEWS DC19 PROGRAM 1</p>
+        </div>
+
+        <!-- Search bar -->
+
+        <!-- Login/Avatar (maybe use guard and custom service)-->
+        <div class="avt logged">
+            <button class="header-avt" (click)="menuShow = !menuShow">
+                <img src="/assets/img/avt.png" alt="">
+            </button>
+            <div class="triangle-up" [class.show]="menuShow"></div>
+            <div class="menu" [class.show]="menuShow">
+                <div class="menu-admin" [class.show]="">
+                    <ul>
+                        <li *ngIf="isPostsPage()">
+                            <a href="" class="menu-item" routerLink="groups">Group</a>
+                        </li>
+                        <li *ngIf="!isPostsPage()">
+                            <a href="" class="menu-item" routerLink="posts">Posts</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="line"></div>
+                <div class="menu-logout">
+                    <a href="" class="menu-item" (click)="Logout()">Log out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <app-posts-manage></app-posts-manage>
+    <footer class="main-footer">
+        <p class="footer-text">Privacy Policy / Personal Information / Term of Service</p>
+    </footer>
+</div>

@@ -19,16 +19,22 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CanActivateGuard } from '../Guard/can-activate-guard.guard';
+import { AdminComponent } from './admin/admin.component';
+import { BlockRightComponent } from './block-right/block-right.component';
 
 const routes: Routes = [
-  { path: 'posts',
-    component: PostsManageComponent,
+  { path: 'admin',
+    component: AdminComponent,
     // canActivate: [CanActivateGuard],
     children: [
+      {
+        path:'posts', 
+        component:PostsManageComponent,
+      }
     ]
   },
   {
-    path:'posts/add',
+    path:'admin/posts/add',
     component: AddEventComponent,
     // canActivate: [CanActivateGuard],
   }
@@ -43,7 +49,9 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AddEventComponent,
-    PostsManageComponent
+    PostsManageComponent,
+    AdminComponent,
+    BlockRightComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

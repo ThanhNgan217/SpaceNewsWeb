@@ -41,7 +41,7 @@ export class PostsManageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setUser();
+    // this.setUser();
     this.searchForm = this.fb.group({
       keyWord:""
     })
@@ -73,22 +73,22 @@ export class PostsManageComponent implements OnInit {
     });
   }
 
-  setUser(){
-    this.user.id = sessionStorage.getItem('userID');
-    this.user.auth_token = sessionStorage.getItem('auth_token');
-  }
+  // setUser(){
+  //   this.user.id = sessionStorage.getItem('userID');
+  //   this.user.auth_token = sessionStorage.getItem('auth_token');
+  // }
 
-  Logout(){
-    sessionStorage.removeItem('userID');
-    sessionStorage.removeItem('auth_token');
-    sessionStorage.removeItem('userRole');
-    this.router.navigate(['']);
-  }
+  // Logout(){
+  //   sessionStorage.removeItem('userID');
+  //   sessionStorage.removeItem('auth_token');
+  //   sessionStorage.removeItem('userRole');
+  //   this.router.navigate(['']);
+  // }
 
-  isPostsPage(){
-    if(this.router.url == '/posts') return true;
-    return false;
-  }
+  // isPostsPage(){
+  //   if(this.router.url == '/posts') return true;
+  //   return false;
+  // }
 
   searchClick(){
     // this.showSearch = true;

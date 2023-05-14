@@ -3,13 +3,13 @@
   <header class="main-header">
     <!-- Logo -->
     <div class="logo-main-header" routerLink="/">
-        <img src="/assets/img/logo.png"/>
-        <p class="tma-text">NEWS DC19 PROGRAM 1</p>
+      <img src="/assets/img/logo.png" />
+      <p class="tma-text">NEWS DC19 PROGRAM 1</p>
     </div>
 
     <!-- Search bar -->
     <form class="searchbar-main-header" [formGroup]="searchForm" autocomplete="off" (ngSubmit)="searchClick()">
-      <mat-form-field class="searchbar-form-field" appearance="fill" >
+      <mat-form-field class="searchbar-form-field" appearance="fill">
         <input matInput type="text" placeholder="Search by topic, website, or RSS link" formControlName="keyWord">
         <button matSuffix mat-icon-button aria-label="Search" fontIcon="search" type="submit">
           <mat-icon>search</mat-icon>
@@ -17,43 +17,44 @@
       </mat-form-field>
     </form>
     <!-- Login/Avatar (maybe use guard and custom service)-->
-    <div class="header-login" [class.logged]="logged" >
-        <!-- <a class="header-login-btn" mat-stroked-button routerLink="login">LOGIN</a> -->
-        <!-- routerLink="login" routerLinkActive="active" -->
-        <button class="header-login-btn" mat-stroked-button routerLink="login" *ngIf="!logged">
-          LOGIN
-        </button>
-        <button class="header-avt" *ngIf="logged"  (click)="menuShow = !menuShow">
-          <img src="/assets/img/avt.png" alt="">
-        </button>
-        <div class="admin" *ngIf="logged && user.role == '1' ">
-          <div class="triangle-up" [class.show]="menuShow"></div>
-          <div class="menu" [class.show]="menuShow">
-            <div class="menu-admin" [class.show]="">
-              <ul>
-                <li>
-                  <a href="" class="menu-item" routerLink="#">Group</a>
-                </li>
-                <li class="line"></li>
-                <li>
-                  <a href="" class="menu-item" routerLink="/posts">Posts</a>
-                </li>
-              </ul>
-            </div>
-            <div class="line"></div>
-            <div class="menu-logout">
-              <a href="" class="menu-item" (click)="Logout()">Log out</a>
-            </div>
+    <div class="header-login" [class.logged]="logged">
+      <!-- <a class="header-login-btn" mat-stroked-button routerLink="login">LOGIN</a> -->
+      <!-- routerLink="login" routerLinkActive="active" -->
+      <button class="header-login-btn" mat-stroked-button routerLink="login" *ngIf="logged">
+        LOGIN
+      </button>
+      <button class="header-avt" *ngIf="!logged" (click)="menuShow = !menuShow">
+        <img src="/assets/img/avt.png" alt="">
+      </button>
+      <div class="admin">
+        <!-- *ngIf="!logged && user.role == '0' " -->
+        <div class="triangle-up" [class.show]="menuShow"></div>
+        <div class="menu" [class.show]="menuShow">
+          <div class="menu-admin" [class.show]="">
+            <ul>
+              <li>
+                <a href="" class="menu-item" routerLink="admin/groups">Group</a>
+              </li>
+              <li class="line"></li>
+              <li>
+                <a href="" class="menu-item" routerLink="admin/posts">Posts</a>
+              </li>
+            </ul>
+          </div>
+          <div class="line"></div>
+          <div class="menu-logout">
+            <a href="" class="menu-item" (click)="Logout()">Log out</a>
           </div>
         </div>
-        <div class="user" *ngIf="logged && user.role =='0'">
-          <div class="triangle-up" [class.show]="menuShow"></div>
-          <div class="menu" [class.show]="menuShow">
-            <div class="menu-logout">
-              <a href="" class="menu-item" (click)="Logout()">Log out</a>
-            </div>
+      </div>
+      <div class="user" *ngIf="logged && user.role =='0'">
+        <div class="triangle-up" [class.show]="menuShow"></div>
+        <div class="menu" [class.show]="menuShow">
+          <div class="menu-logout">
+            <a href="" class="menu-item" (click)="Logout()">Log out</a>
           </div>
         </div>
+      </div>
 
     </div>
   </header>
@@ -67,5 +68,3 @@
     <p class="footer-text">Privacy Policy / Personal Information / Term of Service</p>
   </footer>
 </div>
-
-
