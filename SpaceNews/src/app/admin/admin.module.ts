@@ -21,6 +21,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CanActivateGuard } from '../Guard/can-activate-guard.guard';
 import { AdminComponent } from './admin/admin.component';
 import { BlockRightComponent } from './block-right/block-right.component';
+import { EditEventComponent } from './edit-event/edit-event.component';
 
 const routes: Routes = [
   { path: 'admin',
@@ -28,7 +29,7 @@ const routes: Routes = [
     // canActivate: [CanActivateGuard],
     children: [
       {
-        path:'posts', 
+        path:'posts',
         component:PostsManageComponent,
       }
     ]
@@ -36,6 +37,11 @@ const routes: Routes = [
   {
     path:'admin/posts/add',
     component: AddEventComponent,
+    // canActivate: [CanActivateGuard],
+  },
+  {
+    path:'admin/posts/edit/:id',
+    component: EditEventComponent,
     // canActivate: [CanActivateGuard],
   }
   ,
@@ -52,6 +58,7 @@ const routes: Routes = [
     PostsManageComponent,
     AdminComponent,
     BlockRightComponent,
+    EditEventComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

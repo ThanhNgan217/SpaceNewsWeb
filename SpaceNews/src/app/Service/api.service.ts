@@ -91,6 +91,9 @@ export class ApiService {
     this.key = '';
   }
 
+  getPost(id : number){
+    return this.http.get<Post>(`${this.apiUrl}/api/Posts/${id}`);
+  }
 
   getGroup(){
     return this.http.get<Group[]>('https://localhost:7136/api/Groups');

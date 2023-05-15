@@ -6,17 +6,19 @@
     </div>
     <div class="list-post-container">
       <div class="search-block">
-        <form class="searchbar-main-header" [formGroup]="searchForm" autocomplete="off" (ngSubmit)="searchClick()">
+        <form class="searchbar-main-header" [formGroup]="searchForm" autocomplete="off" (ngSubmit)="ClickBtn()">
           <mat-form-field class="searchbar-form-field" appearance="fill">
             <input matInput type="text" placeholder="What your post you want to Search" formControlName="keyWord">
             <button matSuffix mat-icon-button aria-label="Search" fontIcon="search" type="submit">
-              <mat-icon>search</mat-icon>
+              <mat-icon *ngIf="!showSearch">search</mat-icon>
+              <mat-icon *ngIf="showSearch">close</mat-icon>
             </button>
           </mat-form-field>
         </form>
         <p>Piority</p>
       </div>
       <div class="box-card">
+        <h4 class="no-results-found" [class.show]="!haveResults()">No results found</h4>
         <div class="card-block" *ngFor="let p of listPost">
           <div class="card">
             <div class="card-img">
@@ -28,7 +30,7 @@
             </div>
             <div class="card-btn">
               <button class="detail-btn" (click)="showDialog(p.id)">Detail</button>
-              <button class="edit-btn">Edit</button>
+              <button class="edit-btn" routerLink="posts/edit/{{p.id}}">Edit</button>
               <button class="delete-btn">Delete</button>
             </div>
           </div>

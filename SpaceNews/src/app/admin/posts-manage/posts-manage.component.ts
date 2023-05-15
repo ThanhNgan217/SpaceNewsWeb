@@ -53,16 +53,26 @@ export class PostsManageComponent implements OnInit {
   }
 
   getListPost(){
-    // if(sessionStorage.getItem('isSearch')){
-
-    //   this.postService.searchPost(this.keyWord, this.pageIndex);
-    // }
-    // else {
+    if(this.showSearch == true){
+      this.postService.searchPost(this.keyWord, this.pageIndex).subscribe({
+        next:data =>{
+          this.listPost = data;
+        }
+      });
+    }
+    else{
       this.postService.loadListPost(this.pageIndex).subscribe({
         next:data =>{
           this.listPost = data;
         }
       })
+    }
+    // if(sessionStorage.getItem('isSearch')){
+
+    //   this.postService.searchPost(this.keyWord, this.pageIndex);
+    // }
+    // else {
+
     // }
   }
 
@@ -90,19 +100,27 @@ export class PostsManageComponent implements OnInit {
   //   return false;
   // }
 
-  searchClick(){
-    // this.showSearch = true;
-    let key = this.searchForm.get('keyWord')?.value?.trim();
+  ClickBtn(){
+    this.pageIndex = 0;
+    if(this.showSearch == false){ // search icon
+      let key = this.searchForm.get('keyWord')?.value?.trim();
+      key = key?.replace(/ /g,'%20');
+      this.keyWord = key;
+      this.showSearch = true;
+      this.postService.searchPost(key, this.pageIndex).subscribe({
+        next:data =>{
+          this.listPost = data;
+        }
+      });
+    }
+    else{ // close icon
+      this.searchForm.reset({keyWord: ''});
+      this.showSearch = false;
+      this.getListPost();
+    }
 
-    key = key?.replace(/ /g,'%20');
+    // this.showSearch = true;
     // console.log("hello",key);
-    this.showSearch = true;
-    this.searchForm.reset({keyWord: ''});
-    this.postService.searchPost(key, this.pageIndex).subscribe({
-      next:data =>{
-        this.listPost = data;
-      }
-    });
   }
 
   // handle page number
@@ -120,4 +138,10 @@ export class PostsManageComponent implements OnInit {
     else return;
     this.getListPost();
   }
+
+  haveResults(){
+    if(this.listPost.length == 0) return false;
+    else return true;
+  }
+
 }

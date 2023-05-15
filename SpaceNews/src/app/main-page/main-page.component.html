@@ -20,17 +20,17 @@
     <div class="header-login" [class.logged]="logged">
       <!-- <a class="header-login-btn" mat-stroked-button routerLink="login">LOGIN</a> -->
       <!-- routerLink="login" routerLinkActive="active" -->
-      <button class="header-login-btn" mat-stroked-button routerLink="login" *ngIf="logged">
+      <button class="header-login-btn" mat-stroked-button routerLink="login" *ngIf="!logged">
         LOGIN
       </button>
-      <button class="header-avt" *ngIf="!logged" (click)="menuShow = !menuShow">
+      <button class="header-avt" *ngIf="logged" (click)="menuShow = !menuShow">
         <img src="/assets/img/avt.png" alt="">
       </button>
-      <div class="admin">
+      <div class="admin"  *ngIf="logged && user.role == '1' ">
         <!-- *ngIf="!logged && user.role == '0' " -->
         <div class="triangle-up" [class.show]="menuShow"></div>
         <div class="menu" [class.show]="menuShow">
-          <div class="menu-admin" [class.show]="">
+          <div class="menu-admin" [class.show]="menuShow">
             <ul>
               <li>
                 <a href="" class="menu-item" routerLink="admin/groups">Group</a>

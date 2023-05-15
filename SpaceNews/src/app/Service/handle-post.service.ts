@@ -58,6 +58,27 @@ export class HandlePostService {
     return this.http.post(`${this.url}/api/Posts`, JSON.stringify(newPost), {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
   }
 
+  editPost(obj : formEventData, id : number){
+    let dateTime = `${obj.eventDate}T${obj.eventTime}`;
+
+    let post = {
+      date: dateTime,
+      time: dateTime,
+      location: obj.eventLocation,
+      image: obj.eventImg,
+      priority: obj.eventPiority,
+      content: obj.eventContent,
+      showInSlider: obj.eventPiority == 0 ? false : true,
+      topicID: obj.eventType,
+      groupID: obj.eventGroup,
+      title: obj.eventTitle,
+      type: '',
+      id: id
+    };
+    console.log(post)
+    return this.http.put<Post>(`${this.url}/api/Posts/${id}`, post, {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
+  }
+
   loadListPost(pageIndex = 0){
     return this.http.get<Post[]>(`https://localhost:7136/api/Posts?pageIndex=${pageIndex}&pageSize=6`);
   }

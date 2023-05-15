@@ -4,39 +4,9 @@
     <p>NEWS DC19 PROGRAM 1</p>
   </div>
   <div class="add-event-form-block">
-    <p class="add-event-title">Add Event</p>
+    <p class="add-event-title">Edit Event</p>
   <div class="form-content-container">
     <form class="add-event-form" [formGroup]="addEventForm" autocomplete="off" (ngSubmit)="onSubmit()">
-      <!-- <div class="row-control">
-
-      </div>
-      <div class="row-control">
-
-      </div>
-      <div class="row-control">
-          <div class="date">
-
-          </div>
-          <div class="time">
-
-          </div>
-      </div>
-      <div class="row-control">
-      </div>
-      <div class="row-control">
-      </div>
-      <div class="row-control">
-
-      </div>
-      <div class="row-control">
-
-      </div>
-      <div class="row-control">
-
-      </div>
-      <div class="row-control">
-        <button mat-raised-button color="primary" type="submit" >Add</button>
-      </div> -->
       <table style="border:none">
         <tr class="row-control">
           <td class="td-left">
@@ -45,7 +15,7 @@
             </div>
           </td>
           <td class="td-right">
-            <input class="set-height" name="title" type="text" formControlName="eventTitle" >
+            <input class="set-height" name="title" type="text" formControlName="eventTitle" value="{{currPost.title}}">
           </td>
         </tr>
         <tr class="row-control">
@@ -64,9 +34,9 @@
           </td>
           <td class="td-right">
             <div style="display: flex; justify-content: space-between;">
-              <input type="date" class="set-height" name="date" formControlName="eventDate" />
-            <label for="week" class="time" style="margin: auto 0;">Time</label>
-            <input class="set-height" name="time" formControlName="eventTime" type="time" />
+              <input type="date" class="set-height" name="date" formControlName="eventDate" value="{{currPost.date|date:'yyyy-MM-dd'}}"/>
+            <label for="time" class="time" style="margin: auto 0;">Time</label>
+            <input class="set-height" name="time" formControlName="eventTime" type="time" value="{{currPost.date | date:'HH:mm'}}"/>
             </div>
           </td>
         </tr>
@@ -75,7 +45,7 @@
             <label class="location" for="location">Location</label>
           </td>
           <td class="td-right">
-            <input class="set-height" formControlName="eventLocation" name="location" type="text" >
+            <input class="set-height" formControlName="eventLocation" name="location" type="text" value="{{currPost.location}}">
           </td>
         </tr>
         <tr class="row-control">
@@ -84,7 +54,7 @@
           </td>
           <td class="td-right">
             <label for="choose-file" id="img-label">Choose file
-            <input (change)="onFileSelected(imageInput)" #imageInput type="file" name="img" formControlName="eventImg" id="choose-file" accept="image/*" >
+            <input (change)="onFileSelected(imageInput)" #imageInput type="file" name="img" formControlName="eventImg" id="choose-file" accept="image/png, image/jpeg" value="">
           </label>
             <!-- <input id="choose-file" formControlName="eventImg" name="image" type="file" onchange="console.log(event.target.files)"> -->
           </td>
@@ -106,7 +76,7 @@
           </td>
           <td class="td-right">
             <select class="set-height" formControlName="eventGroup" name="group" [(ngModel)]="selectedGroup">
-              <option *ngFor="let group of ListGroups" [value]="group.id">{{group.name}}</option>
+              <option *ngFor="let group of ListGroups" [selected]="group.id == selectedGroup" [value]="group.id">{{group.name}}</option>
             </select>
           </td>
         </tr>
@@ -118,14 +88,15 @@
           <td class="td-right" style="vertical-align: top;">
             <div class="box"></div>
             <div class="ngxEditor_wrapper" *ngIf="editor" >
-              <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+              <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"></ngx-editor-menu>
               <ngx-editor
                 formControlName="eventContent"
                 [editor]="editor"
                 [ngModel]="html"
                 [disabled]="false"
-                [placeholder] = "''">
-
+                [placeholder]="''"
+                [innerHTML]="">
+              <!-- {{currPost.content}} -->
               </ngx-editor>
             </div>
           </td>
@@ -135,7 +106,7 @@
           <td class="td-right" style="text-align: right;">
             <div style="height: 24px;"></div>
             <div class="submit-btn">
-              <button type="submit">Add now</button>
+              <button type="submit">Save</button>
             </div>
           </td>
         </tr>

@@ -1,22 +1,39 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Editor, Toolbar } from 'ngx-editor';
 import { ApiService } from 'src/app/Service/api.service';
 import { Topic } from 'src/app/Topic';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Group } from 'src/app/Group';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
+import { Post } from 'src/app/PostEvent';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) {}
 }
-
 @Component({
-  selector: 'app-add-event',
-  templateUrl: './add-event.component.html',
-  styleUrls: ['./add-event.component.css']
+  selector: 'app-edit-event',
+  templateUrl: './edit-event.component.html',
+  styleUrls: ['./edit-event.component.css']
 })
-export class AddEventComponent implements OnInit, OnDestroy{
+export class EditEventComponent implements OnInit {
+  currPost={
+    id: 0,
+    date: new Date,
+    time: new Date,
+    location: '',
+    priority: 0,
+    title: '',
+    image: '',
+    content: '',
+    showInSlider: false,
+    topicID: 0,
+    groupID: 0
+  };
+  postID : number = 0;
+  date : string = '';
+  time : string = '';
+
   fileName = '';
   selectedFile: ImageSnippet | undefined;
 
@@ -29,8 +46,8 @@ export class AddEventComponent implements OnInit, OnDestroy{
   addEventForm = new FormGroup({
     eventTitle: new FormControl(''),
     eventType: new FormControl(1),
-    eventDate: new FormControl(Date),
-    eventTime: new FormControl(Date),
+    eventDate: new FormControl( new Date),
+    eventTime: new FormControl(new Date),
     eventLocation: new FormControl(''),
     eventImg: new FormControl(''),
     eventPiority: new FormControl(0),
@@ -39,7 +56,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
   });
 
 
-  constructor(private fb: FormBuilder, private apiService: ApiService, private postService:HandlePostService, private router : Router) {}
+  constructor(private fb: FormBuilder, private _route: ActivatedRoute, private apiService: ApiService, private postService:HandlePostService, private router : Router) {}
 
 
   editor = new Editor;
@@ -53,23 +70,22 @@ export class AddEventComponent implements OnInit, OnDestroy{
   html= '';
 
   ngOnInit(){
+    this.postID = Number(this._route.snapshot.paramMap.get('id'));
+    this.LoadPost(this.postID);
     this.addEventForm = this.fb.group({
       eventTitle: ['', Validators.required],
       eventType: [1],
-      eventDate: [Date, Validators.required],
-      eventTime: [Date, Validators.required],
+      eventDate: [new Date, Validators.required],
+      eventTime: [new Date, Validators.required],
       eventLocation: ['', Validators.required],
       eventImg: ['', Validators.required],
       eventPiority: [0],
       eventGroup: [1],
       eventContent: ['', Validators.required]
     })
-    console.log(this.router.url)
     this.editor = new Editor();
     this.LoadTopics();
     this.LoadGroups();
-    this.selectedTopic = 1;
-    this.selectedGroup = 1;
     // this.ListGroup();
   }
 
@@ -78,12 +94,31 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.editor.destroy();
   }
 
+  //load posts
+  LoadPost(id : number){
+    this.apiService.getPost(id).subscribe({
+      next:data =>{
+        this.currPost = data;
+        this.selectedTopic = data.topicID;
+        this.selectedGroup = data.groupID;
+        this.addEventForm.patchValue({eventContent: data.content})
+        if(data.priority == 1) this.checked = true;
+      }
+    })
+  }
+
+  setDateTime(){
+    let d = this.currPost.date;
+    this.date = `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`;
+    console.log(this.date);
+
+  }
+
   //list topic handle
   LoadTopics(){
     this.apiService.getTopic().subscribe({
       next:data =>{
         this.listTopic = data;
-        console.log(this.listTopic)
       }
     })
   }
@@ -92,7 +127,6 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.apiService.getGroup().subscribe({
       next:data => {
         this.ListGroups = data;
-        console.log(this.ListGroups)
       }
     })
   }
@@ -100,9 +134,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
   onSubmit(){
     if(this.checked) this.addEventForm.patchValue({eventPiority:1})
     else this.addEventForm.patchValue({eventPiority:0})
-    // this.addEventForm.patchValue({eventContent:this.html})
-    // console.log(Object(this.addEventForm.value))
-    // let data = {};
+
     let data = Object(this.addEventForm.value);
 
     console.log(this.addEventForm.get('eventTime')?.value)
@@ -111,9 +143,9 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.selectedTopic = 1;
     this.selectedGroup = 1;
 
-    this.postService.addPost(data).subscribe({
+    this.postService.editPost(data, this.postID).subscribe({
       next:data=>{
-        alert('Success');
+        alert('Saved change');
       },
       error:err=>{console.log(err)}
     })
@@ -125,4 +157,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
   }
   onFileSelected(imageInput:any){
   }
+
 }
+
+

@@ -58,7 +58,7 @@
 .list-post-container{
   position: relative;
   background-color: white;
-  height: calc(var(--ratio)*1250);
+  height: calc(var(--ratio)*1260);
   margin-top: 15px;
   padding-right: 18px;
   padding-left: 38px;
@@ -113,6 +113,16 @@
 
 
 /* card-box > card-block > card */
+.no-results-found{
+  display: none;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 20px;
+}
+.no-results-found.show{
+  display: block;
+}
+
 .card-block{
   position: relative;
   margin: 10px 0;
@@ -220,6 +230,7 @@
 
 /* paginator */
 .block-paginator{
+  margin-top: 10px;
   height: calc(70*var(--ratio));
   bottom: 10px;
   left: 0;

@@ -79,10 +79,10 @@ namespace News.api.Controllers
         [Authorize]
         public async Task<IActionResult> UpdatePost(int Id, PostUpdateModel model)
         {
-            if (Id != model.Id)
-            {
-                return BadRequest();
-            }
+            //if (Id != model.Id)
+            //{
+              //  return BadRequest();
+            //}
 
             var post = _mapper.Map<Post>(model);
             _context.Entry(post).State = EntityState.Modified;

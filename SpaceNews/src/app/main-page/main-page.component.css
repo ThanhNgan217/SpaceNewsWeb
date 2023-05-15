@@ -185,7 +185,7 @@
 }
 .header-login .user .menu.show{
   width: calc(146*var(--ratio));
-  height: 50px;
+  height: 40px;
 }
 
 
