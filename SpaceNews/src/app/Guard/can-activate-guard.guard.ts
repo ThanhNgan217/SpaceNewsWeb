@@ -15,7 +15,10 @@ export class CanActivateGuard implements CanActivate {
     if(sessionStorage.getItem('userRole') == '1'){
       return true;
     }
-    else return false;
+    else{
+      this.router.navigate(['/']);
+      return false;
+    }
 
   }
 

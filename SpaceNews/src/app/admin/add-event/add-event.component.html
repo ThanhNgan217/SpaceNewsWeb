@@ -6,7 +6,7 @@
   <div class="add-event-form-block">
     <p class="add-event-title">Add Event</p>
   <div class="form-content-container">
-    <form class="add-event-form" [formGroup]="addEventForm" autocomplete="off" (ngSubmit)="onSubmit()">
+    <form class="add-event-form" [formGroup]="addEventForm" autocomplete="off" (ngSubmit)="onSubmit()" ngNativeValidate>
       <!-- <div class="row-control">
 
       </div>
@@ -45,7 +45,7 @@
             </div>
           </td>
           <td class="td-right">
-            <input class="set-height" name="title" type="text" formControlName="eventTitle" >
+            <input class="set-height" name="title" type="text" formControlName="eventTitle" required>
           </td>
         </tr>
         <tr class="row-control">
@@ -64,9 +64,9 @@
           </td>
           <td class="td-right">
             <div style="display: flex; justify-content: space-between;">
-              <input type="date" class="set-height" name="date" formControlName="eventDate" />
-            <label for="week" class="time" style="margin: auto 0;">Time</label>
-            <input class="set-height" name="time" formControlName="eventTime" type="time" />
+              <input type="date" class="set-height" name="date" formControlName="eventDate" required/>
+            <label for="time" class="time" style="margin: auto 0;">Time</label>
+            <input class="set-height" name="time" formControlName="eventTime" type="time" required/>
             </div>
           </td>
         </tr>
@@ -75,7 +75,7 @@
             <label class="location" for="location">Location</label>
           </td>
           <td class="td-right">
-            <input class="set-height" formControlName="eventLocation" name="location" type="text" >
+            <input class="set-height" formControlName="eventLocation" name="location" type="text" required>
           </td>
         </tr>
         <tr class="row-control">
@@ -124,7 +124,7 @@
                 [editor]="editor"
                 [ngModel]="html"
                 [disabled]="false"
-                [placeholder] = "''">
+                [placeholder] = "''" >
 
               </ngx-editor>
             </div>

@@ -58,9 +58,27 @@ export class HandlePostService {
     return this.http.post(`${this.url}/api/Posts`, JSON.stringify(newPost), {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
   }
 
-  editPost(obj : formEventData, id : number){
-    let dateTime = `${obj.eventDate}T${obj.eventTime}`;
+  editPost(obj : formEventData, id : number, oldDate : Date){
+    // let dateTime = `${obj.eventDate}T${obj.eventTime}`;
+    let dateTime;
+    if(obj.eventDate != oldDate && obj.eventTime != oldDate){ // change both
+      dateTime = `${obj.eventDate}T${obj.eventTime}`;
+    }
+    else if(obj.eventDate != oldDate && obj.eventTime == oldDate){ // only change date
+      let time = obj.eventTime.toString();
+      let arr = time.split('T'); // arr = [ 'date','time' ]
+      dateTime = `${obj.eventDate}T${arr[1]}`;
+    }
+    else if(obj.eventDate == oldDate && obj.eventTime != oldDate){ // only change time
+      let date = obj.eventDate.toString();
+      let arr = date.split('T'); // arr = [ 'date','time' ]
+      dateTime = `${arr[0]}T${obj.eventTime}`;
+    }
+    else { // no change
+      dateTime = `${obj.eventDate}`;
+    }
 
+    console.log(dateTime);
     let post = {
       date: dateTime,
       time: dateTime,
@@ -76,6 +94,29 @@ export class HandlePostService {
       id: id
     };
     console.log(post)
+    return this.http.put<Post>(`${this.url}/api/Posts/${id}`, post, {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
+  }
+
+  deletePost(id:number){
+    return this.http.delete(`${this.url}/api/Posts/${id}`, {headers:{'Authorization':`Bearer ${this.auth}`}});
+  }
+
+  piorityToggle(id:number, toggle:boolean, postData:Post|undefined){
+    let post = {
+      date: postData?.date,
+      time: postData?.time,
+      location: postData?.location,
+      image: postData?.image,
+      priority: toggle == true? 1 : 0,
+      content: postData?.content,
+      showInSlider: toggle,
+      topicID: postData?.topicID,
+      groupID: postData?.groupID,
+      title: postData?.title,
+      type: '',
+      id: id
+    };
+    console.log('new data', post);
     return this.http.put<Post>(`${this.url}/api/Posts/${id}`, post, {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
   }
 

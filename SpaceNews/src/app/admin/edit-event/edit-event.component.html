@@ -15,7 +15,7 @@
             </div>
           </td>
           <td class="td-right">
-            <input class="set-height" name="title" type="text" formControlName="eventTitle" value="{{currPost.title}}">
+            <input class="set-height" name="title" type="text" formControlName="eventTitle">
           </td>
         </tr>
         <tr class="row-control">
@@ -45,7 +45,7 @@
             <label class="location" for="location">Location</label>
           </td>
           <td class="td-right">
-            <input class="set-height" formControlName="eventLocation" name="location" type="text" value="{{currPost.location}}">
+            <input class="set-height" formControlName="eventLocation" name="location" type="text">
           </td>
         </tr>
         <tr class="row-control">
@@ -54,7 +54,7 @@
           </td>
           <td class="td-right">
             <label for="choose-file" id="img-label">Choose file
-            <input (change)="onFileSelected(imageInput)" #imageInput type="file" name="img" formControlName="eventImg" id="choose-file" accept="image/png, image/jpeg" value="">
+            <input (change)="onFileSelected(imageInput)" #imageInput type="file" name="img" formControlName="eventImg" id="choose-file" accept="image/png, image/jpeg">
           </label>
             <!-- <input id="choose-file" formControlName="eventImg" name="image" type="file" onchange="console.log(event.target.files)"> -->
           </td>
@@ -95,7 +95,7 @@
                 [ngModel]="html"
                 [disabled]="false"
                 [placeholder]="''"
-                [innerHTML]="">
+                >
               <!-- {{currPost.content}} -->
               </ngx-editor>
             </div>
@@ -106,6 +106,7 @@
           <td class="td-right" style="text-align: right;">
             <div style="height: 24px;"></div>
             <div class="submit-btn">
+              <button class="cancel-edit" routerLink="/admin/posts">Cancel</button>
               <button type="submit">Save</button>
             </div>
           </td>

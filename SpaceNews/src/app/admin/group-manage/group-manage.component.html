@@ -1,41 +1,38 @@
 <div class="content-container">
   <div class="block-left">
     <div class="text-block">
-      <p>List Event</p>
-      <button class="add-post-btn" routerLink="posts/add">Add post</button>
+      <p>List Group</p>
+      <button class="add-post-btn" routerLink="posts/add">Add Group</button>
     </div>
     <div class="list-post-container">
       <div class="search-block">
         <form class="searchbar-main-header" [formGroup]="searchForm" autocomplete="off" (ngSubmit)="ClickBtn()">
           <mat-form-field class="searchbar-form-field" appearance="fill">
-            <input matInput type="text" placeholder="What your post you want to Search" formControlName="keyWord">
+            <input matInput type="text" placeholder="What your Group you want to Search" formControlName="keyWord">
             <button matSuffix mat-icon-button aria-label="Search" fontIcon="search" type="submit">
               <mat-icon *ngIf="!showSearch">search</mat-icon>
               <mat-icon *ngIf="showSearch">close</mat-icon>
             </button>
           </mat-form-field>
         </form>
-        <p>Piority</p>
       </div>
       <div class="box-card">
         <h4 class="no-results-found" [class.show]="!haveResults()">No results found</h4>
-        <div class="card-block" *ngFor="let p of listPost">
+        <div class="card-block" *ngFor="let g of listGroup">
           <div class="card">
-            <div class="card-img">
-              <img src="{{p.image}}" alt="p.title">
+            <div class="card-name">
+              <p class="title">{{g.name}}</p>
             </div>
             <div class="card-content">
-              <p class="title">{{p.title}}</p>
-              <p class="content" [innerHTML]="p.content"></p>
+              <p>3 event comming soon</p>
+              <p>29 post</p>
+              <p>last event 17/02/2023</p>
             </div>
             <div class="card-btn">
-              <button class="detail-btn" (click)="showDialog(p.id)">Detail</button>
-              <button class="edit-btn" routerLink="posts/edit/{{p.id}}">Edit</button>
-              <button class="delete-btn" (click)="deletePost(p.id)">Delete</button>
+              <button class="detail-btn" >Detail</button>
+              <button class="edit-btn" routerLink="">Edit</button>
+              <button class="delete-btn" >Delete</button>
             </div>
-          </div>
-          <div class="piority-toggle" [class.checked]="p.showInSlider" (click)="piorityToggle(p.id)" id="toggle{{p.id}}">
-            <span class="piority-thumb" [class.checked]="p.showInSlider" id="thumb{{p.id}}"></span>
           </div>
         </div>
       </div>

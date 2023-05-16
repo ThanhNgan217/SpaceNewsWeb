@@ -44,15 +44,15 @@ export class EditEventComponent implements OnInit {
   selectedGroup = 1;
 
   addEventForm = new FormGroup({
-    eventTitle: new FormControl(''),
-    eventType: new FormControl(1),
-    eventDate: new FormControl( new Date),
-    eventTime: new FormControl(new Date),
-    eventLocation: new FormControl(''),
+    eventTitle: new FormControl('', Validators.required),
+    eventType: new FormControl(1, Validators.required),
+    eventDate: new FormControl( new Date, Validators.required),
+    eventTime: new FormControl(new Date, Validators.required),
+    eventLocation: new FormControl('', Validators.required),
     eventImg: new FormControl(''),
-    eventPiority: new FormControl(0),
-    eventGroup: new FormControl(1),
-    eventContent: new FormControl('')
+    eventPiority: new FormControl(0, Validators.required),
+    eventGroup: new FormControl(1, Validators.required),
+    eventContent: new FormControl('', Validators.required)
   });
 
 
@@ -72,18 +72,8 @@ export class EditEventComponent implements OnInit {
   ngOnInit(){
     this.postID = Number(this._route.snapshot.paramMap.get('id'));
     this.LoadPost(this.postID);
-    this.addEventForm = this.fb.group({
-      eventTitle: ['', Validators.required],
-      eventType: [1],
-      eventDate: [new Date, Validators.required],
-      eventTime: [new Date, Validators.required],
-      eventLocation: ['', Validators.required],
-      eventImg: ['', Validators.required],
-      eventPiority: [0],
-      eventGroup: [1],
-      eventContent: ['', Validators.required]
-    })
-    this.editor = new Editor();
+
+    // this.editor = new Editor();
     this.LoadTopics();
     this.LoadGroups();
     // this.ListGroup();
@@ -101,17 +91,23 @@ export class EditEventComponent implements OnInit {
         this.currPost = data;
         this.selectedTopic = data.topicID;
         this.selectedGroup = data.groupID;
-        this.addEventForm.patchValue({eventContent: data.content})
         if(data.priority == 1) this.checked = true;
+        this.addEventForm.patchValue({eventContent: data.content})
+        // this.addEventForm.patchValue({eventDate: new Date})
+        // this.addEventForm.patchValue({eventTime: new Date})
+        this.addEventForm.setValue({
+          eventTitle: data.title,
+          eventType: data.topicID,
+          eventDate: data.date,
+          eventTime: data.date,
+          eventLocation: data.location,
+          eventImg: data.image,
+          eventPiority: data.priority,
+          eventGroup: data.groupID,
+          eventContent: data.content
+        })
       }
     })
-  }
-
-  setDateTime(){
-    let d = this.currPost.date;
-    this.date = `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`;
-    console.log(this.date);
-
   }
 
   //list topic handle
@@ -132,23 +128,29 @@ export class EditEventComponent implements OnInit {
   }
 
   onSubmit(){
+    // this.addEventForm.get('eventDate')?.valueChanges.subscribe({
+    //   next:data =>{
+    //     console.log(data);
+    //   }
+    // })
     if(this.checked) this.addEventForm.patchValue({eventPiority:1})
     else this.addEventForm.patchValue({eventPiority:0})
 
     let data = Object(this.addEventForm.value);
-
-    console.log(this.addEventForm.get('eventTime')?.value)
+    console.log(this.addEventForm.get('eventContent')?.value)
     this.addEventForm.reset();
 
     this.selectedTopic = 1;
     this.selectedGroup = 1;
 
-    this.postService.editPost(data, this.postID).subscribe({
+    this.postService.editPost(data, this.postID, this.currPost.date)
+    .subscribe({
       next:data=>{
         alert('Saved change');
       },
       error:err=>{console.log(err)}
     })
+    this.router.navigateByUrl('admin/posts');
   }
 
   // upload img

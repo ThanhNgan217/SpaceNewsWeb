@@ -120,10 +120,19 @@ table button{
 table button:hover{
   cursor: pointer;
 }
+table .submit-btn{
+  display: flex;
+  justify-content: space-between;
+}
+table button.cancel-edit{
+  background-color: #FAF9F7;
+  border: solid 2px gray;
+  color: gray;
+  margin-left: 0;
+}
 table .piority-toggle:hover{
   cursor: pointer;
 }
-
 table .piority-toggle{
   position: relative;
   width: 56px;

@@ -67,15 +67,9 @@ export class PostsManageComponent implements OnInit {
         }
       })
     }
-    // if(sessionStorage.getItem('isSearch')){
-
-    //   this.postService.searchPost(this.keyWord, this.pageIndex);
-    // }
-    // else {
-
-    // }
   }
 
+  // detail
   showDialog(id : number){
     let post = this.listPost.find(p => p.id == id);
     this.dialog.open(PostDialog, {
@@ -83,23 +77,30 @@ export class PostsManageComponent implements OnInit {
     });
   }
 
-  // setUser(){
-  //   this.user.id = sessionStorage.getItem('userID');
-  //   this.user.auth_token = sessionStorage.getItem('auth_token');
-  // }
+  //delete
+  deletePost(id : number){
+    this.postService.deletePost(id).subscribe({
+      next:data =>{
+        this.getListPost();
+        alert('Delete post successfully!');
+      }
+    })
+  }
 
-  // Logout(){
-  //   sessionStorage.removeItem('userID');
-  //   sessionStorage.removeItem('auth_token');
-  //   sessionStorage.removeItem('userRole');
-  //   this.router.navigate(['']);
-  // }
+  // piority
+  piorityToggle(id:number){
+    let currPost = this.listPost.find(p=>p.id == id);
+    let toggle = !currPost?.showInSlider;
+    let tag = document.getElementById(`toggle${id}`);
+    let thumb = document.getElementById(`thumb${id}`);
+    console.log(`toggle${id}`)
+    tag?.classList.toggle('checked');
+    thumb?.classList.toggle('checked');
+    this.postService.piorityToggle(id, toggle, currPost).subscribe({
+    })
+  }
 
-  // isPostsPage(){
-  //   if(this.router.url == '/posts') return true;
-  //   return false;
-  // }
-
+  //search posts
   ClickBtn(){
     this.pageIndex = 0;
     if(this.showSearch == false){ // search icon
@@ -118,9 +119,6 @@ export class PostsManageComponent implements OnInit {
       this.showSearch = false;
       this.getListPost();
     }
-
-    // this.showSearch = true;
-    // console.log("hello",key);
   }
 
   // handle page number

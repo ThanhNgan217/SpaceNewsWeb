@@ -53,17 +53,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
   html= '';
 
   ngOnInit(){
-    this.addEventForm = this.fb.group({
-      eventTitle: ['', Validators.required],
-      eventType: [1],
-      eventDate: [Date, Validators.required],
-      eventTime: [Date, Validators.required],
-      eventLocation: ['', Validators.required],
-      eventImg: ['', Validators.required],
-      eventPiority: [0],
-      eventGroup: [1],
-      eventContent: ['', Validators.required]
-    })
+    this.initForm();
     console.log(this.router.url)
     this.editor = new Editor();
     this.LoadTopics();
@@ -71,6 +61,20 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.selectedTopic = 1;
     this.selectedGroup = 1;
     // this.ListGroup();
+  }
+
+  initForm(){
+    this.addEventForm = this.fb.group({
+      eventTitle: ['', [Validators.required]],
+      eventType: [1],
+      eventDate: [Date, [Validators.required]],
+      eventTime: [Date, [Validators.required]],
+      eventLocation: ['', [Validators.required]],
+      eventImg: ['', [Validators.required]],
+      eventPiority: [0],
+      eventGroup: [1],
+      eventContent: ['', [Validators.required]]
+    })
   }
 
   //destory the editor
@@ -100,17 +104,9 @@ export class AddEventComponent implements OnInit, OnDestroy{
   onSubmit(){
     if(this.checked) this.addEventForm.patchValue({eventPiority:1})
     else this.addEventForm.patchValue({eventPiority:0})
-    // this.addEventForm.patchValue({eventContent:this.html})
-    // console.log(Object(this.addEventForm.value))
-    // let data = {};
     let data = Object(this.addEventForm.value);
-
-    console.log(this.addEventForm.get('eventTime')?.value)
-    this.addEventForm.reset();
-
-    this.selectedTopic = 1;
-    this.selectedGroup = 1;
-
+    // this.addEventForm.reset();
+    this.initForm();
     this.postService.addPost(data).subscribe({
       next:data=>{
         alert('Success');

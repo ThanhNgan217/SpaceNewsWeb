@@ -22,6 +22,7 @@ import { CanActivateGuard } from '../Guard/can-activate-guard.guard';
 import { AdminComponent } from './admin/admin.component';
 import { BlockRightComponent } from './block-right/block-right.component';
 import { EditEventComponent } from './edit-event/edit-event.component';
+import { GroupManageComponent } from './group-manage/group-manage.component';
 
 const routes: Routes = [
   { path: 'admin',
@@ -31,23 +32,24 @@ const routes: Routes = [
       {
         path:'posts',
         component:PostsManageComponent,
+      },
+      {
+        path: '', redirectTo : 'posts', pathMatch:'full'
+      },
+      {
+        path:'groups',
+        component:GroupManageComponent
       }
     ]
   },
   {
     path:'admin/posts/add',
     component: AddEventComponent,
-    // canActivate: [CanActivateGuard],
+    canActivate: [CanActivateGuard],
   },
   {
     path:'admin/posts/edit/:id',
     component: EditEventComponent,
-    // canActivate: [CanActivateGuard],
-  }
-  ,
-  {
-    path: 'Groups',
-    component: AddEventComponent,
     canActivate: [CanActivateGuard],
   }
 ];
@@ -59,6 +61,7 @@ const routes: Routes = [
     AdminComponent,
     BlockRightComponent,
     EditEventComponent,
+    GroupManageComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
