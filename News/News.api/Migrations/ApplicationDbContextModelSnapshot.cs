@@ -243,7 +243,7 @@ namespace News.api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
             modelBuilder.Entity("News.api.Entities.Post", b =>
@@ -287,7 +287,7 @@ namespace News.api.Migrations
 
                     b.HasIndex("TopicID");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("News.api.Entities.Topic", b =>
@@ -304,7 +304,7 @@ namespace News.api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Topics");
+                    b.ToTable("Topics", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

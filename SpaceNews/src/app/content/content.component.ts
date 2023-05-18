@@ -9,6 +9,11 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { Topic } from '../Topic';
 import { HttpClient } from '@angular/common/http';
 
+interface User{
+  id : string|null,
+  auth_token : string |null,
+}
+
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
@@ -35,8 +40,8 @@ export class ContentComponent {
   pageIndex = 0;
   postsSlider : Post[] = [];
 
-  logged = false;
-  user = {
+  logged = sessionStorage.getItem('userID')? true : false;
+  user : User = {
     id : '',
     auth_token : ''
   }
@@ -67,6 +72,9 @@ export class ContentComponent {
     this.bsInlineRangeValue = [this.bsInlineValue, this.maxDate];
   }
   ngOnInit(){
+    this.LoadSlider();
+    this.LoadTopics();
+    this.setUser();
     this.apiService.showSearch.subscribe({
       next:data => {
         this.showSearch = data;
@@ -78,11 +86,17 @@ export class ContentComponent {
         else return;
       }
     })
-    this.LoadSlider();
-    this.LoadTopics();
+    this.autoChangeSlider;
 
-    this.setUser();
     // console.log(this.logged, this.user);
+  }
+
+  myInterval= () => {
+    if(this.index == this.counter-1) this.index = 0;
+    else this.index++;
+    this.idShow = this.postsSlider[this.index].id;
+    this.urlShow = this.postsSlider[this.index].image;
+    this.title = this.postsSlider[this.index].title;
   }
 
   //slider handle'
@@ -91,13 +105,13 @@ export class ContentComponent {
       next:data =>{
         this.postsSlider= data.filter(d=>d.priority == 1)
         this.index = 0;
-        this.idShow = this.postsSlider[this.index].id; // 1
-        this.urlShow = this.postsSlider[this.index].image;
-        this.title = this.postsSlider[this.index].title;
+        this.idShow = this.postsSlider[0].id; // 1
+        this.urlShow = this.postsSlider[0].image;
+        this.title = this.postsSlider[0].title;
         this.counter = this.postsSlider.length;
       }
     })
-    this.autoChangeSlider;
+    // this.autoChangeSlider;
     // this.autoChangeSlider = setInterval(this.myInterval, 3500);
   }
 
@@ -142,32 +156,13 @@ export class ContentComponent {
       data : post,
     });
   }
-  myInterval= () => {
-    if(this.index == this.counter-1) this.index = 0;
-    else this.index++;
-    this.idShow = this.postsSlider[this.index].id;
-    this.urlShow = this.postsSlider[this.index].image;
-    this.title = this.postsSlider[this.index].title;
-  }
+
   autoChangeSlider = setInterval(this.myInterval, 3500);
 
   //logged
   setUser(){
-    let arr:string[] =[];
-    this.apiService.currUsser.subscribe((__value: string[]) => {
-      arr.push(__value[0]);
-      arr.push(__value[1]);
-    })
-    if(arr[0]) {
-      this.user.id = arr[0];
-      this.user.auth_token = arr[1];
-      this.logged = true;
-    }
-    else{
-      this.logged = false;
-      this.user.id = '';
-      this.user.auth_token = '';
-    }
+    this.user.id = sessionStorage.getItem('userID');
+    this.user.auth_token = sessionStorage.getItem('auth_token');
   }
 
   //list topic handle

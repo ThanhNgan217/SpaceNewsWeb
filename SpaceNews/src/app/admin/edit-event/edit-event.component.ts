@@ -30,6 +30,7 @@ export class EditEventComponent implements OnInit {
     topicID: 0,
     groupID: 0
   };
+  fileSrc : any;
   postID : number = 0;
   date : string = '';
   time : string = '';
@@ -128,22 +129,17 @@ export class EditEventComponent implements OnInit {
   }
 
   onSubmit(){
-    // this.addEventForm.get('eventDate')?.valueChanges.subscribe({
-    //   next:data =>{
-    //     console.log(data);
-    //   }
-    // })
     if(this.checked) this.addEventForm.patchValue({eventPiority:1})
     else this.addEventForm.patchValue({eventPiority:0})
 
     let data = Object(this.addEventForm.value);
-    console.log(this.addEventForm.get('eventContent')?.value)
+    // console.log(this.addEventForm.get('eventContent')?.value)
     this.addEventForm.reset();
 
     this.selectedTopic = 1;
     this.selectedGroup = 1;
 
-    this.postService.editPost(data, this.postID, this.currPost.date)
+    this.postService.editPost(data, this.postID, this.currPost.date, this.fileSrc)
     .subscribe({
       next:data=>{
         alert('Saved change');
@@ -154,10 +150,15 @@ export class EditEventComponent implements OnInit {
   }
 
   // upload img
-  fileUpload(){
-    console.log('file uploaded')
-  }
-  onFileSelected(imageInput:any){
+  onFileSelected(event:Event){
+    // @ts-ignore: Object is possibly 'null'.
+    let file = (event.target as HTMLInputElement).files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file)
+    reader.addEventListener("load", (event) => {
+      this.fileSrc = reader.result as string;
+    });
+
   }
 
 }

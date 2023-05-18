@@ -17,7 +17,7 @@ class ImageSnippet {
   styleUrls: ['./add-event.component.css']
 })
 export class AddEventComponent implements OnInit, OnDestroy{
-  fileName = '';
+  fileSrc: any;
   selectedFile: ImageSnippet | undefined;
 
   checked = false;
@@ -54,7 +54,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
 
   ngOnInit(){
     this.initForm();
-    console.log(this.router.url)
+    // console.log(this.router.url)
     this.editor = new Editor();
     this.LoadTopics();
     this.LoadGroups();
@@ -87,7 +87,6 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.apiService.getTopic().subscribe({
       next:data =>{
         this.listTopic = data;
-        console.log(this.listTopic)
       }
     })
   }
@@ -96,18 +95,21 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.apiService.getGroup().subscribe({
       next:data => {
         this.ListGroups = data;
-        console.log(this.ListGroups)
       }
     })
   }
 
   onSubmit(){
+    // console.log(this.fileSrc);
     if(this.checked) this.addEventForm.patchValue({eventPiority:1})
     else this.addEventForm.patchValue({eventPiority:0})
+    // this.addEventForm.patchValue({eventImg: this.fileSrc})
+
     let data = Object(this.addEventForm.value);
+
     // this.addEventForm.reset();
     this.initForm();
-    this.postService.addPost(data).subscribe({
+    this.postService.addPost(data, this.fileSrc).subscribe({
       next:data=>{
         alert('Success');
       },
@@ -116,9 +118,17 @@ export class AddEventComponent implements OnInit, OnDestroy{
   }
 
   // upload img
-  fileUpload(){
-    console.log('file uploaded')
+  onFileSelected(event:Event){
+    // @ts-ignore: Object is possibly 'null'.
+    let file = (event.target as HTMLInputElement).files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file)
+    reader.addEventListener("load", (event) => {
+      this.fileSrc = reader.result as string;
+    });
+
   }
-  onFileSelected(imageInput:any){
-  }
+
+
+
 }

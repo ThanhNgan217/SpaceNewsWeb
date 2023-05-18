@@ -48,10 +48,6 @@ export class PostsManageComponent implements OnInit {
     this.getListPost();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-
-  }
-
   getListPost(){
     if(this.showSearch == true){
       this.postService.searchPost(this.keyWord, this.pageIndex).subscribe({

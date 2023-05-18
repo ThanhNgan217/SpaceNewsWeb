@@ -31,31 +31,57 @@ export class ListPostComponent implements OnInit{
 
   ngOnInit(): void{
 
-    this.getListPost(this.topicChecked, this.pageIndex, this.keyWord);
+    // this.getListPost(this.topicChecked, this.pageIndex, this.keyWord);
     // this.posts = this.listPost;
     // this.upcommingPost.forEach((p)=>this.posts.unshift(p))
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('topicChecked' in changes){
+      const topic = Number(changes['topicChecked'].currentValue);
         this.pageIndex = 0;
-        // this.changePage.emit(this.pageIndex);
-        const topic = Number(changes['topicChecked'].currentValue);
+        this.changePage.emit(this.pageIndex);
+        // const topic = Number(changes['topicChecked'].currentValue);
         this.topicChecked = topic;
         this.apiService.stopSearch();
         this.ChangeTopic(topic);
+      // if('pageIndex'in changes){
+      //   this.getListPost(topic, this.pageIndex);
+      // }else this.getListPost(topic, 0);
     }
-    if('keyWord' in changes){
+    else if('keyWord' in changes){
       let str = /%20/g;
       this.keyWordOrigin = this.keyWord?.replace(str,' ');
       this.getListPost(this.topicChecked,this.pageIndex, this.keyWord);
     }
-    if('pageIndex' in changes){
+    else if('pageIndex' in changes){
       if(this.keyWord){
         this.getListPost(this.topicChecked, this.pageIndex, this.keyWord)
       }
-      else this.getListPost(this.topicChecked, this.pageIndex, '');
+        else {
+          this.getListPost(this.topicChecked, this.pageIndex, '');}
     }
+
+  //   if ('topicChecked' in changes){
+  //     this.pageIndex = 0;
+  //     // this.changePage.emit(this.pageIndex);
+  //     const topic = Number(changes['topicChecked'].currentValue);
+  //     this.topicChecked = topic;
+  //     this.apiService.stopSearch();
+  //     this.ChangeTopic(topic);
+  // }
+  // if('keyWord' in changes){
+  //   let str = /%20/g;
+  //   this.keyWordOrigin = this.keyWord?.replace(str,' ');
+  //   this.getListPost(this.topicChecked,this.pageIndex, this.keyWord);
+  // }
+  // if('pageIndex' in changes){
+  //   if(this.keyWord){
+  //     this.getListPost(this.topicChecked, this.pageIndex, this.keyWord)
+  //   }
+  //     else {
+  //       this.getListPost(this.topicChecked, this.pageIndex, '');}
+  // }
   }
 
   // getsearchPost(numpage = 0, key = ''){

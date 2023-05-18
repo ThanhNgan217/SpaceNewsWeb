@@ -162,7 +162,7 @@ table .piority-toggle.checked{
 #img-label:hover{
   cursor: pointer;
 }
-#choose-file{
+#inputImg{
   position: absolute;
   z-index: -1;
   transform: translateX(-76px);

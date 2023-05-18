@@ -2,7 +2,7 @@
   <div class="block-left">
     <div class="text-block">
       <p>List Event</p>
-      <button class="add-post-btn" routerLink="posts/add">Add post</button>
+      <button class="add-post-btn" routerLink="add">Add Event</button>
     </div>
     <div class="list-post-container">
       <div class="search-block">
@@ -15,7 +15,7 @@
             </button>
           </mat-form-field>
         </form>
-        <p>Piority</p>
+        <p>Priority</p>
       </div>
       <div class="box-card">
         <h4 class="no-results-found" [class.show]="!haveResults()">No results found</h4>
@@ -30,7 +30,7 @@
             </div>
             <div class="card-btn">
               <button class="detail-btn" (click)="showDialog(p.id)">Detail</button>
-              <button class="edit-btn" routerLink="posts/edit/{{p.id}}">Edit</button>
+              <button class="edit-btn" routerLink="edit/{{p.id}}">Edit</button>
               <button class="delete-btn" (click)="deletePost(p.id)">Delete</button>
             </div>
           </div>

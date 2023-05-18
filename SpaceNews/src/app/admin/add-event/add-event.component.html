@@ -83,8 +83,8 @@
             <label class="image">Image</label>
           </td>
           <td class="td-right">
-            <label for="choose-file" id="img-label">Choose file
-            <input (change)="onFileSelected(imageInput)" #imageInput type="file" name="img" formControlName="eventImg" id="choose-file" accept="image/*" >
+            <label for="inputImg" id="img-label">Choose file
+            <input (change)="onFileSelected($event)" #imageInput type="file" name="img" formControlName="eventImg" id="inputImg" accept="image/*" >
           </label>
             <!-- <input id="choose-file" formControlName="eventImg" name="image" type="file" onchange="console.log(event.target.files)"> -->
           </td>
@@ -102,7 +102,7 @@
         </tr>
         <tr class="row-control">
           <td class="td-left">
-            <label for="group" class="group">Relevant group</label>
+            <label for="group" class="group">Relevant groups</label>
           </td>
           <td class="td-right">
             <select class="set-height" formControlName="eventGroup" name="group" [(ngModel)]="selectedGroup">
@@ -120,7 +120,7 @@
             <div class="ngxEditor_wrapper" *ngIf="editor" >
               <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
               <ngx-editor
-                formControlName="eventContent"
+              [formControl]="addEventForm.controls['eventContent']"
                 [editor]="editor"
                 [ngModel]="html"
                 [disabled]="false"

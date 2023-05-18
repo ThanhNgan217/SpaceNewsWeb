@@ -38,14 +38,14 @@ export class HandlePostService {
 
 
 
-  addPost(obj : formEventData){
+  addPost(obj : formEventData, image : string){
     let dateTime = `${obj.eventDate}T${obj.eventTime}`;
 
     let newPost = {
       date: dateTime,
       time: dateTime,
       location: obj.eventLocation,
-      image: obj.eventImg,
+      image: image,
       priority: obj.eventPiority,
       content: obj.eventContent,
       showInSlider: obj.eventPiority == 0 ? false : true,
@@ -58,9 +58,15 @@ export class HandlePostService {
     return this.http.post(`${this.url}/api/Posts`, JSON.stringify(newPost), {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
   }
 
-  editPost(obj : formEventData, id : number, oldDate : Date){
+  editPost(obj : formEventData, id : number, oldDate : Date, newImg : string){
     // let dateTime = `${obj.eventDate}T${obj.eventTime}`;
     let dateTime;
+    let img : string = obj.eventImg;
+    if(newImg != '' && newImg != undefined){
+      img = newImg;
+      console.log(newImg)
+    }
+    else console.log(newImg)
     if(obj.eventDate != oldDate && obj.eventTime != oldDate){ // change both
       dateTime = `${obj.eventDate}T${obj.eventTime}`;
     }
@@ -78,12 +84,13 @@ export class HandlePostService {
       dateTime = `${obj.eventDate}`;
     }
 
-    console.log(dateTime);
+
+    // console.log(dateTime);
     let post = {
       date: dateTime,
       time: dateTime,
       location: obj.eventLocation,
-      image: obj.eventImg,
+      image: img,
       priority: obj.eventPiority,
       content: obj.eventContent,
       showInSlider: obj.eventPiority == 0 ? false : true,
