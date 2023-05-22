@@ -2,20 +2,34 @@
   <div class="block-left">
     <div class="text-block">
       <p>List Event</p>
+      <form class="searchbar-main-header" [formGroup]="searchForm" autocomplete="off" (ngSubmit)="ClickBtn()">
+        <mat-form-field class="searchbar-form-field" appearance="fill">
+          <input matInput type="text" placeholder="What your post you want to Search" formControlName="keyWord">
+          <button matSuffix mat-icon-button aria-label="Search" fontIcon="search" type="submit">
+            <mat-icon *ngIf="!showSearch">search</mat-icon>
+            <mat-icon *ngIf="showSearch">close</mat-icon>
+          </button>
+        </mat-form-field>
+      </form>
       <button class="add-post-btn" routerLink="add">Add Event</button>
     </div>
+
     <div class="list-post-container">
-      <div class="search-block">
-        <form class="searchbar-main-header" [formGroup]="searchForm" autocomplete="off" (ngSubmit)="ClickBtn()">
-          <mat-form-field class="searchbar-form-field" appearance="fill">
-            <input matInput type="text" placeholder="What your post you want to Search" formControlName="keyWord">
-            <button matSuffix mat-icon-button aria-label="Search" fontIcon="search" type="submit">
-              <mat-icon *ngIf="!showSearch">search</mat-icon>
-              <mat-icon *ngIf="showSearch">close</mat-icon>
-            </button>
-          </mat-form-field>
-        </form>
-        <p>Priority</p>
+      <div class="topic-block">
+        <div class="list-topic">
+          <div class="chips-list" id="list-topic">
+            <button class="chip" [class.topic-checked]="idTopic == 0" (click)="topicChange(0)" [value]="0">All</button>
+            <!-- <div class="ngForList" *ngFor="let t of ListTopic"> -->
+            <button class="chip" *ngFor="let t of ListTopic" [value]="t.id" (click)="topicChange(t.id)" [class.topic-checked]="idTopic == t.id">{{t.name}}</button>
+            <!-- </div> -->
+          </div>
+          <button class="chip last-events">Last Events</button>
+        </div>
+
+        <div class="text-box">
+          <p class="priority">Priority</p>
+          <p class="status">Status</p>
+        </div>
       </div>
       <div class="box-card">
         <h4 class="no-results-found" [class.show]="!haveResults()">No results found</h4>
@@ -34,8 +48,13 @@
               <button class="delete-btn" (click)="deletePost(p.id)">Delete</button>
             </div>
           </div>
-          <div class="piority-toggle" [class.checked]="p.showInSlider" (click)="piorityToggle(p.id)" id="toggle{{p.id}}">
-            <span class="piority-thumb" [class.checked]="p.showInSlider" id="thumb{{p.id}}"></span>
+          <div class="toggle-box">
+            <div class="piority-toggle toggle" [class.checked]="p.priority == 1" (click)="piorityToggle(p.id)" id="toggle{{p.id}}">
+              <span class="piority-thumb thumb" [class.checked]="p.priority == 1" id="thumb{{p.id}}"></span>
+            </div>
+            <div class="status-toggle toggle" [class.checked]="p.showInSlider" (click)="statusToggle(p.id)" id="statusToggle{{p.id}}">
+              <span class="status-thumb thumb" [class.checked]="p.showInSlider" id="statusThumb{{p.id}}"></span>
+            </div>
           </div>
         </div>
       </div>

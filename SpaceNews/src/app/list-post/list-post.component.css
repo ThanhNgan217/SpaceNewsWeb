@@ -154,6 +154,9 @@ mat-button-toggle{
   box-shadow: 0 1px 4px 1px  rgba(0, 0, 0, 0.25);
   /* box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.25); */
 }
+.post:hover{
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.5);
+}
 .post-router:hover{
   cursor: pointer;
 }

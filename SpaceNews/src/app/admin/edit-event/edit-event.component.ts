@@ -139,7 +139,7 @@ export class EditEventComponent implements OnInit {
     this.selectedTopic = 1;
     this.selectedGroup = 1;
 
-    this.postService.editPost(data, this.postID, this.currPost.date, this.fileSrc)
+    this.postService.editPost(data, this.postID, this.currPost.date, this.fileSrc, this.currPost.showInSlider)
     .subscribe({
       next:data=>{
         alert('Saved change');

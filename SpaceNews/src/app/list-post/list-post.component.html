@@ -2,7 +2,7 @@
   <h4 class="search-text" *ngIf="keyWord != ''">Search for : <i>{{keyWordOrigin}}</i></h4>
   <div class="list-post">
     <div class="post-container" *ngFor="let p of posts">
-      <div class="post" [class.piority]="p.priority" [class.upcomming]="isUpcomming(p.id)" [class.passed]="isPassed(p.id)">
+      <div class="post" [class.onweek]="" [class.upcomming]="isUpcomming(p.id)" [class.passed]="isPassed(p.id)">
         <!-- <div class="post-router" routerLink="post/{{p.id}}"> -->
           <div class="post-router" (click)="showDialog(p.id)">
           <img src="{{p.image}}">

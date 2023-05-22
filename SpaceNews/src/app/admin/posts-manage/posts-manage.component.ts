@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Post } from 'src/app/PostEvent';
 import { ApiService } from 'src/app/Service/api.service';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
+import { Topic } from 'src/app/Topic';
 import { PostDialog } from 'src/app/list-post/list-post.component';
 
 interface User{
@@ -18,6 +19,8 @@ interface User{
   styleUrls: ['./posts-manage.component.css']
 })
 export class PostsManageComponent implements OnInit {
+  ListTopic : Topic[] = [];
+  idTopic = 0;
 
   listPost : Post[] = [];
   topicChecked = 0;
@@ -37,11 +40,12 @@ export class PostsManageComponent implements OnInit {
   searchResults: Post[] = [];
   keyWord : string|undefined = '';
 
-  constructor(private router : Router, private fb: FormBuilder, public dialog: MatDialog, private postService:HandlePostService) {
+  constructor(private router : Router, private fb: FormBuilder, public dialog: MatDialog, private postService:HandlePostService, private apiService: ApiService) {
   }
 
   ngOnInit(): void {
     // this.setUser();
+    this.LoadTopics();
     this.searchForm = this.fb.group({
       keyWord:""
     })
@@ -50,20 +54,32 @@ export class PostsManageComponent implements OnInit {
 
   getListPost(){
     if(this.showSearch == true){
-      this.postService.searchPost(this.keyWord, this.pageIndex).subscribe({
+      this.postService.searchPost(this.keyWord, this.pageIndex, this.idTopic).subscribe({
         next:data =>{
           this.listPost = data;
         }
       });
     }
     else{
-      this.postService.loadListPost(this.pageIndex).subscribe({
+      if(this.idTopic == 0){
+        this.postService.loadListPost(this.pageIndex);
+      }
+      this.postService.loadListPost(this.pageIndex, this.idTopic).subscribe({
         next:data =>{
           this.listPost = data;
         }
       })
     }
   }
+
+  LoadTopics(){
+    this.apiService.getTopic().subscribe({
+      next:data =>{
+        this.ListTopic = data;
+      }
+    })
+  }
+
 
   // detail
   showDialog(id : number){
@@ -85,19 +101,43 @@ export class PostsManageComponent implements OnInit {
 
   // piority
   piorityToggle(id:number){
-    let currPost = this.listPost.find(p=>p.id == id);
-    let toggle = !currPost?.showInSlider;
+    let currPost;
+    let toggle;
     let tag = document.getElementById(`toggle${id}`);
     let thumb = document.getElementById(`thumb${id}`);
-    console.log(`toggle${id}`)
     tag?.classList.toggle('checked');
     thumb?.classList.toggle('checked');
-    this.postService.piorityToggle(id, toggle, currPost).subscribe({
-    })
+    this.postService.getPost(id).subscribe({
+      next:data =>{
+        currPost = data;
+        toggle = data.priority==1 ? false:true;
+        this.postService.piorityToggle(id, toggle, currPost).subscribe({
+        })
+      }
+    });
+  }
+
+  statusToggle(id:number){
+    let currPost;
+    let toggle;
+    let tag = document.getElementById(`statusToggle${id}`);
+    let thumb = document.getElementById(`statusThumb${id}`);
+    tag?.classList.toggle('checked');
+    thumb?.classList.toggle('checked');
+    this.postService.getPost(id).subscribe({
+      next:data =>{
+        currPost = data;
+        toggle = !data.showInSlider;
+        // console.log(toggle)
+        this.postService.statusToggle(id, toggle, currPost).subscribe({
+        })
+      }
+    });
   }
 
   //search posts
   ClickBtn(){
+    this.idTopic = 0
     this.pageIndex = 0;
     if(this.showSearch == false){ // search icon
       let key = this.searchForm.get('keyWord')?.value?.trim();
@@ -117,6 +157,12 @@ export class PostsManageComponent implements OnInit {
     }
   }
 
+  //Topic Change
+  topicChange(id : number){
+    this.idTopic = id;
+    this.pageIndex = 0;
+    this.getListPost();
+  }
   // handle page number
   changePage(value:number){
     this.pageIndex = value;

@@ -48,7 +48,8 @@ export class HandlePostService {
       image: image,
       priority: obj.eventPiority,
       content: obj.eventContent,
-      showInSlider: obj.eventPiority == 0 ? false : true,
+      // showInSlider: obj.eventPiority == 0 ? false : true,
+      showInSlider: true, // default is enable
       topicID: obj.eventType,
       groupID: obj.eventGroup,
       title: obj.eventTitle,
@@ -58,13 +59,13 @@ export class HandlePostService {
     return this.http.post(`${this.url}/api/Posts`, JSON.stringify(newPost), {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
   }
 
-  editPost(obj : formEventData, id : number, oldDate : Date, newImg : string){
+  editPost(obj : formEventData, id : number, oldDate : Date, newImg : string, showInSlider : boolean = true){
     // let dateTime = `${obj.eventDate}T${obj.eventTime}`;
     let dateTime;
     let img : string = obj.eventImg;
     if(newImg != '' && newImg != undefined){
       img = newImg;
-      console.log(newImg)
+      // console.log(newImg)
     }
     else console.log(newImg)
     if(obj.eventDate != oldDate && obj.eventTime != oldDate){ // change both
@@ -93,7 +94,7 @@ export class HandlePostService {
       image: img,
       priority: obj.eventPiority,
       content: obj.eventContent,
-      showInSlider: obj.eventPiority == 0 ? false : true,
+      showInSlider: showInSlider,
       topicID: obj.eventType,
       groupID: obj.eventGroup,
       title: obj.eventTitle,
@@ -102,6 +103,10 @@ export class HandlePostService {
     };
     console.log(post)
     return this.http.put<Post>(`${this.url}/api/Posts/${id}`, post, {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
+  }
+
+  getPost(id : number){
+    return this.http.get<Post>(`${this.url}/api/Posts/${id}`);
   }
 
   deletePost(id:number){
@@ -116,6 +121,25 @@ export class HandlePostService {
       image: postData?.image,
       priority: toggle == true? 1 : 0,
       content: postData?.content,
+      showInSlider: postData?.showInSlider,
+      topicID: postData?.topicID,
+      groupID: postData?.groupID,
+      title: postData?.title,
+      type: '',
+      id: id
+    };
+    // console.log('new data', post);
+    return this.http.put<Post>(`${this.url}/api/Posts/${id}`, post, {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
+  }
+
+  statusToggle(id:number, toggle:boolean, postData:Post|undefined){
+    let post = {
+      date: postData?.date,
+      time: postData?.time,
+      location: postData?.location,
+      image: postData?.image,
+      priority: postData?.priority,
+      content: postData?.content,
       showInSlider: toggle,
       topicID: postData?.topicID,
       groupID: postData?.groupID,
@@ -123,19 +147,24 @@ export class HandlePostService {
       type: '',
       id: id
     };
-    console.log('new data', post);
+    // console.log('new data', post);
+
     return this.http.put<Post>(`${this.url}/api/Posts/${id}`, post, {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
   }
 
-  loadListPost(pageIndex = 0){
-    return this.http.get<Post[]>(`https://localhost:7136/api/Posts?pageIndex=${pageIndex}&pageSize=6`);
+  loadListPost(pageIndex = 0, topicID = 0){
+    if(topicID == 0) return this.http.get<Post[]>(`https://localhost:7136/api/Posts?pageIndex=${pageIndex}&pageSize=6`);
+    return this.http.get<Post[]>(`https://localhost:7136/api/Posts?topicId=${topicID}&pageIndex=${pageIndex}&pageSize=6`);
   }
 
-  searchPost(key = '', pageIndex = 0){
+  searchPost(key = '', pageIndex = 0, topicID = 0){
     // sessionStorage.setItem('isSearch', 'true');
     // sessionStorage.setItem('key', key);
-    console.log(key)
-    return this.http.get<Post[]>(`https://localhost:7136/api/Posts?keyword=${key}&pageIndex=${pageIndex}&pageSize=6`);
+    // console.log(key)
+    if(topicID == 0){
+      return this.http.get<Post[]>(`https://localhost:7136/api/Posts?keyword=${key}&pageIndex=${pageIndex}&pageSize=6`);
+    }
+    return this.http.get<Post[]>(`https://localhost:7136/api/Posts?topicId=${topicID}&keyword=${key}&pageIndex=${pageIndex}&pageSize=6`);
   }
 
 }
