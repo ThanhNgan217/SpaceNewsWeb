@@ -29,7 +29,7 @@ export class MainPageComponent implements OnInit, OnChanges{
 
   ngOnInit():void{
     this.setUser();
-    console.log(this.user);
+    // console.log(this.user);
     this.searchForm = this.fb.group({
       keyWord:""
     })

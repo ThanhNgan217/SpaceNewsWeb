@@ -10,7 +10,7 @@ export class CanLoginService {
   isloged(){
     let result = true;
     this.apiService.currUsser.subscribe(__values=>{
-      if(__values[2] == '1' || __values[2] == '0') result = false
+      if(__values[2] == '1' || __values[2] == '0') result = false // check userRole is valid
     })
     return result;
   }

@@ -580,9 +580,9 @@ D:\News\News.api\obj\Debug\net7.0\refint\News.api.dll
 D:\News\News.api\obj\Debug\net7.0\News.api.pdb
 D:\News\News.api\obj\Debug\net7.0\News.api.genruntimeconfig.cache
 D:\News\News.api\obj\Debug\net7.0\ref\News.api.dll
+C:\Users\intern.htthanhngan\Desktop\SpaceNewsWeb\News\News.api\bin\Debug\net7.0\spa.proxy.json
 C:\Users\intern.htthanhngan\Desktop\SpaceNewsWeb\News\News.api\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\intern.htthanhngan\Desktop\SpaceNewsWeb\News\News.api\bin\Debug\net7.0\appsettings.json
-C:\Users\intern.htthanhngan\Desktop\SpaceNewsWeb\News\News.api\bin\Debug\net7.0\spa.proxy.json
 C:\Users\intern.htthanhngan\Desktop\SpaceNewsWeb\News\News.api\bin\Debug\net7.0\News.api.exe
 C:\Users\intern.htthanhngan\Desktop\SpaceNewsWeb\News\News.api\bin\Debug\net7.0\News.api.deps.json
 C:\Users\intern.htthanhngan\Desktop\SpaceNewsWeb\News\News.api\bin\Debug\net7.0\News.api.runtimeconfig.json

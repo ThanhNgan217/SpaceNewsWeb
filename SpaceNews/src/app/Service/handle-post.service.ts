@@ -153,8 +153,8 @@ export class HandlePostService {
   }
 
   loadListPost(pageIndex = 0, topicID = 0){
-    if(topicID == 0) return this.http.get<Post[]>(`https://localhost:7136/api/Posts?pageIndex=${pageIndex}&pageSize=6`);
-    return this.http.get<Post[]>(`https://localhost:7136/api/Posts?topicId=${topicID}&pageIndex=${pageIndex}&pageSize=6`);
+    if(topicID == 0) return this.http.get<Post[]>(`${this.url}/api/Posts?pageIndex=${pageIndex}&pageSize=6&previousTime=false&ascendingOrder=true`);
+    return this.http.get<Post[]>(`${this.url}/api/Posts?topicId=${topicID}&pageIndex=${pageIndex}&pageSize=6&previousTime=false&ascendingOrder=true`);
   }
 
   searchPost(key = '', pageIndex = 0, topicID = 0){
@@ -162,9 +162,9 @@ export class HandlePostService {
     // sessionStorage.setItem('key', key);
     // console.log(key)
     if(topicID == 0){
-      return this.http.get<Post[]>(`https://localhost:7136/api/Posts?keyword=${key}&pageIndex=${pageIndex}&pageSize=6`);
+      return this.http.get<Post[]>(`${this.url}/api/Posts?keyword=${key}&pageIndex=${pageIndex}&pageSize=6&previousTime=false&ascendingOrder=true`);
     }
-    return this.http.get<Post[]>(`https://localhost:7136/api/Posts?topicId=${topicID}&keyword=${key}&pageIndex=${pageIndex}&pageSize=6`);
+    return this.http.get<Post[]>(`${this.url}/api/Posts?topicId=${topicID}&keyword=${key}&pageIndex=${pageIndex}&pageSize=6&previousTime=false&ascendingOrder=true`);
   }
 
 }

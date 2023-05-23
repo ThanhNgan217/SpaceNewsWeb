@@ -67,10 +67,10 @@ export class ApiService {
 
   getPosts(idTopic : number = 0, pageNumber = 0){
     if(idTopic == 0){
-      return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?pageIndex=${pageNumber}&pageSize=9`);
+      return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?pageIndex=${pageNumber}&pageSize=9&showSlider=true&previousTime=false&ascendingOrder=true`);
     }
     else{
-      return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?topicId=${idTopic}&pageIndex=${pageNumber}&pageSize=9`)
+      return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?topicId=${idTopic}&pageIndex=${pageNumber}&pageSize=9&showSlider=true&previousTime=false&ascendingOrder=true`)
     }
   }
 
@@ -82,8 +82,9 @@ export class ApiService {
     }
     else this.stopSearch();
   }
-  getSearchResults(pageNumber = 0, key =''){
-    return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?keyword=${key}&pageIndex=${pageNumber}&pageSize=9`)
+  getSearchResults(pageNumber = 0, key ='', enable = true, pastEvent = false ){
+    //list results : showInSlider(enable) = true, sort = true, not get previous events(past event)
+    return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?keyword=${key}&pageIndex=${pageNumber}&pageSize=9&showSlider=${enable}&previousTime=${pastEvent}&ascendingOrder=true`)
   }
 
   stopSearch(){

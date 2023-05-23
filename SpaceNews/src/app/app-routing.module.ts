@@ -23,8 +23,8 @@ const routes: Routes = [
   {
     path:'login',
     component:LoginPageComponent,
-    canActivate:[CanLoginGuard]
-    // loadChildren : ()=>import('./admin/admin.module').then((m)=>m.AdminModule)
+    canActivate:[CanLoginGuard],
+    loadChildren : ()=>import('./admin/admin.module').then((m)=>m.AdminModule)
   },
   {path:'**', component:PageNotFoundComponent},
   // {path:'/', component:ListPostComponent},

@@ -44,5 +44,21 @@ namespace News.api.Controllers
             }
             return await _context.Groups.ToListAsync();
         }
+
+
+        //////////////////////////////////////////////////////////////////////////////////////
+        // GET: api/posts/get_groups/5
+        //[HttpGet("{Id}")]
+        //public async Task<ActionResult<Group>> GetGroup(int Id)
+        //{
+            //var gr = await _context.Groups.FindAsync(Id);
+
+            //if (gr == null)
+            //{
+                //return NotFound();
+            //}
+
+           // return gr;
+        //}
     }
 }

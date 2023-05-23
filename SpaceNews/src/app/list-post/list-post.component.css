@@ -137,11 +137,11 @@ mat-button-toggle{
 }
 .list-post .upcomming{
   border-radius: 4px;
-  box-shadow: 0 2px 2px 2px  rgba(247, 2, 2, 0.671);
+  box-shadow: 0 2px 8px 3px  rgba(247, 2, 2, 0.671);
 }
 .list-post .onweek{
   border-radius: 4px;
-  box-shadow: 0 2px 2px 2px  rgba(247, 120, 2, 0.87);
+  box-shadow: 0 2px 8px 3px  rgba(247, 120, 2, 0.87);
 }
 .list-post .passed{
   opacity: 0.7;

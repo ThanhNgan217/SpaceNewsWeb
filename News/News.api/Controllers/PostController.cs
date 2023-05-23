@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
 using Microsoft.EntityFrameworkCore;
 using News.api.Data;
 using News.api.Entities;
 using News.api.ViewModels;
+using System.Linq.Expressions;
 
 namespace News.api.Controllers
 {
@@ -25,15 +27,42 @@ namespace News.api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Post>>> GetPosts(
             int? topicId = null,
-            string keyword = "", 
-            int pageIndex = 0, 
-            int pageSize = 10)
+            string keyword = "",
+            int pageIndex = 0,
+            int pageSize = 10,
+            bool? showSlider = null,
+            bool? previousTime = null,
+            bool? ascendingOrder = null
+            )
         {
-            var query = _context.Posts.Include(s => s.Topic).Include(s => s.Group).AsQueryable();
+            DateTime currentDay = DateTime.UtcNow.Date;
+            var query = _context.Posts.Include(s => s.Topic).AsQueryable();
 
             if (topicId != null)
             {
                 query = query.Where(s => s.TopicID == topicId);
+            }
+
+            if (showSlider == true)
+            {
+                query = query.Where(s => s.ShowInSlider == true);
+            }
+            else if (showSlider != null & showSlider == false)
+            {
+                query = query.Where(s => s.ShowInSlider == false);
+            }
+
+            if (ascendingOrder != null)
+            {
+                query = query.OrderBy(s => s.Date);
+            }
+            if (previousTime == false)
+            {
+                query = query.Where(s => s.Date >= currentDay);
+            }
+            else if (previousTime == true && previousTime != null)
+            {
+                query = query.Where(s => s.Date < currentDay);
             }
 
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -41,7 +70,7 @@ namespace News.api.Controllers
                 || (s.Topic != null && s.Topic.Name.Contains(keyword)) || (s.Title.Contains(keyword))
                 );
 
-            var result =  await query
+            var result = await query
                 .Skip(pageIndex * pageSize)
                 .Take(pageSize).ToListAsync();
             return result;
@@ -64,14 +93,47 @@ namespace News.api.Controllers
         // POST: api/posts
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Post>> CreatePost([FromBody]PostCreateModel model)
+        public async Task<ActionResult<Post>> CreatePost([FromBody] PostCreateModel model)
         {
+            var haveUpdated = true;
+            var transaction = await _context.Database.BeginTransactionAsync();
             var post = _mapper.Map<Post>(model);
 
             _context.Posts.Add(post);
-            await _context.SaveChangesAsync();
+            var existingGroupIdList = _context.Groups.Select(s => s.Id).ToList();
+            if (existingGroupIdList == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                post.GroupID = string.Join(",", post.GroupID.Split(',').Select(s => s.Trim()).ToArray()).TrimEnd(',');
+            }
+            int[] groupIds = post.GroupID.Split(',').Select(int.Parse).ToArray();
+            try
+            {
+                foreach (int groupId in groupIds)
+                {
+                    if (!existingGroupIdList.Contains(groupId))
+                    {
+                        haveUpdated = false;
+                    }
+                }
+                if (haveUpdated)
+                {
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    return CreatedAtAction(nameof(GetPost), new { Id = post.Id }, post);
+                }
 
-            return CreatedAtAction(nameof(GetPost), new { Id = post.Id }, post);
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw ex;
+            }
+
+            return NotFound("GroupId field not being existed!");
         }
 
         // PUT: api/posts/5
@@ -79,31 +141,42 @@ namespace News.api.Controllers
         [Authorize]
         public async Task<IActionResult> UpdatePost(int Id, PostUpdateModel model)
         {
-            //if (Id != model.Id)
-            //{
-              //  return BadRequest();
-            //}
-
+            var transaction = await _context.Database.BeginTransactionAsync();
+            var haveUpdated = true;
+            if (Id != model.Id)
+            {
+                return BadRequest();
+            }
+            var existingGroupIdList = _context.Groups.Select(s => s.Id).ToList();
             var post = _mapper.Map<Post>(model);
-            _context.Entry(post).State = EntityState.Modified;
+            post.GroupID = string.Join(",", post.GroupID.Split(',').Select(s => s.Trim()).ToArray()).TrimEnd(',');
+            int[] groupIds = post.GroupID.Split(',').Select(int.Parse).ToArray();
 
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PostExists(Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                _context.Entry(post).State = EntityState.Modified;
 
-            return NoContent();
+                foreach (int groupId in groupIds)
+                {
+                    if (!existingGroupIdList.Contains(groupId) || !PostExists(Id))
+                    {
+                        haveUpdated = false;
+                    }
+                }
+                if (haveUpdated)
+                {
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    return NoContent();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw ex;
+            }
+            return NotFound("GroupID or PostId not being existed!");
         }
 
         // DELETE: api/posts/5
@@ -126,6 +199,15 @@ namespace News.api.Controllers
         private bool PostExists(int Id)
         {
             return _context.Posts.Any(p => p.Id == Id);
+        }
+
+        private bool GroupExists(int[] id)
+        {
+            foreach (int groupId in id)
+            {
+                return _context.Groups.Any(g => g.Id == groupId);
+            }
+            return true;
         }
     }
 }

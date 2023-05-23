@@ -21,7 +21,7 @@ public class Post
     public bool ShowInSlider { get; set; }
     public int? TopicID { get; set; }
 
-    public int? GroupID { get; set; }
+    public string? GroupID { get; set; }
     public string? Title { get; set; }
     public string? Type { get; set; }
 

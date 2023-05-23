@@ -16,13 +16,15 @@ export class ListPostComponent implements OnInit{
   @Output() changePage = new EventEmitter();
   @Output() topicChange = new EventEmitter();
 
+  posts : Post[] = [];//will show
+  onWeek: Post[] = [];// <= 7days
+  upcomming : Post[] = [];// <= 3days
+
   keyWordOrigin : string |undefined;
   listPost : Post[] = [];
   constructor(public dialog: MatDialog, private apiService:ApiService){}
 
-  posts : Post[] = [];//will show
-  upcommingPost : Post[]= [];
-  passedEvent : Post[] = [];
+
 
   // search results
   // showSearch = false;
@@ -90,10 +92,11 @@ export class ListPostComponent implements OnInit{
 
   getListPost(topicId = 0, pagenum = 0, key :string|undefined = ''){
     if(key){
-      // console.log('key:', key)
+      // need sort, enable, not passed event
       this.apiService.getSearchResults(pagenum, key).subscribe({
         next:data =>{
-          this.listPost = data;
+          // this.listPost = data;
+          this.posts = data;
           this.handlePosts();
         }
       })
@@ -101,7 +104,8 @@ export class ListPostComponent implements OnInit{
     else{
       this.apiService.getPosts(topicId, pagenum).subscribe({
         next:data =>{
-          this.listPost = data;
+          // this.listPost = data;
+          this.posts = data;
           this.handlePosts();
         }
       })
@@ -110,65 +114,30 @@ export class ListPostComponent implements OnInit{
 
   handlePosts(){
     let currDate = new Date();
-    let upcommingTime = new Date();
     let t = currDate.getTime();
-    let list: Post[] = [];
-    let passEvent : Post[] = [];
-    // this.listPost.forEach(p =>{
-    //   console.log(new Date(p.time).getTime());
-    // })
 
-    //listPost.length = 9 => if (p.time > currDate) => push;
-                            // if (p is upcomming) => unshift;
-
-    this.listPost.forEach(p =>{
+    // onWeek list
+    // 259200000 ms = 72h = 3days
+    // 345600000 ms = 96h = 4days
+    // 345599999 ms = 96h - 1s = 4days - 1s
+    // 604800000 ms = 168h = 7days
+    // 691199000 ma = ... = 8days -1s
+    this.posts.forEach((p)=>{
       let x = new Date(p.time);
-      if(x.getTime() < t){ // event pass
-        passEvent.push(p);
-      }
-      else{
-        list.push(p);
+      if(x.getTime() - t <= 691199000 && x.getTime() - t >= -36399000){
+        if(x.getTime() - t <= 345599999) this.upcomming.push(p)
+        else this.onWeek.push(p);
       }
     })
 
-    //sort list
-    this.posts = list.sort((a, b)=>{
-        let x = new Date(a.time).getTime();
-        let y = new Date(b.time).getTime();
-        return x - y;
-    })
-
-    //upcomming time
-    this.posts.forEach(p=>{
-      let x = new Date(p.time);
-      if(x.getMonth() == currDate.getMonth() && x.getFullYear() == currDate.getFullYear()){
-        if(x.getDate() - currDate.getDate() <= 3) upcommingTime = x;
-      }
-    })
-
-    this.upcommingPost = this.posts.filter((p)=> {
-      let x = new Date(p.time);
-      if(x <= upcommingTime) return p;
-      else return;
-    });
-
-    this.passedEvent = passEvent.sort((a, b)=>{
-      let x = new Date(a.time).getTime();
-      let y = new Date(b.time).getTime();
-      return x - y;
-    });
-
-    this.posts = this.posts.concat(passEvent);
-  }
-
-  isPassed(id : number){
-    // console.log(this.passedEvent)
-    if(this.passedEvent.find((p)=>p.id == id)) return true;
-    else return false;
   }
 
   isUpcomming(id : number){
-    if(this.upcommingPost.find((p)=>p.id == id)) return true;
+    if(this.upcomming.find(p=>p.id == id)) return true;
+    else return false;
+  }
+  isOnWeek(id : number){
+    if(this.onWeek.find(p => p.id == id)) return true;
     else return false;
   }
 
@@ -187,8 +156,11 @@ export class ListPostComponent implements OnInit{
   showDialog(id : number){
     let post = this.posts.find(p => p.id == id);
     // post.groupname = post?.Group.name
+    // console.log(post?.content)
+
+
     const dialogRef = this.dialog.open(PostDialog, {
-      data : post
+      data:post
     });
   }
 }
@@ -202,11 +174,15 @@ export class PostDialog implements OnInit{
   constructor(
     public dialogRef: MatDialogRef<PostDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Post,
+    @Inject(MAT_DIALOG_DATA) public grName: string,
     private apiService : ApiService
   ) {}
+
+
   key = "name";
   post = this.data;
 
   ngOnInit(): void {
+
   }
 }

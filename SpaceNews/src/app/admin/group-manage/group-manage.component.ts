@@ -72,10 +72,10 @@ export class GroupManageComponent implements OnInit {
 
   // detail
   showDialog(id : number){
-    let post = this.listGroup.find(p => p.id == id);
-    this.dialog.open(PostDialog, {
-      data : post,
-    });
+    // let post = this.listGroup.find(p => p.id == id);
+    // this.dialog.open(PostDialog, {
+    //   data : post,
+    // });
   }
 
   //delete

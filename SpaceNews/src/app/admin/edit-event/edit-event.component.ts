@@ -28,7 +28,7 @@ export class EditEventComponent implements OnInit {
     content: '',
     showInSlider: false,
     topicID: 0,
-    groupID: 0
+    groupID: ''
   };
   fileSrc : any;
   postID : number = 0;
@@ -42,7 +42,7 @@ export class EditEventComponent implements OnInit {
   listTopic : Topic[] = [];
   ListGroups : Group[] = [];
   selectedTopic = 1;
-  selectedGroup = 1;
+  selectedGroup = '';
 
   addEventForm = new FormGroup({
     eventTitle: new FormControl('', Validators.required),
@@ -52,7 +52,7 @@ export class EditEventComponent implements OnInit {
     eventLocation: new FormControl('', Validators.required),
     eventImg: new FormControl(''),
     eventPiority: new FormControl(0, Validators.required),
-    eventGroup: new FormControl(1, Validators.required),
+    eventGroup: new FormControl('', Validators.required),
     eventContent: new FormControl('', Validators.required)
   });
 
@@ -137,7 +137,7 @@ export class EditEventComponent implements OnInit {
     this.addEventForm.reset();
 
     this.selectedTopic = 1;
-    this.selectedGroup = 1;
+    this.selectedGroup = '1';
 
     this.postService.editPost(data, this.postID, this.currPost.date, this.fileSrc, this.currPost.showInSlider)
     .subscribe({
