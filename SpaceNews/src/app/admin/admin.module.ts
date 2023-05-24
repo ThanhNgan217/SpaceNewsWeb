@@ -23,6 +23,7 @@ import { AdminComponent } from './admin/admin.component';
 import { BlockRightComponent } from './block-right/block-right.component';
 import { EditEventComponent } from './edit-event/edit-event.component';
 import { GroupManageComponent } from './group-manage/group-manage.component';
+import { PastEventsComponent } from './past-events/past-events.component';
 
 const routes: Routes = [
   { path: 'admin',
@@ -62,6 +63,7 @@ const routes: Routes = [
     BlockRightComponent,
     EditEventComponent,
     GroupManageComponent,
+    PastEventsComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

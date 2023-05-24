@@ -112,6 +112,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.postService.addPost(data, this.fileSrc).subscribe({
       next:data=>{
         alert('Success');
+        this.router.navigate(['/admin/posts']);
       },
       error:err=>{console.log(err)}
     })
@@ -121,12 +122,17 @@ export class AddEventComponent implements OnInit, OnDestroy{
   onFileSelected(event:Event){
     // @ts-ignore: Object is possibly 'null'.
     let file = (event.target as HTMLInputElement).files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file)
-    reader.addEventListener("load", (event) => {
-      this.fileSrc = reader.result as string;
-    });
-
+    if(file.size > 250000){
+      alert('Maximum image size is 250KB');
+      this.addEventForm.patchValue({eventImg: ''})
+    }
+    else{
+      const reader = new FileReader();
+      reader.readAsDataURL(file)
+      reader.addEventListener("load", (event) => {
+        this.fileSrc = reader.result as string;
+      });
+    }
   }
 
 

@@ -6,7 +6,7 @@ import { Topic } from 'src/app/Topic';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Group } from 'src/app/Group';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
-import { Post } from 'src/app/PostEvent';
+import {Location} from '@angular/common';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) {}
@@ -57,7 +57,9 @@ export class EditEventComponent implements OnInit {
   });
 
 
-  constructor(private fb: FormBuilder, private _route: ActivatedRoute, private apiService: ApiService, private postService:HandlePostService, private router : Router) {}
+  constructor(private location: Location, private fb: FormBuilder, private _route: ActivatedRoute, private apiService: ApiService, private postService:HandlePostService, private router : Router) {
+
+  }
 
 
   editor = new Editor;
@@ -71,6 +73,7 @@ export class EditEventComponent implements OnInit {
   html= '';
 
   ngOnInit(){
+    // console.log(this.previousUrl);
     this.postID = Number(this._route.snapshot.paramMap.get('id'));
     this.LoadPost(this.postID);
 
@@ -143,21 +146,48 @@ export class EditEventComponent implements OnInit {
     .subscribe({
       next:data=>{
         alert('Saved change');
+        this.router.navigateByUrl('admin/posts');
       },
-      error:err=>{console.log(err)}
+      error:err=>{alert(err.message)}
     })
-    this.router.navigateByUrl('admin/posts');
+  }
+
+  cancelEdit(){
+    if(sessionStorage.getItem('prev')){
+      if(sessionStorage.getItem('prev')?.includes('posts')){
+        this.router.navigate(['/admin/posts']);
+        sessionStorage.removeItem('prev');
+      }
+      else{
+        this.router.navigate(['/']);
+        sessionStorage.removeItem('prev');
+      }
+    }
+    else{
+       this.router.navigate(['/admin/posts']);
+      sessionStorage.removeItem('prev');
+    }
   }
 
   // upload img
   onFileSelected(event:Event){
     // @ts-ignore: Object is possibly 'null'.
     let file = (event.target as HTMLInputElement).files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file)
-    reader.addEventListener("load", (event) => {
-      this.fileSrc = reader.result as string;
-    });
+    if(file.size > 250000){
+      alert('Maximum image size is 250KB');
+      this.fileSrc = this.addEventForm.get('eventImg')?.value;
+      // this.addEventForm.patchValue({eventImg:null})
+      this.addEventForm.get('eventImg')?.reset();
+      (<HTMLInputElement>document.getElementById('choose-file')).value = "";
+      // console.log(this.addEventForm.get('eventImg')?.value)
+    }
+    else{
+      const reader = new FileReader();
+      reader.readAsDataURL(file)
+      reader.addEventListener("load", (event) => {
+        this.fileSrc = reader.result as string;
+      });
+    }
 
   }
 

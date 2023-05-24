@@ -27,7 +27,6 @@ public class Post
 
     [JsonIgnore]
     public virtual Topic? Topic { get; set; }
-    public virtual Group? Group { get; set; }
 }
 
 public class Group

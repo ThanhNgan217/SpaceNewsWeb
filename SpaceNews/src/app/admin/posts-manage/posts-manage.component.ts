@@ -73,6 +73,7 @@ export class PostsManageComponent implements OnInit {
   }
 
   LoadTopics(){
+    sessionStorage.removeItem('prev');
     this.apiService.getTopic().subscribe({
       next:data =>{
         this.ListTopic = data;

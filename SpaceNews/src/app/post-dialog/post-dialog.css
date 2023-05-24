@@ -49,6 +49,26 @@ mat-dialog-content{
   padding: 0;
   border-radius: 100%;
 }
+.post-container .edit-btn{
+  position: absolute;
+  bottom: 0;
+  right: -50px;
+  background-color: white;
+  min-width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  border-top-right-radius: 15%;
+  border-bottom-right-radius: 15%;
+}
+.edit-btn mat-icon{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.edit-btn:hover{
+  cursor: pointer;
+}
 
 /* .content-left{
   width: 45%;

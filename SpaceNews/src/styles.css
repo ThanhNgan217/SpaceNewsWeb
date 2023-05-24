@@ -134,7 +134,8 @@ html *::-webkit-scrollbar-thumb {
   padding-right: 0 !important;
   max-width: calc(var(--ratio)*720) !important;
   min-height: calc(var(--ratio)*800) !important;
-  max-height: calc(var(--ratio)*950) !important;
+  /* max-height: calc(var(--ratio)*1000) !important; */
+  max-height: 80% !important;
   background-color: #F5F5F5!important;
   overflow:unset !important;
 }

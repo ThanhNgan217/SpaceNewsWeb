@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, SecurityContext, EventEmitter, Inject, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 // import { Post, listPost } from '../post';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Post } from '../PostEvent';
 import { ApiService } from '../Service/api.service';
+import { DomSanitizer} from '@angular/platform-browser'
 
 @Component({
   selector: 'app-list-post',
@@ -15,6 +16,8 @@ export class ListPostComponent implements OnInit{
   @Input() keyWord : string|undefined;
   @Output() changePage = new EventEmitter();
   @Output() topicChange = new EventEmitter();
+
+  isAdmin = false;
 
   posts : Post[] = [];//will show
   onWeek: Post[] = [];// <= 7days
@@ -32,7 +35,7 @@ export class ListPostComponent implements OnInit{
   // keyWord : string|undefined;
 
   ngOnInit(): void{
-
+    if(sessionStorage.getItem('userID')) this.isAdmin = true;
     // this.getListPost(this.topicChecked, this.pageIndex, this.keyWord);
     // this.posts = this.listPost;
     // this.upcommingPost.forEach((p)=>this.posts.unshift(p))
@@ -124,8 +127,8 @@ export class ListPostComponent implements OnInit{
     // 691199000 ma = ... = 8days -1s
     this.posts.forEach((p)=>{
       let x = new Date(p.time);
-      if(x.getTime() - t <= 691199000 && x.getTime() - t >= -36399000){
-        if(x.getTime() - t <= 345599999) this.upcomming.push(p)
+      if(x.getTime() - t <= 604800000 && x.getTime() - t >= -36399000){
+        if(x.getTime() - t <= 259200000) this.upcomming.push(p)
         else this.onWeek.push(p);
       }
     })
@@ -155,12 +158,13 @@ export class ListPostComponent implements OnInit{
   }
   showDialog(id : number){
     let post = this.posts.find(p => p.id == id);
+    let grName = 'DG5';
     // post.groupname = post?.Group.name
     // console.log(post?.content)
 
 
     const dialogRef = this.dialog.open(PostDialog, {
-      data:post
+      data: post
     });
   }
 }
@@ -168,21 +172,28 @@ export class ListPostComponent implements OnInit{
 @Component({
   selector: 'post-dialog',
   templateUrl: '../post-dialog/post-dialog.html',
-  styleUrls: ['../post-dialog/post-dialog.css']
+  styleUrls: ['../post-dialog/post-dialog.css'],
 })
 export class PostDialog implements OnInit{
   constructor(
     public dialogRef: MatDialogRef<PostDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Post,
-    @Inject(MAT_DIALOG_DATA) public grName: string,
-    private apiService : ApiService
-  ) {}
+    // @Inject(MAT_DIALOG_DATA) public grName: string,
+    private apiService : ApiService,
+    public dialog: MatDialog,
+    private sanitizer: DomSanitizer
+  ) {
+    this.content = sanitizer.sanitize(SecurityContext.HTML, data.content);
+  }
 
-
-  key = "name";
+  isAdmin = false;
   post = this.data;
+  // name = this.grName
+  content : string | null;
 
   ngOnInit(): void {
-
+    sessionStorage.setItem('prev',window.location.href);
+    if(sessionStorage.getItem('userID')) this.isAdmin = true;
   }
+
 }
