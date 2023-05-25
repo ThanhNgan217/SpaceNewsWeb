@@ -7,15 +7,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Route, RouterModule, Routes } from '@angular/router';
 
-import {MatMenuModule} from '@angular/material/menu';
-import {MatTableModule} from '@angular/material/table';
-import {MatListModule} from '@angular/material/list';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTableModule } from '@angular/material/table';
+import { MatListModule } from '@angular/material/list';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NgxEditorModule } from 'ngx-editor';
-import {MatInputModule} from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CanActivateGuard } from '../Guard/can-activate-guard.guard';
@@ -24,6 +25,7 @@ import { BlockRightComponent } from './block-right/block-right.component';
 import { EditEventComponent } from './edit-event/edit-event.component';
 import { GroupManageComponent } from './group-manage/group-manage.component';
 import { PastEventsComponent } from './past-events/past-events.component';
+
 
 const routes: Routes = [
   { path: 'admin',
@@ -63,7 +65,7 @@ const routes: Routes = [
     BlockRightComponent,
     EditEventComponent,
     GroupManageComponent,
-    PastEventsComponent,
+    PastEventsComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -72,6 +74,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgxEditorModule,
     MatFormFieldModule,
+    MatDialogModule,
     MatInputModule,
     MatMenuModule,
     MatTableModule,

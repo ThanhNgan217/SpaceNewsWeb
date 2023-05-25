@@ -167,4 +167,14 @@ export class HandlePostService {
     return this.http.get<Post[]>(`${this.url}/api/Posts?topicId=${topicID}&keyword=${key}&pageIndex=${pageIndex}&pageSize=6&previousTime=false&ascendingOrder=true`);
   }
 
+  // paste events handle
+  getPastEvents(topicID: number, pageIndex: number){
+    if(topicID == 0){
+      return this.http.get<Post[]>(`${this.url}/api/Posts?pageIndex=${pageIndex}&pageSize=12&previousTime=true&ascendingOrder=false`);
+    }
+    else{
+      return this.http.get<Post[]>(`${this.url}/api/Posts?topicId=${topicID}&pageIndex=${pageIndex}&pageSize=12&previousTime=true&ascendingOrder=false`);
+    }
+  }
+
 }

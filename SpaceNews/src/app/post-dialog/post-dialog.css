@@ -70,6 +70,29 @@ mat-dialog-content{
   cursor: pointer;
 }
 
+.post-container .delete-btn{
+  position: absolute;
+  bottom: 50px;
+  right: -45px;
+  background-color: red;
+  color: white;
+  min-width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  border-top-right-radius: 15%;
+  border-bottom-right-radius: 15%;
+  opacity: 0.7;
+}
+.delete-btn mat-icon{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.delete-btn:hover{
+  cursor: pointer;
+}
+
 /* .content-left{
   width: 45%;
   max-height: calc((var(--ratio)*500));

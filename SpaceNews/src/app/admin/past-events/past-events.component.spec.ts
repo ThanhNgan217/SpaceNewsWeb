@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PastEventsComponent } from './past-events.component';
 
-describe('PastEventsComponent', () => {
+describe('PastEventComponent', () => {
   let component: PastEventsComponent;
   let fixture: ComponentFixture<PastEventsComponent>;
 

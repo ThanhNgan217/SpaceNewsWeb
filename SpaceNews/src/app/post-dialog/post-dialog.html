@@ -1,6 +1,9 @@
 <div class="post-container">
-  <div class="edit-btn" mat-dialog-close *ngIf="isAdmin" routerLink="/admin/posts/edit/{{post.id}}">
+  <div class="edit-btn" mat-dialog-close *ngIf="isAdmin" (click)="editEvent(post.id)">
     <mat-icon>edit</mat-icon>
+  </div>
+  <div class="delete-btn" *ngIf="isPastEvents" (click)="deleteEvent(post.id)">
+    <mat-icon>delete</mat-icon>
   </div>
   <button mat-button mat-dialog-close class="close">X</button>
   <mat-dialog-content class="content-post">

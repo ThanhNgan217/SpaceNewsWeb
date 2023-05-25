@@ -23,7 +23,7 @@
             <button class="chip" *ngFor="let t of ListTopic" [value]="t.id" (click)="topicChange(t.id)" [class.topic-checked]="idTopic == t.id">{{t.name}}</button>
             <!-- </div> -->
           </div>
-          <button class="chip last-events">Last Events</button>
+          <button class="chip last-events" (click)="openPastEventsDialog()">Past Events</button>
         </div>
 
         <div class="text-box">
@@ -40,7 +40,7 @@
             </div>
             <div class="card-content">
               <p class="title">{{p.title}}</p>
-              <p class="content" [innerHTML]="p.content"></p>
+              <p class="content" [innerHTML]="transformYourHtml(p.content)"></p>
             </div>
             <div class="card-btn">
               <button class="detail-btn" (click)="showDialog(p.id)">Detail</button>

@@ -7,6 +7,8 @@ import { ApiService } from 'src/app/Service/api.service';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
 import { Topic } from 'src/app/Topic';
 import { PostDialog } from 'src/app/list-post/list-post.component';
+import { DomSanitizer} from '@angular/platform-browser'
+import { PastEventsComponent } from '../past-events/past-events.component';
 
 interface User{
   id : string|null,
@@ -21,6 +23,8 @@ interface User{
 export class PostsManageComponent implements OnInit {
   ListTopic : Topic[] = [];
   idTopic = 0;
+
+  contentWithStyle : any;
 
   listPost : Post[] = [];
   topicChecked = 0;
@@ -40,7 +44,7 @@ export class PostsManageComponent implements OnInit {
   searchResults: Post[] = [];
   keyWord : string|undefined = '';
 
-  constructor(private router : Router, private fb: FormBuilder, public dialog: MatDialog, private postService:HandlePostService, private apiService: ApiService) {
+  constructor(private pastEventsDialog: MatDialog, private router : Router, private fb: FormBuilder, public dialog: MatDialog, private postService:HandlePostService, private apiService: ApiService, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit(): void {
@@ -81,6 +85,18 @@ export class PostsManageComponent implements OnInit {
     })
   }
 
+  // Past events
+  openPastEventsDialog(){
+    // reset search fearture
+    this.searchForm.reset({keyWord: ''});
+    this.showSearch = false;
+    this.getListPost();
+
+    this.pastEventsDialog.open(PastEventsComponent, {
+      width: '80%',
+      height: '85%',
+    });
+  }
 
   // detail
   showDialog(id : number){
@@ -88,6 +104,11 @@ export class PostsManageComponent implements OnInit {
     this.dialog.open(PostDialog, {
       data : post,
     });
+  }
+
+  // style attributes for content innerHTML
+  transformYourHtml(text: string) {
+    return this.sanitizer.bypassSecurityTrustHtml(text);
   }
 
   //delete

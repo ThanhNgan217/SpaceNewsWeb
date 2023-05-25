@@ -146,7 +146,20 @@ export class EditEventComponent implements OnInit {
     .subscribe({
       next:data=>{
         alert('Saved change');
-        this.router.navigateByUrl('admin/posts');
+        if(sessionStorage.getItem('prev')){
+          if(sessionStorage.getItem('prev')?.includes('posts')){
+            this.router.navigate(['/admin/posts']);
+            sessionStorage.removeItem('prev');
+          }
+          else{
+            this.router.navigate(['/']);
+            sessionStorage.removeItem('prev');
+          }
+        }
+        else{
+           this.router.navigate(['/admin/posts']);
+          sessionStorage.removeItem('prev');
+        }
       },
       error:err=>{alert(err.message)}
     })

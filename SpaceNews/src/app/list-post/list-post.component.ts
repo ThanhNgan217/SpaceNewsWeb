@@ -3,7 +3,9 @@ import { Component, SecurityContext, EventEmitter, Inject, Input, OnInit, Output
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Post } from '../PostEvent';
 import { ApiService } from '../Service/api.service';
-import { DomSanitizer} from '@angular/platform-browser'
+import { DomSanitizer} from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { HandlePostService } from '../Service/handle-post.service';
 
 @Component({
   selector: 'app-list-post',
@@ -66,32 +68,7 @@ export class ListPostComponent implements OnInit{
         else {
           this.getListPost(this.topicChecked, this.pageIndex, '');}
     }
-
-  //   if ('topicChecked' in changes){
-  //     this.pageIndex = 0;
-  //     // this.changePage.emit(this.pageIndex);
-  //     const topic = Number(changes['topicChecked'].currentValue);
-  //     this.topicChecked = topic;
-  //     this.apiService.stopSearch();
-  //     this.ChangeTopic(topic);
-  // }
-  // if('keyWord' in changes){
-  //   let str = /%20/g;
-  //   this.keyWordOrigin = this.keyWord?.replace(str,' ');
-  //   this.getListPost(this.topicChecked,this.pageIndex, this.keyWord);
-  // }
-  // if('pageIndex' in changes){
-  //   if(this.keyWord){
-  //     this.getListPost(this.topicChecked, this.pageIndex, this.keyWord)
-  //   }
-  //     else {
-  //       this.getListPost(this.topicChecked, this.pageIndex, '');}
-  // }
   }
-
-  // getsearchPost(numpage = 0, key = ''){
-  //   this.apiService.getSearchResults(numpage, key)
-  // }
 
   getListPost(topicId = 0, pagenum = 0, key :string|undefined = ''){
     if(key){
@@ -179,21 +156,47 @@ export class PostDialog implements OnInit{
     public dialogRef: MatDialogRef<PostDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Post,
     // @Inject(MAT_DIALOG_DATA) public grName: string,
-    private apiService : ApiService,
+    private handlePostService: HandlePostService,
     public dialog: MatDialog,
-    private sanitizer: DomSanitizer
-  ) {
-    this.content = sanitizer.sanitize(SecurityContext.HTML, data.content);
-  }
+    private sanitizer: DomSanitizer,
+    private router: Router
+  ) {}
 
   isAdmin = false;
+  isPastEvents = false;
   post = this.data;
   // name = this.grName
-  content : string | null;
+  content : any;
 
   ngOnInit(): void {
-    sessionStorage.setItem('prev',window.location.href);
-    if(sessionStorage.getItem('userID')) this.isAdmin = true;
+    if(sessionStorage.getItem('pastEvents')=='1') this.isPastEvents = true;
+    if(sessionStorage.getItem('userID')){
+      this.isAdmin = true;
+      console.log(sessionStorage.getItem('prev'));
+      sessionStorage.removeItem('prev');
+      sessionStorage.setItem('prev',window.location.href);
+      console.log(sessionStorage.getItem('prev'));
+    }
+    this.content = this.transformYourHtml(this.post.content);
+  }
+  transformYourHtml(text: string) {
+    return this.sanitizer.bypassSecurityTrustHtml(text);
+  }
+
+  editEvent(id: number){
+    if(sessionStorage.getItem('pastEvents') == '1'){
+      sessionStorage.removeItem('pastEvents');
+    }
+    this.router.navigate([`/admin/posts/edit/${id}`])
+  }
+
+  deleteEvent(id: number){
+    this.handlePostService.deletePost(id).subscribe({
+      next:data =>{
+        this.dialogRef.close();
+        alert('Event deleted successfully')
+      }
+    })
   }
 
 }
