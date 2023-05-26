@@ -39,6 +39,8 @@ export class HandlePostService {
 
 
   addPost(obj : formEventData, image : string){
+    this.auth = sessionStorage.getItem('auth_token');
+
     let dateTime = `${obj.eventDate}T${obj.eventTime}`;
 
     let newPost = {
@@ -51,7 +53,7 @@ export class HandlePostService {
       // showInSlider: obj.eventPiority == 0 ? false : true,
       showInSlider: true, // default is enable
       topicID: obj.eventType,
-      groupID: obj.eventGroup,
+      groupID: obj.eventGroup.toString(),
       title: obj.eventTitle,
       type: '',
     };
@@ -96,7 +98,7 @@ export class HandlePostService {
       content: obj.eventContent,
       showInSlider: showInSlider,
       topicID: obj.eventType,
-      groupID: obj.eventGroup,
+      groupID: obj.eventGroup.toString(),
       title: obj.eventTitle,
       type: '',
       id: id

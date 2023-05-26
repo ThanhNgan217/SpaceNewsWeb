@@ -11,10 +11,6 @@ export interface Post{
   content: string,
   showInSlider: boolean,
   topicID: number,
-  group : {
-    id: number,
-    name : string,
-    email : string
-  },
-  groupID:string
+  groupID:string,
+  groupNames: string[]
 }

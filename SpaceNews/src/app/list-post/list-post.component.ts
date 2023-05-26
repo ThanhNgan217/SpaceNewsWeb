@@ -6,6 +6,7 @@ import { ApiService } from '../Service/api.service';
 import { DomSanitizer} from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { HandlePostService } from '../Service/handle-post.service';
+import { Group } from '../Group';
 
 @Component({
   selector: 'app-list-post',
@@ -21,6 +22,7 @@ export class ListPostComponent implements OnInit{
 
   isAdmin = false;
 
+  listGroup: Group[] = [];
   posts : Post[] = [];//will show
   onWeek: Post[] = [];// <= 7days
   upcomming : Post[] = [];// <= 3days
@@ -38,6 +40,7 @@ export class ListPostComponent implements OnInit{
 
   ngOnInit(): void{
     if(sessionStorage.getItem('userID')) this.isAdmin = true;
+    this.getListGroup();
     // this.getListPost(this.topicChecked, this.pageIndex, this.keyWord);
     // this.posts = this.listPost;
     // this.upcommingPost.forEach((p)=>this.posts.unshift(p))
@@ -70,6 +73,14 @@ export class ListPostComponent implements OnInit{
     }
   }
 
+  getListGroup(){
+    this.apiService.getGroup().subscribe({
+      next: data =>{
+        this.listGroup = data;
+      }
+    })
+  }
+
   getListPost(topicId = 0, pagenum = 0, key :string|undefined = ''){
     if(key){
       // need sort, enable, not passed event
@@ -77,6 +88,7 @@ export class ListPostComponent implements OnInit{
         next:data =>{
           // this.listPost = data;
           this.posts = data;
+          this.getGrNames();
           this.handlePosts();
         }
       })
@@ -86,11 +98,27 @@ export class ListPostComponent implements OnInit{
         next:data =>{
           // this.listPost = data;
           this.posts = data;
+          this.getGrNames();
           this.handlePosts();
         }
       })
     }
   }
+
+  getGrNames(){
+    this.posts.forEach(p=>{
+      let idGr = p.groupID.split(',');
+      let arr: string[] = [];
+      idGr.map( id =>{
+        let group = this.listGroup.find(g=>g.id == id);
+        if(group){
+          arr.push(group.name);
+        }
+      })
+      p.groupNames = arr;
+    })
+  }
+
 
   handlePosts(){
     let currDate = new Date();
@@ -172,10 +200,8 @@ export class PostDialog implements OnInit{
     if(sessionStorage.getItem('pastEvents')=='1') this.isPastEvents = true;
     if(sessionStorage.getItem('userID')){
       this.isAdmin = true;
-      console.log(sessionStorage.getItem('prev'));
       sessionStorage.removeItem('prev');
       sessionStorage.setItem('prev',window.location.href);
-      console.log(sessionStorage.getItem('prev'));
     }
     this.content = this.transformYourHtml(this.post.content);
   }

@@ -9,6 +9,7 @@ import { Topic } from 'src/app/Topic';
 import { PostDialog } from 'src/app/list-post/list-post.component';
 import { DomSanitizer} from '@angular/platform-browser'
 import { PastEventsComponent } from '../past-events/past-events.component';
+import { Group } from 'src/app/Group';
 
 interface User{
   id : string|null,
@@ -22,6 +23,7 @@ interface User{
 })
 export class PostsManageComponent implements OnInit {
   ListTopic : Topic[] = [];
+  listGroup : Group[] = [];
   idTopic = 0;
 
   contentWithStyle : any;
@@ -53,6 +55,7 @@ export class PostsManageComponent implements OnInit {
     this.searchForm = this.fb.group({
       keyWord:""
     })
+    this.getListGroup();
     this.getListPost();
   }
 
@@ -61,19 +64,44 @@ export class PostsManageComponent implements OnInit {
       this.postService.searchPost(this.keyWord, this.pageIndex, this.idTopic).subscribe({
         next:data =>{
           this.listPost = data;
+          this.getGrNames();
         }
       });
     }
     else{
       if(this.idTopic == 0){
         this.postService.loadListPost(this.pageIndex);
+        this.getGrNames();
       }
       this.postService.loadListPost(this.pageIndex, this.idTopic).subscribe({
         next:data =>{
           this.listPost = data;
+          this.getGrNames();
         }
       })
     }
+  }
+
+  getListGroup(){
+    this.apiService.getGroup().subscribe({
+      next: data =>{
+        this.listGroup = data;
+      }
+    })
+  }
+
+  getGrNames(){
+    this.listPost.forEach(p=>{
+      let idGr = p.groupID.split(',');
+      let arr: string[] = [];
+      idGr.forEach( id =>{
+        let group = this.listGroup.find(g=>g.id == id);
+        if(group){
+          arr.push(group.name);
+        }
+      })
+      p.groupNames = arr;
+    })
   }
 
   LoadTopics(){

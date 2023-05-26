@@ -106,6 +106,21 @@ table .box{
 table select{
   width: 128px;
 }
+table ::ng-deep .mat-select-trigger {
+  /* height: 1.125em; */
+  height: 30px;
+  min-width: 30px;
+  padding: 5px;
+  width: auto;
+  border: black solid 1px;
+  border-radius: 4px;
+}
+
+mat-option ::ng-deep .mat-pseudo-checkbox-checked{
+  background-color: var(--blue) !important;
+}
+
+
 table button{
   width: 100px;
   height: 50px;

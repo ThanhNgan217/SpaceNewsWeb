@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Route, RouterModule, Routes } from '@angular/router';
 
+import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
@@ -85,6 +86,7 @@ const routes: Routes = [
     MatInputModule,
     MatIconModule,
     MatOptionModule,
+    MatSelectModule,
     ReactiveFormsModule
   ],
 

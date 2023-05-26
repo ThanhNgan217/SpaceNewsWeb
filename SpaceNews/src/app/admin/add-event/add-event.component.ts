@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Editor, Toolbar } from 'ngx-editor';
 import { ApiService } from 'src/app/Service/api.service';
@@ -6,6 +6,7 @@ import { Topic } from 'src/app/Topic';
 import { Router } from '@angular/router';
 import { Group } from 'src/app/Group';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
+import { MatOption } from '@angular/material/core';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) {}
@@ -20,11 +21,13 @@ export class AddEventComponent implements OnInit, OnDestroy{
   fileSrc: any;
   selectedFile: ImageSnippet | undefined;
 
+  groupsID = [''];
+
   checked = false;
   listTopic : Topic[] = [];
   ListGroups : Group[] = [];
   selectedTopic = 1;
-  selectedGroup = 1;
+  selectedGroup = ['0']
 
   addEventForm = new FormGroup({
     eventTitle: new FormControl(''),
@@ -34,12 +37,14 @@ export class AddEventComponent implements OnInit, OnDestroy{
     eventLocation: new FormControl(''),
     eventImg: new FormControl(''),
     eventPiority: new FormControl(0),
-    eventGroup: new FormControl(1),
+    eventGroup: new FormControl(['']),
     eventContent: new FormControl('')
   });
 
 
   constructor(private fb: FormBuilder, private apiService: ApiService, private postService:HandlePostService, private router : Router) {}
+  @ViewChild('selectAllGroup')
+  private selectAllGroup !: MatOption;
 
 
   editor = new Editor;
@@ -59,7 +64,6 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.LoadTopics();
     this.LoadGroups();
     this.selectedTopic = 1;
-    this.selectedGroup = 1;
     // this.ListGroup();
   }
 
@@ -72,7 +76,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
       eventLocation: ['', [Validators.required]],
       eventImg: ['', [Validators.required]],
       eventPiority: [0],
-      eventGroup: [1],
+      eventGroup: [['']],
       eventContent: ['', [Validators.required]]
     })
   }
@@ -95,8 +99,30 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.apiService.getGroup().subscribe({
       next:data => {
         this.ListGroups = data;
+        this.groupsID = [];
+        data.forEach(g => this.groupsID.push(g.id.toString()));
+        // this.selectedGroup = this.groupsID;
+        // console.log(this.selectedGroup, this.groupsID)
       }
     })
+  }
+
+  // select all group
+  selectAll(){
+    if(this.selectAllGroup.selected){
+      this.addEventForm.patchValue({eventGroup :this.groupsID})
+      this.selectAllGroup.select();
+    }
+    else{
+      this.addEventForm.patchValue({eventGroup :[]})
+    }
+    console.log(this.addEventForm.get('eventGroup')?.value)
+  }
+  selectGroup(){
+    if(this.selectAllGroup.selected) {
+      this.selectAllGroup.deselect();
+    }
+    if(this.addEventForm.controls.eventGroup.value?.length == this.groupsID.length) this.selectAllGroup.select();
   }
 
   onSubmit(){
@@ -104,9 +130,12 @@ export class AddEventComponent implements OnInit, OnDestroy{
     if(this.checked) this.addEventForm.patchValue({eventPiority:1})
     else this.addEventForm.patchValue({eventPiority:0})
     // this.addEventForm.patchValue({eventImg: this.fileSrc})
-
+    let gr = this.addEventForm.get('eventGroup')?.value;
+    gr?.shift();
+    this.addEventForm.patchValue({eventGroup : gr})
     let data = Object(this.addEventForm.value);
-
+    console.log(data);
+    console.log(this.addEventForm.get('eventGroup')?.value)
     // this.addEventForm.reset();
     this.initForm();
     this.postService.addPost(data, this.fileSrc).subscribe({

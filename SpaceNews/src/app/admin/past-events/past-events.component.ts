@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogState } from '@angular/material/dialog';
 
 import { DomSanitizer} from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { Group } from 'src/app/Group';
 import { Post } from 'src/app/PostEvent';
 import { ApiService } from 'src/app/Service/api.service';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
@@ -18,12 +19,12 @@ export class PastEventsComponent implements OnInit {
   ListTopic : Topic[] = [];
   idTopic = 0;
   pageIndex = 0;
-  postsSlider : Post[] = [];
-
   posts : Post[] = [];
+  listGroup : Group[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<PastEventsComponent>,
+    public eventDialogRef: MatDialogRef<PostDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Post[],
     // @Inject(MAT_DIALOG_DATA) public grName: string,
     private handlePostService: HandlePostService,
@@ -36,7 +37,9 @@ export class PastEventsComponent implements OnInit {
 
   ngOnInit(): void {
     this.LoadTopics();
+    this.getListGroup();
     this.getListPost();
+
   }
 
   close(){
@@ -76,7 +79,30 @@ export class PastEventsComponent implements OnInit {
       next:data =>{
         // this.listPost = data;
         this.posts = data;
+        this.getGrNames();
       }
+    })
+  }
+
+  getListGroup(){
+    this.apiService.getGroup().subscribe({
+      next: data =>{
+        this.listGroup = data;
+      }
+    })
+  }
+
+  getGrNames(){
+    this.posts.forEach(p=>{
+      let idGr = p.groupID.split(',');
+      let arr: string[] = [];
+      idGr.forEach( id =>{
+        let group = this.listGroup.find(g=>g.id == id);
+        if(group){
+          arr.push(group.name);
+        }
+      })
+      p.groupNames = arr;
     })
   }
 
