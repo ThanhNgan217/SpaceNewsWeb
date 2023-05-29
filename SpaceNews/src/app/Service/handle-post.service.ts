@@ -36,7 +36,18 @@ export class HandlePostService {
   url = 'https://localhost:7136';
 
 
+  addEventType(name : string){
+    const words = name.split(" ");
 
+    for(let i = 0; i < words.length; i++) {
+      words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+    }
+
+    let body = {
+      name :  words.join(" ")
+    }
+    return this.http.post(`${this.url}/api/Topics`,JSON.stringify(body),{headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
+  }
 
   addPost(obj : formEventData, image : string){
     this.auth = sessionStorage.getItem('auth_token');
@@ -69,7 +80,6 @@ export class HandlePostService {
       img = newImg;
       // console.log(newImg)
     }
-    else console.log(newImg)
     if(obj.eventDate != oldDate && obj.eventTime != oldDate){ // change both
       dateTime = `${obj.eventDate}T${obj.eventTime}`;
     }

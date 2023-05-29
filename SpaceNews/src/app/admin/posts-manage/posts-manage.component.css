@@ -73,22 +73,20 @@
 .list-topic{
   position: relative;
   background-color: white;
-  max-width: calc(var(--ratio)*830);
+  width: calc(var(--ratio)*700);
   height: 60px;
   overflow-x : auto;
   overflow-y: hidden;
+  border-right: 1px solid rgba(128, 128, 128, 0.6);
+
 }
 .chips-list{
   position: absolute;
   display: flex;
-  border: none;
   top: 50%;
   transform: translateY(-50%);
-  min-width: 60%;
-  /* max-width: 100%; */
-  max-width: calc(var(--ratio)*730);
+  width: 100%;
   max-height: 60px;
-  justify-content: space-between;
 }
 .list-topic::-webkit-scrollbar{
   height: 5px;
@@ -103,6 +101,8 @@
   display: inline-block;
   min-width: 90px;
   height: 50px;
+  margin-right: 20px;
+
   /* margin-left: calc(30*var(--ratio)); */
   /* line-height: 50px; */
   text-align: center;
@@ -119,9 +119,9 @@
 .chips-list .topic-checked{
   background-color: #B2E5FE;
 }
-.list-topic .chip.last-events{
+.text-box .chip.past-events{
   position: absolute;
-  right: 0;
+  left: -50%;
   top: 50%;
   transform: translateY(-50%);
   border: grey solid 2px;

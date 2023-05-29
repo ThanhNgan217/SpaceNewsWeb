@@ -100,40 +100,51 @@ namespace News.api.Controllers
             var post = _mapper.Map<Post>(model);
 
             _context.Posts.Add(post);
-            var existingGroupIdList = _context.Groups.Select(s => s.Id).ToList();
-            if (existingGroupIdList == null)
+
+            if(post.GroupID == "")
             {
-                return NotFound();
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return CreatedAtAction(nameof(GetPost), new { Id = post.Id }, post);
             }
             else
             {
-                post.GroupID = string.Join(",", post.GroupID.Split(',').Select(s => s.Trim()).ToArray()).TrimEnd(',');
-            }
-            int[] groupIds = post.GroupID.Split(',').Select(int.Parse).ToArray();
-            try
-            {
-                foreach (int groupId in groupIds)
+                var existingGroupIdList = _context.Groups.Select(s => s.Id).ToList();
+                if (existingGroupIdList == null)
                 {
-                    if (!existingGroupIdList.Contains(groupId))
+                    return NotFound();
+                }
+                else
+                {
+                    post.GroupID = string.Join(",", post.GroupID.Split(',').Select(s => s.Trim()).ToArray()).TrimEnd(',');
+                }
+                int[] groupIds = post.GroupID.Split(',').Select(int.Parse).ToArray();
+                try
+                {
+                    foreach (int groupId in groupIds)
                     {
-                        haveUpdated = false;
+                        if (!existingGroupIdList.Contains(groupId))
+                        {
+                            haveUpdated = false;
+                        }
                     }
+                    if (haveUpdated)
+                    {
+                        await _context.SaveChangesAsync();
+                        await transaction.CommitAsync();
+                        return CreatedAtAction(nameof(GetPost), new { Id = post.Id }, post);
+                    }
+
                 }
-                if (haveUpdated)
+                catch (Exception ex)
                 {
-                    await _context.SaveChangesAsync();
-                    await transaction.CommitAsync();
-                    return CreatedAtAction(nameof(GetPost), new { Id = post.Id }, post);
+                    await transaction.RollbackAsync();
+                    throw ex;
                 }
 
+                return NotFound("GroupId field not being existed!");
             }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync();
-                throw ex;
-            }
-
-            return NotFound("GroupId field not being existed!");
+            
         }
 
         // PUT: api/posts/5
@@ -143,40 +154,51 @@ namespace News.api.Controllers
         {
             var transaction = await _context.Database.BeginTransactionAsync();
             var haveUpdated = true;
+            var post = _mapper.Map<Post>(model);
+            post.GroupID = string.Join(",", post.GroupID.Split(',').Select(s => s.Trim()).ToArray()).TrimEnd(',');
             if (Id != model.Id)
             {
                 return BadRequest();
             }
-            var existingGroupIdList = _context.Groups.Select(s => s.Id).ToList();
-            var post = _mapper.Map<Post>(model);
-            post.GroupID = string.Join(",", post.GroupID.Split(',').Select(s => s.Trim()).ToArray()).TrimEnd(',');
-            int[] groupIds = post.GroupID.Split(',').Select(int.Parse).ToArray();
-
-            try
+            if (post.GroupID == "")
             {
                 _context.Entry(post).State = EntityState.Modified;
-
-                foreach (int groupId in groupIds)
-                {
-                    if (!existingGroupIdList.Contains(groupId) || !PostExists(Id))
-                    {
-                        haveUpdated = false;
-                    }
-                }
-                if (haveUpdated)
-                {
-                    await _context.SaveChangesAsync();
-                    await transaction.CommitAsync();
-                    return NoContent();
-                }
-
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return NoContent();
             }
-            catch (Exception ex)
+            else
             {
-                await transaction.RollbackAsync();
-                throw ex;
+                var existingGroupIdList = _context.Groups.Select(s => s.Id).ToList();
+                
+                int[] groupIds = post.GroupID.Split(',').Select(int.Parse).ToArray();
+
+                try
+                {
+                    _context.Entry(post).State = EntityState.Modified;
+
+                    foreach (int groupId in groupIds)
+                    {
+                        if (!existingGroupIdList.Contains(groupId) || !PostExists(Id))
+                        {
+                            haveUpdated = false;
+                        }
+                    }
+                    if (haveUpdated)
+                    {
+                        await _context.SaveChangesAsync();
+                        await transaction.CommitAsync();
+                        return NoContent();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    throw ex;
+                }
+                return NotFound("GroupID or PostId not being existed!");
             }
-            return NotFound("GroupID or PostId not being existed!");
         }
 
         // DELETE: api/posts/5

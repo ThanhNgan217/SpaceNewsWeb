@@ -121,8 +121,8 @@ export class PostsManageComponent implements OnInit {
     this.getListPost();
 
     this.pastEventsDialog.open(PastEventsComponent, {
-      width: '80%',
-      height: '85%',
+      width: '85vw',
+      height: '85vh',
     });
   }
 

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Group } from 'src/app/Group';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
 import { MatOption } from '@angular/material/core';
+import { daLocale } from 'ngx-bootstrap/chronos';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) {}
@@ -27,7 +28,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
   listTopic : Topic[] = [];
   ListGroups : Group[] = [];
   selectedTopic = 1;
-  selectedGroup = ['0']
+  selectedGroup = ['']
 
   addEventForm = new FormGroup({
     eventTitle: new FormControl(''),
@@ -70,7 +71,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
   initForm(){
     this.addEventForm = this.fb.group({
       eventTitle: ['', [Validators.required]],
-      eventType: [1],
+      eventType: [0],
       eventDate: [Date, [Validators.required]],
       eventTime: [Date, [Validators.required]],
       eventLocation: ['', [Validators.required]],
@@ -131,11 +132,25 @@ export class AddEventComponent implements OnInit, OnDestroy{
     else this.addEventForm.patchValue({eventPiority:0})
     // this.addEventForm.patchValue({eventImg: this.fileSrc})
     let gr = this.addEventForm.get('eventGroup')?.value;
-    gr?.shift();
-    this.addEventForm.patchValue({eventGroup : gr})
+    if(this.selectAllGroup.selected){
+      gr?.shift();
+      console.log(gr);
+    }
+
+    if(gr?.length == 0){
+      gr = ['']
+    }
+    // else{
+    //   let tmp = gr?.toString();
+    //   if(tmp[0] == '')
+
+    // }
+    this.addEventForm.patchValue({eventGroup : gr});
+    this.addEventForm.patchValue({eventType: this.selectedTopic});
     let data = Object(this.addEventForm.value);
+    this.selectedTopic = 1;
     console.log(data);
-    console.log(this.addEventForm.get('eventGroup')?.value)
+    // console.log(this.addEventForm.get('eventGroup')?.value)
     // this.addEventForm.reset();
     this.initForm();
     this.postService.addPost(data, this.fileSrc).subscribe({
@@ -162,6 +177,28 @@ export class AddEventComponent implements OnInit, OnDestroy{
         this.fileSrc = reader.result as string;
       });
     }
+  }
+
+  handleTopic(e: any){
+    let eventType = e.target.value;
+    // console.log(eventType)
+    if(this.listTopic.find(t => t.name == eventType)){
+      let id = this.listTopic.find(t => t.name == eventType)?.id;
+      this.selectedTopic = id? id : 1;
+      this.addEventForm.patchValue({eventType: id});
+    }
+    else{
+      let msg = `Add new event type "${eventType}"?`;
+      if(confirm(msg) == true){ // add new event type / topic
+        this.postService.addEventType(eventType).subscribe({
+          next:data =>{}
+        });
+      }
+      else{
+        e.target.reset();
+      }
+    }
+
   }
 
 

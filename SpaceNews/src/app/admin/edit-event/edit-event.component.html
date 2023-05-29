@@ -75,9 +75,13 @@
             <label for="group" class="group">Relevant group</label>
           </td>
           <td class="td-right">
-            <select class="set-height" formControlName="eventGroup" name="group" [(ngModel)]="selectedGroup">
+            <!-- <select class="set-height" formControlName="eventGroup" name="group" [(ngModel)]="selectedGroup">
               <option *ngFor="let group of ListGroups" [selected]="group.id == selectedGroup" [value]="group.id">{{group.name}}</option>
-            </select>
+            </select> -->
+            <mat-select class="set-height" formControlName="eventGroup" name="group" [(ngModel)]="selectedGroup" multiple>
+              <mat-option #selectAllGroup [value]="" (click)="selectAll()">All</mat-option>
+              <mat-option *ngFor="let group of ListGroups" (click)="selectGroup()" [value]="group.id.toString()">{{group.name}}</mat-option>
+            </mat-select>
           </td>
         </tr>
         <tr class="row-control">

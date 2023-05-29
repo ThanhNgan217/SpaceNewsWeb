@@ -23,10 +23,10 @@
             <button class="chip" *ngFor="let t of ListTopic" [value]="t.id" (click)="topicChange(t.id)" [class.topic-checked]="idTopic == t.id">{{t.name}}</button>
             <!-- </div> -->
           </div>
-          <button class="chip last-events" (click)="openPastEventsDialog()">Past Events</button>
         </div>
 
         <div class="text-box">
+          <button class="chip past-events" (click)="openPastEventsDialog()">Past Events</button>
           <p class="priority">Priority</p>
           <p class="status">Visible</p>
         </div>

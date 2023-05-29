@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Editor, Toolbar } from 'ngx-editor';
 import { ApiService } from 'src/app/Service/api.service';
@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Group } from 'src/app/Group';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
 import {Location} from '@angular/common';
+import { MatOption } from '@angular/material/core';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) {}
@@ -42,7 +43,8 @@ export class EditEventComponent implements OnInit {
   listTopic : Topic[] = [];
   ListGroups : Group[] = [];
   selectedTopic = 1;
-  selectedGroup = '';
+  selectedGroup = ['']
+  groupsID = [''];
 
   addEventForm = new FormGroup({
     eventTitle: new FormControl('', Validators.required),
@@ -52,7 +54,7 @@ export class EditEventComponent implements OnInit {
     eventLocation: new FormControl('', Validators.required),
     eventImg: new FormControl(''),
     eventPiority: new FormControl(0, Validators.required),
-    eventGroup: new FormControl('', Validators.required),
+    eventGroup: new FormControl([''], Validators.required),
     eventContent: new FormControl('', Validators.required)
   });
 
@@ -60,6 +62,8 @@ export class EditEventComponent implements OnInit {
   constructor(private location: Location, private fb: FormBuilder, private _route: ActivatedRoute, private apiService: ApiService, private postService:HandlePostService, private router : Router) {
 
   }
+  @ViewChild('selectAllGroup')
+  private selectAllGroup !: MatOption;
 
 
   editor = new Editor;
@@ -75,11 +79,11 @@ export class EditEventComponent implements OnInit {
   ngOnInit(){
     // console.log(this.previousUrl);
     this.postID = Number(this._route.snapshot.paramMap.get('id'));
+    this.LoadGroups();
     this.LoadPost(this.postID);
 
     // this.editor = new Editor();
     this.LoadTopics();
-    this.LoadGroups();
     // this.ListGroup();
   }
 
@@ -94,11 +98,13 @@ export class EditEventComponent implements OnInit {
       next:data =>{
         this.currPost = data;
         this.selectedTopic = data.topicID;
-        this.selectedGroup = data.groupID;
+        this.selectedGroup = data.groupID.split(',');
         if(data.priority == 1) this.checked = true;
         this.addEventForm.patchValue({eventContent: data.content})
         // this.addEventForm.patchValue({eventDate: new Date})
         // this.addEventForm.patchValue({eventTime: new Date})
+        let gr =  data.groupID.split(',');
+
         this.addEventForm.setValue({
           eventTitle: data.title,
           eventType: data.topicID,
@@ -107,9 +113,11 @@ export class EditEventComponent implements OnInit {
           eventLocation: data.location,
           eventImg: data.image,
           eventPiority: data.priority,
-          eventGroup: data.groupID,
+          eventGroup: gr,
           eventContent: data.content
         })
+
+
       }
     })
   }
@@ -127,20 +135,52 @@ export class EditEventComponent implements OnInit {
     this.apiService.getGroup().subscribe({
       next:data => {
         this.ListGroups = data;
+        this.groupsID = [];
+        data.forEach(g => this.groupsID.push(g.id.toString()));
       }
     })
   }
 
+  // select all group
+  selectAll(){
+    if(this.selectAllGroup.selected){
+      this.addEventForm.patchValue({eventGroup :this.groupsID})
+      this.selectAllGroup.select();
+    }
+    else{
+      this.addEventForm.patchValue({eventGroup :[]})
+    }
+    console.log(this.addEventForm.get('eventGroup')?.value)
+  }
+  selectGroup(){
+    if(this.selectAllGroup.selected) {
+      this.selectAllGroup.deselect();
+    }
+    if(this.addEventForm.controls.eventGroup.value?.length == this.groupsID.length) this.selectAllGroup.select();
+  }
+
+
   onSubmit(){
     if(this.checked) this.addEventForm.patchValue({eventPiority:1})
     else this.addEventForm.patchValue({eventPiority:0})
+
+    let gr = this.addEventForm.get('eventGroup')?.value;
+    if(this.selectAllGroup.selected){
+      gr?.shift();
+      console.log(gr);
+    }
+
+    if(gr?.length == 0){
+      gr = ['']
+    }
+    this.addEventForm.patchValue({eventGroup:gr});
 
     let data = Object(this.addEventForm.value);
     // console.log(this.addEventForm.get('eventContent')?.value)
     this.addEventForm.reset();
 
     this.selectedTopic = 1;
-    this.selectedGroup = '1';
+    this.selectedGroup = [''];
 
     this.postService.editPost(data, this.postID, this.currPost.date, this.fileSrc, this.currPost.showInSlider)
     .subscribe({

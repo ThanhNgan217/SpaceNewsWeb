@@ -54,7 +54,7 @@ const routes: Routes = [
   {
     path:'admin/posts/edit/:id',
     component: EditEventComponent,
-    canActivate: [CanActivateGuard],
+    // canActivate: [CanActivateGuard],
   }
 ];
 
