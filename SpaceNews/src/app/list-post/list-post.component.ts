@@ -163,11 +163,6 @@ export class ListPostComponent implements OnInit{
   }
   showDialog(id : number){
     let post = this.posts.find(p => p.id == id);
-    let grName = 'DG5';
-    // post.groupname = post?.Group.name
-    // console.log(post?.content)
-
-
     const dialogRef = this.dialog.open(PostDialog, {
       data: post
     });

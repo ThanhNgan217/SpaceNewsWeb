@@ -23,9 +23,13 @@
             <label for="type" class="type">Event Type</label>
           </td>
           <td class="td-right">
-            <select class="set-height" name="type" formControlName="eventType" [(ngModel)]="selectedTopic">
+            <input type="text" list="eventType" class="set-height" name="type" formControlName="eventType" (change)="handleTopic($event)" style="text-transform: capitalize;" required>
+            <datalist id="eventType">
+              <option *ngFor="let type of listTopic" [value]="type.name">{{type.name}}</option>
+            </datalist>
+            <!-- <select class="set-height" name="type" formControlName="eventType" [(ngModel)]="selectedTopic">
               <option *ngFor="let type of listTopic" [selected]="type.id == selectedTopic" [value]="type.id">{{type.name}}</option>
-            </select>
+            </select> -->
           </td>
         </tr>
         <tr class="row-control">

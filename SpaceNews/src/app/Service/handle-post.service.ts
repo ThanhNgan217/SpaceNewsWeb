@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Post } from '../PostEvent';
+import { Topic } from '../Topic';
 
 interface formEventData {
   eventTitle : '',
@@ -46,7 +47,7 @@ export class HandlePostService {
     let body = {
       name :  words.join(" ")
     }
-    return this.http.post(`${this.url}/api/Topics`,JSON.stringify(body),{headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
+    return this.http.post<Topic>(`${this.url}/api/Topics`,JSON.stringify(body),{headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
   }
 
   addPost(obj : formEventData, image : string){

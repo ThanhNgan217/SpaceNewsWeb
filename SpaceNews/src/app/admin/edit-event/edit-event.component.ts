@@ -47,15 +47,15 @@ export class EditEventComponent implements OnInit {
   groupsID = [''];
 
   addEventForm = new FormGroup({
-    eventTitle: new FormControl('', Validators.required),
-    eventType: new FormControl(1, Validators.required),
-    eventDate: new FormControl( new Date, Validators.required),
-    eventTime: new FormControl(new Date, Validators.required),
-    eventLocation: new FormControl('', Validators.required),
+    eventTitle: new FormControl(''),
+    eventType: new FormControl(),
+    eventDate: new FormControl(new Date),
+    eventTime: new FormControl(new Date),
+    eventLocation: new FormControl(''),
     eventImg: new FormControl(''),
-    eventPiority: new FormControl(0, Validators.required),
-    eventGroup: new FormControl([''], Validators.required),
-    eventContent: new FormControl('', Validators.required)
+    eventPiority: new FormControl(0),
+    eventGroup: new FormControl(['']),
+    eventContent: new FormControl('')
   });
 
 
@@ -80,10 +80,10 @@ export class EditEventComponent implements OnInit {
     // console.log(this.previousUrl);
     this.postID = Number(this._route.snapshot.paramMap.get('id'));
     this.LoadGroups();
-    this.LoadPost(this.postID);
+    this.LoadTopics();
+    // this.LoadPost(this.postID);
 
     // this.editor = new Editor();
-    this.LoadTopics();
     // this.ListGroup();
   }
 
@@ -97,17 +97,21 @@ export class EditEventComponent implements OnInit {
     this.apiService.getPost(id).subscribe({
       next:data =>{
         this.currPost = data;
-        this.selectedTopic = data.topicID;
+        if(this.listTopic.find(t => t.id == data.topicID)){ // check if event type already exists
+          this.selectedTopic = data.topicID;
+        }
+        else{
+          this.selectedTopic = 1;
+        }
+        let oldType = this.listTopic.find(t => t.id == this.selectedTopic)?.name
+        // if not update event type, default event type is '1 : Out Door'
+
         this.selectedGroup = data.groupID.split(',');
         if(data.priority == 1) this.checked = true;
-        this.addEventForm.patchValue({eventContent: data.content})
-        // this.addEventForm.patchValue({eventDate: new Date})
-        // this.addEventForm.patchValue({eventTime: new Date})
         let gr =  data.groupID.split(',');
-
         this.addEventForm.setValue({
           eventTitle: data.title,
-          eventType: data.topicID,
+          eventType: oldType,
           eventDate: data.date,
           eventTime: data.date,
           eventLocation: data.location,
@@ -116,8 +120,6 @@ export class EditEventComponent implements OnInit {
           eventGroup: gr,
           eventContent: data.content
         })
-
-
       }
     })
   }
@@ -127,6 +129,7 @@ export class EditEventComponent implements OnInit {
     this.apiService.getTopic().subscribe({
       next:data =>{
         this.listTopic = data;
+        this.LoadPost(this.postID);
       }
     })
   }
@@ -174,6 +177,7 @@ export class EditEventComponent implements OnInit {
       gr = ['']
     }
     this.addEventForm.patchValue({eventGroup:gr});
+    this.addEventForm.patchValue({eventType: this.selectedTopic});
 
     let data = Object(this.addEventForm.value);
     // console.log(this.addEventForm.get('eventContent')?.value)
@@ -240,6 +244,30 @@ export class EditEventComponent implements OnInit {
       reader.addEventListener("load", (event) => {
         this.fileSrc = reader.result as string;
       });
+    }
+  }
+
+  handleTopic(e: any){
+    let eventType = e.target.value;
+    this.addEventForm.patchValue({eventType: eventType});
+    // console.log(eventType)
+    if(this.listTopic.find(t => t.name == eventType)){
+      console.log(eventType)
+      let id = this.listTopic.find(t => t.name == eventType)?.id;
+      this.selectedTopic = id? id : 0;
+    }
+    else{
+      let msg = `Add new event type "${eventType}"?`;
+      if(confirm(msg) == true){ // add new event type / topic
+        this.postService.addEventType(eventType).subscribe({
+          next:data =>{
+            this.selectedTopic = data.id;
+          }
+        });
+      }
+      else{
+        e.target.value = '';
+      }
     }
 
   }

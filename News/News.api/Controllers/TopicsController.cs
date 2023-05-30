@@ -102,7 +102,8 @@ namespace News.api.Controllers
             _context.Topics.Add(topic);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTopic", new { id = topic.Id }, topic);
+            CreatedAtAction("GetTopic", new { id = topic.Id }, topic);
+            return topic;
         }
 
         // DELETE: api/Topics/5

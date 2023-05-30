@@ -8,6 +8,7 @@ import { PostDialog } from '../list-post/list-post.component'
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Topic } from '../Topic';
 import { HttpClient } from '@angular/common/http';
+import { Group } from '../Group';
 
 interface User{
   id : string|null,
@@ -36,6 +37,7 @@ export class ContentComponent {
   // ]
 
   ListTopic : Topic[] = [];
+  listGroup: Group[] = [];
   idTopic = 0;
   pageIndex = 0;
   postsSlider : Post[] = [];
@@ -72,6 +74,7 @@ export class ContentComponent {
     this.bsInlineRangeValue = [this.bsInlineValue, this.maxDate];
   }
   ngOnInit(){
+    this.getListGroup();
     this.LoadSlider();
     this.LoadTopics();
     this.setUser();
@@ -104,6 +107,7 @@ export class ContentComponent {
     this.apiService.getSlider().subscribe({
       next:data =>{
         this.postsSlider= data.filter(d=>d.priority == 1)
+        this.getGrNames();
         this.index = 0;
         this.idShow = this.postsSlider[0].id; // 1
         this.urlShow = this.postsSlider[0].image;
@@ -111,8 +115,28 @@ export class ContentComponent {
         this.counter = this.postsSlider.length;
       }
     })
-    // this.autoChangeSlider;
-    // this.autoChangeSlider = setInterval(this.myInterval, 3500);
+  }
+
+  getListGroup(){
+    this.apiService.getGroup().subscribe({
+      next: data =>{
+        this.listGroup = data;
+      }
+    })
+  }
+
+  getGrNames(){
+    this.postsSlider.forEach(p=>{
+      let idGr = p.groupID.split(',');
+      let arr: string[] = [];
+      idGr.map( id =>{
+        let group = this.listGroup.find(g=>g.id == id);
+        if(group){
+          arr.push(group.name);
+        }
+      })
+      p.groupNames = arr;
+    })
   }
 
   toEvent(id:number){

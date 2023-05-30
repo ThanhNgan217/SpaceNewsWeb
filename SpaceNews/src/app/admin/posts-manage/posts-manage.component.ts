@@ -26,8 +26,6 @@ export class PostsManageComponent implements OnInit {
   listGroup : Group[] = [];
   idTopic = 0;
 
-  contentWithStyle : any;
-
   listPost : Post[] = [];
   topicChecked = 0;
   pageIndex = 0;

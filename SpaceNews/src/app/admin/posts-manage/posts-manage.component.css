@@ -73,7 +73,8 @@
 .list-topic{
   position: relative;
   background-color: white;
-  width: calc(var(--ratio)*700);
+  /* width: calc(var(--ratio)*700); */
+  width: 65%;
   height: 60px;
   overflow-x : auto;
   overflow-y: hidden;
@@ -99,15 +100,17 @@
 .chip{
   position: relative;
   display: inline-block;
-  min-width: 90px;
-  height: 50px;
-  margin-right: 20px;
+  min-width: 5.5em;
+  max-width: 8em;
+  height: 3.2em;
+  max-height: 4.5em;
+  margin-right: 1.2em;
 
   /* margin-left: calc(30*var(--ratio)); */
   /* line-height: 50px; */
   text-align: center;
-  border: var(--blue) solid calc(3*var(--ratio));
-  border-radius: calc(36*var(--ratio));
+  border: var(--blue) solid 2px;
+  border-radius: 1.7em;
   background-color: #FAF9F7;
   color: var(--blue);
   font-size: 14px;
@@ -165,7 +168,7 @@
 }
 
 .topic-block .text-box{
-  min-width: 200px;
+  width: 22%;
   height: 60px;
   position: absolute;
   top: 0;
@@ -195,7 +198,8 @@
   height: 150px;
 }
 .card-block .card{
-  width: calc(var(--ratio)*830);
+  /* width: calc(var(--ratio)*830); */
+  width: 77%;
   height: 100%;
   padding-left: 10px;
   display: flex;
@@ -270,7 +274,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  min-width: 200px;
+  width: 22%;
   display: flex;
   justify-content: space-around;
 }

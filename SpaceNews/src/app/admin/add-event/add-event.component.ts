@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { Group } from 'src/app/Group';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
 import { MatOption } from '@angular/material/core';
-import { daLocale } from 'ngx-bootstrap/chronos';
+// import { daLocale } from 'ngx-bootstrap/chronos';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) {}
@@ -24,7 +24,10 @@ export class AddEventComponent implements OnInit, OnDestroy{
 
   groupsID = [''];
 
+  location = [''];
+
   checked = false;
+  defaultTopic = '';
   listTopic : Topic[] = [];
   ListGroups : Group[] = [];
   selectedTopic = 1;
@@ -32,7 +35,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
 
   addEventForm = new FormGroup({
     eventTitle: new FormControl(''),
-    eventType: new FormControl(1),
+    eventType: new FormControl(),
     eventDate: new FormControl(Date),
     eventTime: new FormControl(Date),
     eventLocation: new FormControl(''),
@@ -59,11 +62,15 @@ export class AddEventComponent implements OnInit, OnDestroy{
   html= '';
 
   ngOnInit(){
-    this.initForm();
-    // console.log(this.router.url)
-    this.editor = new Editor();
+    this.getLocation();
     this.LoadTopics();
     this.LoadGroups();
+    this.initForm();
+    console.log(this.location);
+
+
+    // console.log(this.router.url)
+    this.editor = new Editor();
     this.selectedTopic = 1;
     // this.ListGroup();
   }
@@ -71,7 +78,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
   initForm(){
     this.addEventForm = this.fb.group({
       eventTitle: ['', [Validators.required]],
-      eventType: [0],
+      eventType: ['', [Validators.required]],
       eventDate: [Date, [Validators.required]],
       eventTime: [Date, [Validators.required]],
       eventLocation: ['', [Validators.required]],
@@ -92,6 +99,8 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.apiService.getTopic().subscribe({
       next:data =>{
         this.listTopic = data;
+        this.defaultTopic = data[0].name;
+        this.addEventForm.patchValue({eventType: this.defaultTopic});
       }
     })
   }
@@ -117,7 +126,6 @@ export class AddEventComponent implements OnInit, OnDestroy{
     else{
       this.addEventForm.patchValue({eventGroup :[]})
     }
-    console.log(this.addEventForm.get('eventGroup')?.value)
   }
   selectGroup(){
     if(this.selectAllGroup.selected) {
@@ -134,25 +142,25 @@ export class AddEventComponent implements OnInit, OnDestroy{
     let gr = this.addEventForm.get('eventGroup')?.value;
     if(this.selectAllGroup.selected){
       gr?.shift();
-      console.log(gr);
     }
 
     if(gr?.length == 0){
       gr = ['']
     }
-    // else{
-    //   let tmp = gr?.toString();
-    //   if(tmp[0] == '')
 
-    // }
+
     this.addEventForm.patchValue({eventGroup : gr});
     this.addEventForm.patchValue({eventType: this.selectedTopic});
+
     let data = Object(this.addEventForm.value);
-    this.selectedTopic = 1;
     console.log(data);
-    // console.log(this.addEventForm.get('eventGroup')?.value)
-    // this.addEventForm.reset();
+
+    // reset form values
+    this.selectedTopic = 1;
     this.initForm();
+    this.addEventForm.patchValue({eventType: this.defaultTopic});
+
+
     this.postService.addPost(data, this.fileSrc).subscribe({
       next:data=>{
         alert('Success');
@@ -180,27 +188,49 @@ export class AddEventComponent implements OnInit, OnDestroy{
   }
 
   handleTopic(e: any){
-    let eventType = e.target.value;
+    let eventType = e.target.value.trim();
+    this.addEventForm.patchValue({eventType: eventType});
     // console.log(eventType)
     if(this.listTopic.find(t => t.name == eventType)){
+      console.log(eventType)
       let id = this.listTopic.find(t => t.name == eventType)?.id;
-      this.selectedTopic = id? id : 1;
-      this.addEventForm.patchValue({eventType: id});
+      this.selectedTopic = id? id : 0;
     }
-    else{
-      let msg = `Add new event type "${eventType}"?`;
-      if(confirm(msg) == true){ // add new event type / topic
-        this.postService.addEventType(eventType).subscribe({
-          next:data =>{}
-        });
-      }
-      else{
-        e.target.reset();
+    else {
+      if(eventType !=""){
+        let msg = `Add new event type "${eventType}"?`;
+        if(confirm(msg) == true){ // add new event type / topic
+          this.postService.addEventType(eventType).subscribe({
+            next:data =>{
+              this.selectedTopic = data.id;
+            }
+          });
+        }
+        else{
+          this.selectedTopic = 1;
+          this.addEventForm.patchValue({eventType: this.defaultTopic});
+        }
+      }else{
+        this.selectedTopic = 1;
+        this.addEventForm.patchValue({eventType: this.defaultTopic});
       }
     }
+
+
 
   }
 
-
-
+  async getLocation(){
+    let posts;
+    let suggestions : string[] = [];
+    this.apiService.getSlider().subscribe({
+      next:data => {
+        posts = data;
+        suggestions = posts.map(p =>{
+          return p.location;
+        })
+        this.location = [...new Set(suggestions)];
+      }
+    })
+  }
 }
