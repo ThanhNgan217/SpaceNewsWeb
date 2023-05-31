@@ -1,0 +1,35 @@
+<div class="logo" routerLink="/">
+  <img src ="/assets/img/logo.png"  width="150.81px" height="68px">
+  <p>NEWS DC19 PROGRAM 1</p>
+</div>
+<div class="add-group-title">
+<h3>Add Group</h3>
+</div>
+<div class="home-content-container">
+  <!-- <div> -->
+    <form class="add-group-form" autocomplete="off" (ngSubmit)="onSubmit()" [formGroup]="addGroupForm">
+      <div class="name">
+        <label for="name">Name</label>
+        <input type="text" name="name"
+        required
+        formControlName="groupName"
+        >
+      </div>
+      <div class = "mail">
+        <label for="mail">Mail </label>
+          <input
+            class="input-field" type="text" name="mails"
+            required
+            formControlName="groupMail"
+          >
+          <mat-icon matSuffix>mail_outline</mat-icon>
+      </div>
+      <button
+          type="submit"
+          class="submit-btn"
+        >Add Now
+      </button>
+    </form>
+</div>
+
+

@@ -103,4 +103,10 @@ export class ApiService {
   addPost(val: any){
     return this.http.post(`${this.apiUrl}/api/Posts`, val);
   }
+
+
+  // filter posts by group id
+  getListPosts(groupId: string){
+    return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?groupId=${groupId}&pageIndex=0&pageSize=9999`)
+  }
 }

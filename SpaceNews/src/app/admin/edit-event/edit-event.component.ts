@@ -31,6 +31,9 @@ export class EditEventComponent implements OnInit {
     topicID: 0,
     groupID: ''
   };
+
+  currTopicName : string | undefined;
+
   fileSrc : any;
   postID : number = 0;
   date : string = '';
@@ -38,6 +41,8 @@ export class EditEventComponent implements OnInit {
 
   fileName = '';
   selectedFile: ImageSnippet | undefined;
+  locationSuggest: any;
+
 
   checked = false;
   listTopic : Topic[] = [];
@@ -79,8 +84,16 @@ export class EditEventComponent implements OnInit {
   ngOnInit(){
     // console.log(this.previousUrl);
     this.postID = Number(this._route.snapshot.paramMap.get('id'));
-    this.LoadGroups();
-    this.LoadTopics();
+    this.editEventPromise
+    .then((location)=>{
+      this.locationSuggest = location;
+      this.LoadGroups();
+      this.LoadTopics();
+    })
+    .catch(()=>{
+      this.LoadGroups();
+      this.LoadTopics();
+    })
     // this.LoadPost(this.postID);
 
     // this.editor = new Editor();
@@ -99,6 +112,7 @@ export class EditEventComponent implements OnInit {
         this.currPost = data;
         if(this.listTopic.find(t => t.id == data.topicID)){ // check if event type already exists
           this.selectedTopic = data.topicID;
+          this.currTopicName = this.listTopic.find(t => t.id == data.topicID)?.name;
         }
         else{
           this.selectedTopic = 1;
@@ -209,20 +223,22 @@ export class EditEventComponent implements OnInit {
     })
   }
 
-  cancelEdit(){
-    if(sessionStorage.getItem('prev')){
-      if(sessionStorage.getItem('prev')?.includes('posts')){
-        this.router.navigate(['/admin/posts']);
-        sessionStorage.removeItem('prev');
+  cancelEdit(e: any){
+    if(e.target == "button"){
+      if(sessionStorage.getItem('prev')){
+        if(sessionStorage.getItem('prev')?.includes('posts')){
+          this.router.navigate(['/admin/posts']);
+          sessionStorage.removeItem('prev');
+        }
+        else{
+          this.router.navigate(['/']);
+          sessionStorage.removeItem('prev');
+        }
       }
       else{
-        this.router.navigate(['/']);
+         this.router.navigate(['/admin/posts']);
         sessionStorage.removeItem('prev');
       }
-    }
-    else{
-       this.router.navigate(['/admin/posts']);
-      sessionStorage.removeItem('prev');
     }
   }
 
@@ -248,7 +264,7 @@ export class EditEventComponent implements OnInit {
   }
 
   handleTopic(e: any){
-    let eventType = e.target.value;
+    let eventType = e.target.value.trim();
     this.addEventForm.patchValue({eventType: eventType});
     // console.log(eventType)
     if(this.listTopic.find(t => t.name == eventType)){
@@ -257,20 +273,42 @@ export class EditEventComponent implements OnInit {
       this.selectedTopic = id? id : 0;
     }
     else{
-      let msg = `Add new event type "${eventType}"?`;
-      if(confirm(msg) == true){ // add new event type / topic
-        this.postService.addEventType(eventType).subscribe({
-          next:data =>{
-            this.selectedTopic = data.id;
-          }
-        });
-      }
-      else{
-        e.target.value = '';
+      if(eventType !=""){
+        let msg = `Add new event type "${eventType}"?`;
+        if(confirm(msg) == true){ // add new event type / topic
+          this.postService.addEventType(eventType).subscribe({
+            next:data =>{
+              this.selectedTopic = data.id;
+            }
+          });
+        }
+        else{
+          console.log('a')
+          this.selectedTopic = this.currPost.topicID;
+          this.addEventForm.patchValue({eventType: this.currTopicName});
+        }
+      }else{
+        this.selectedTopic = this.currPost.topicID;
+        this.addEventForm.patchValue({eventType: this.currTopicName});
       }
     }
 
   }
+
+
+  editEventPromise = new Promise((resolve, reject) =>{
+    let location = new Set();
+    this.apiService.getSlider().subscribe({
+      next : data => {
+        let posts = data;
+        posts.forEach(p => {location.add(p.location);})
+        resolve(Array.from(location));
+      },
+      error: err=>{
+        reject(err);
+      }
+    })
+  })
 
 }
 

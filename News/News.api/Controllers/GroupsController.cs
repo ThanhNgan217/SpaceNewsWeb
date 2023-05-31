@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using News.api.Data;
 using News.api.Entities;
 using News.api.ViewModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace News.api.Controllers
 {
@@ -36,29 +37,63 @@ namespace News.api.Controllers
         //GET : Api/posts/get_groups
         [HttpGet]
         //[Authorize]
-        public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
+        public async Task<ActionResult<IEnumerable<Group>>> GetGroups(
+            string keyword = "",
+            int pageIndex = 0,
+            int pageSize = 6)
         {
+            var query = _context.Groups.AsQueryable();
+
             if (_context.Groups == null)
             {
                 return NotFound();
             }
-            return await _context.Groups.ToListAsync();
+            if (!string.IsNullOrWhiteSpace(keyword))
+                query = query.Where(s => s.Name.Contains(keyword));
+
+
+            var result = await query
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize).ToListAsync();
+            return result;
         }
 
+        //GET: Api/Groups/5
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<Group>> GetGroup(int Id)
+        {
+            var group = await _context.Groups.FindAsync(Id)
+;
 
-        //////////////////////////////////////////////////////////////////////////////////////
-        // GET: api/posts/get_groups/5
-        //[HttpGet("{Id}")]
-        //public async Task<ActionResult<Group>> GetGroup(int Id)
-        //{
-            //var gr = await _context.Groups.FindAsync(Id);
+            if (group == null)
+            {
+                return NotFound();
+            }
 
-            //if (gr == null)
-            //{
-                //return NotFound();
-            //}
+            return group;
+        }
+        // DELETE: api/Groups/5
+        [HttpDelete("{Id}")]
+        //[Authorize]
+        public async Task<IActionResult> DeleteGroup(int Id)
+        {
+            var group = await _context.Groups.FindAsync(Id)
+;
+            if (group == null)
+            {
+                return NotFound();
+            }
 
-           // return gr;
-        //}
+            _context.Groups.Remove(group);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool GroupExists(int Id)
+        {
+            return _context.Groups.Any(p => p.Id == Id);
+        }
+
     }
 }

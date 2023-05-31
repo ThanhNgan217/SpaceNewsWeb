@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Edit Group</h2>
+<div class="group-edit-container">
+  <div mat-dialog-content class="group-edit">
+      <form [formGroup]="editGroupForm" (ngSubmit)="onSubmit()">
+          <table>
+              <tr>
+                  <td class="label"><label for="name">Name</label></td>
+                  <td class="input"><input type="text" name="name"
+                      placeholder={{group.name}}
+                      required
+                      formControlName="groupName"></td>
+              </tr>
+              <tr>
+                  <td class="label"><label for="mail">Mail </label></td>
+                  <td class="input"><input type="text" name="mails"
+                      required
+                      formControlName="groupMail"></td>
+              </tr>
+          </table>
+          <button
+              type="submit"
+              class="submit-btn"
+              >Add Now
+          </button>
+      </form>
+
+  </div>
+</div>

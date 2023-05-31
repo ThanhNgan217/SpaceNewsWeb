@@ -83,11 +83,11 @@ export class LoginPageComponent implements OnInit {
         sessionStorage.setItem('auth_token',data.auth_token);
         sessionStorage.setItem('userRole',data.role);
         console.log('useraccount', this.userAccount);
-        setTimeout(()=>{
-          alert('Login session expired, Please login again')
-          sessionStorage.clear();
-          this.router.navigate(['/login']);
-        }, 7200000)
+        // setTimeout(()=>{
+        //   alert('Login session expired, Please login again')
+        //   sessionStorage.clear();
+        //   this.router.navigate(['/login']);
+        // }, 7200000)
         this.apiService.logged(this.userAccount.id, this.userAccount.auth_token, this.userAccount.role);
         this.router.navigate(['/'])
       },

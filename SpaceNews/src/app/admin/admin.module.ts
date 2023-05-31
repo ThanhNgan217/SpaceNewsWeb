@@ -24,8 +24,9 @@ import { CanActivateGuard } from '../Guard/can-activate-guard.guard';
 import { AdminComponent } from './admin/admin.component';
 import { BlockRightComponent } from './block-right/block-right.component';
 import { EditEventComponent } from './edit-event/edit-event.component';
-import { GroupManageComponent } from './group-manage/group-manage.component';
+import { GroupDetailsDialog, GroupEditDialog, GroupManageComponent } from './group-manage/group-manage.component';
 import { PastEventsComponent } from './past-events/past-events.component';
+import { AddGroupComponent } from './add-group/add-group.component';
 
 
 const routes: Routes = [
@@ -55,6 +56,11 @@ const routes: Routes = [
     path:'admin/posts/edit/:id',
     component: EditEventComponent,
     // canActivate: [CanActivateGuard],
+  },
+  {
+    path:'admin/groups/add',
+    component: AddGroupComponent,
+    // canActivate: [CanActivateGuard],
   }
 ];
 
@@ -66,7 +72,10 @@ const routes: Routes = [
     BlockRightComponent,
     EditEventComponent,
     GroupManageComponent,
-    PastEventsComponent
+    PastEventsComponent,
+    GroupDetailsDialog,
+    GroupEditDialog,
+    AddGroupComponent
   ],
   imports: [
     RouterModule.forChild(routes),

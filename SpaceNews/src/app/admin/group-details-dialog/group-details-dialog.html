@@ -1,0 +1,50 @@
+<div class="container">
+  <h2 class="group">
+      GROUP DETAIL
+  </h2>
+  <table>
+      <thead>
+          <tr>
+              <td>Name</td>
+              <td>Email</td>
+          </tr>
+      </thead>
+      <tbody>
+          <!-- <tr *ngFor= "let user of users">
+              <td>{{user.name}}</td>
+              <td>{{user.email}}</td>
+          </tr> -->
+          <tr>
+              <td>A</td>
+              <td>a@gmail.com</td>
+          </tr>
+
+      </tbody>
+  </table>
+
+  <h2 class="events">
+      Events
+  </h2>
+  <!-- list post component -->
+    <div class="list-post">
+      <div class="post-container" *ngFor="let p of posts">
+        <div class="post" [class.onweek]="isOnWeek(p.id)" [class.upcomming]="isUpcomming(p.id)">
+          <!-- <div class="post-router" routerLink="post/{{p.id}}"> -->
+            <div class="post-router">
+            <img src="{{p.image}}">
+            <div class="content-box">
+              <p class="list-post-title">{{p.title}}</p>
+              <pre class="list-post-description">{{p.time | date:'MMM d, y            h:mm a'}}</pre>
+            </div>
+          </div>
+          <div class="post-icon">
+            <!-- <mat-icon>star_border</mat-icon> -->
+            <!-- <span (click)="starClick(p.id)"><i class="bi bi-star" *ngIf="!isFavourite"></i><i class="bi bi-star-fill" *ngIf="isFavourite"></i></span> -->
+            <i class="bi bi-star" ></i>
+            <!-- <mat-icon>share</mat-icon> -->
+            <i class="bi bi-share"></i>
+            <!-- <mat-icon>more_vert</mat-icon> -->
+            <i class="bi bi-three-dots-vertical"></i>
+          </div>
+
+</div>

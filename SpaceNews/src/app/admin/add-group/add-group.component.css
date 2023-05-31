@@ -1,0 +1,143 @@
+*{
+  font-family: 'Montserrat', sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  --viewH : 100vh;
+  --viewW : 100vw;
+  --blue: #259CD7;
+  --ratio : calc(var(--viewW)/1160);
+  --ratioH : calc(var(--viewH)/1024);
+}
+.logo {
+  width: calc(571*var(--ratio));
+  height: calc(85*var(--ratio));
+  left: calc(47*var(--ratio));
+  margin: 50px 50px 0px;
+  cursor: pointer;
+}
+.logo img{
+    float: left;
+    width: calc(150.81*var(--ratio));
+    height: calc(68*var(--ratio));
+}
+.logo p{
+    float: left;
+    font-style: normal;
+    font-weight: 700;
+    font-size: calc(25*var(--ratio));
+    letter-spacing: calc(0.2*var(--ratio));
+    line-height: calc(68*var(--ratio));
+    color: var(--blue);
+    margin: 0 0 0px;
+}
+.add-group-title {
+  position: absolute;
+  width: calc(587*var(--ratio));
+  height: calc(97*var(--ratio));
+  top: calc(160*var(--ratio));
+  left: calc(264*var(--ratio));
+}
+h3 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  letter-spacing: 0.1px;
+  text-align: center;
+  color: #25282B;
+  line-height: 42px;
+  margin-top: calc(55*var(--ratio));
+}
+.home-content-container {
+  position: absolute;
+  top: calc(266*var(--ratio));
+}
+.name {
+  position: absolute;
+  top: calc(9*var(--ratio));
+  left: calc(264*var(--ratio));
+  width: calc(587*var(--ratio));
+  height: calc(26*var(--ratio));
+}
+.name label {
+  position: absolute;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.2px;
+  color: #52575C;
+  align-items: center;
+  float: left;
+  top: calc(6*var(--ratio));
+}
+.name input {
+  position: relative;
+  left: calc(87*var(--ratio));
+  background: #FFFFFF;
+  border: 1px solid #B9B9B9;
+  width: calc(500*var(--ratio));
+  height:calc(26*var(--ratio));
+  text-align: left;
+}
+.mail {
+  position: absolute;
+  top: calc(58*var(--ratio));
+  left: calc(264*var(--ratio));
+  width: calc(587*var(--ratio));
+  height: calc(26*var(--ratio));
+}
+
+.mail label {
+  position: absolute;
+  top: calc(6*var(--ratio));
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.2px;
+  color: #52575C;
+  align-items: center;
+  float: left;
+}
+
+
+.mail input {
+  position: relative;
+  left: calc(87*var(--ratio));
+  background: #FFFFFF;
+  border: 1px solid #B9B9B9;
+  width:calc(500*var(--ratio));
+  height:calc(26*var(--ratio));
+  text-align: left;
+}
+
+.mail .material-icons {
+  position: relative;
+  display: flex;
+  float: right;
+  right: calc(4.12*var(--ratio));
+  top: calc(3.19*var(--ratio));
+  width: calc(24.75*var(--ratio));
+  height: calc(20.63*var(--ratio));
+  font-family: 'Material Icons' !important;
+}
+button {
+  position: absolute;
+  width: calc(100*var(--ratio));
+  height: calc(50*var(--ratio));
+  top: calc(107*var(--ratio));
+  left: calc(751*var(--ratio));
+
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--blue);
+  background-color: #FAF9F7;
+  border: 2px solid var(--blue);
+  border-radius: 10px;
+  text-align: center;
+  float: right;
+}

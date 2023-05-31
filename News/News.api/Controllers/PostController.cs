@@ -7,6 +7,9 @@ using News.api.Data;
 using News.api.Entities;
 using News.api.ViewModels;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Text.RegularExpressions;
+using System.Drawing.Printing;
 
 namespace News.api.Controllers
 {
@@ -28,6 +31,7 @@ namespace News.api.Controllers
         public async Task<ActionResult<IEnumerable<Post>>> GetPosts(
             int? topicId = null,
             string keyword = "",
+            string groupId = null,//
             int pageIndex = 0,
             int pageSize = 10,
             bool? showSlider = null,
@@ -42,6 +46,12 @@ namespace News.api.Controllers
             {
                 query = query.Where(s => s.TopicID == topicId);
             }
+            //
+            if (groupId != null)
+            {
+                query = query.Where(s => s.GroupID.Contains(groupId));
+            }
+            //
 
             if (showSlider == true)
             {
@@ -232,5 +242,9 @@ namespace News.api.Controllers
             }
             return true;
         }
+
+
+
+
     }
 }

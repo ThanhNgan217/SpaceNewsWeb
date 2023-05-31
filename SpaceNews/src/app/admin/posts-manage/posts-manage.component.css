@@ -14,7 +14,9 @@
 .content-container{
   position: relative;
   margin-top: 15px;
+  margin-bottom: 15px;
   width: 100%;
+  height: auto;
 }
 
 /* block left */
@@ -63,7 +65,8 @@
 .list-post-container{
   position: relative;
   background-color: white;
-  height: calc(var(--ratio)*1260);
+  /* height: calc(var(--ratio)*1260); */
+  min-height: 100vh;
   margin-top: 15px;
   padding-right: 18px;
   padding-left: 38px;
@@ -180,6 +183,9 @@
   line-height: 60px;
 }
 
+.box-card{
+  min-height: 100vh;
+}
 
 /* card-box > card-block > card */
 .no-results-found{
@@ -314,12 +320,12 @@
 
 /* paginator */
 .block-paginator{
-  margin-top: 10px;
+  position: relative;
+  margin-top: 3vh;
   height: calc(70*var(--ratio));
-  bottom: 10px;
+  bottom: 0;
   left: 0;
   right: 0;
-  position: absolute;
 }
 .paginator{
   position: relative;

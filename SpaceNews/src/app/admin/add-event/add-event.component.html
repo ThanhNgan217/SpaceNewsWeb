@@ -79,7 +79,10 @@
             <label class="location" for="location">Location</label>
           </td>
           <td class="td-right">
-            <input class="set-height" formControlName="eventLocation" name="location" type="text" required>
+            <input class="set-height" list="locationSuggest" formControlName="eventLocation" name="location" type="text" required autocomplete="true">
+            <datalist id="locationSuggest">
+              <option *ngFor="let a of location" [value]="a">{{a}}</option>
+            </datalist>
           </td>
         </tr>
         <tr class="row-control">

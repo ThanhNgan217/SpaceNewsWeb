@@ -24,7 +24,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
 
   groupsID = [''];
 
-  location = [''];
+  location: any;
 
   checked = false;
   defaultTopic = '';
@@ -62,11 +62,20 @@ export class AddEventComponent implements OnInit, OnDestroy{
   html= '';
 
   ngOnInit(){
-    this.getLocation();
-    this.LoadTopics();
-    this.LoadGroups();
-    this.initForm();
-    console.log(this.location);
+    // this.getLocation();
+
+    this.addEventPromise
+    .then((listLocation)=>{
+      this.location = listLocation;
+      this.LoadTopics();
+      this.LoadGroups();
+      this.initForm();
+    })
+    .catch(()=>{
+      this.LoadTopics();
+      this.LoadGroups();
+      this.initForm();
+    })
 
 
     // console.log(this.router.url)
@@ -220,17 +229,17 @@ export class AddEventComponent implements OnInit, OnDestroy{
 
   }
 
-  async getLocation(){
-    let posts;
-    let suggestions : string[] = [];
+  addEventPromise = new Promise((resolve, reject) =>{
+    let location = new Set();
     this.apiService.getSlider().subscribe({
-      next:data => {
-        posts = data;
-        suggestions = posts.map(p =>{
-          return p.location;
-        })
-        this.location = [...new Set(suggestions)];
+      next : data => {
+        let posts = data;
+        posts.forEach(p => {location.add(p.location);})
+        resolve(Array.from(location));
+      },
+      error: err=>{
+        reject(err);
       }
     })
-  }
+  })
 }

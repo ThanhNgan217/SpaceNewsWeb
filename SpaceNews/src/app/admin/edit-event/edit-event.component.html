@@ -49,7 +49,10 @@
             <label class="location" for="location">Location</label>
           </td>
           <td class="td-right">
-            <input class="set-height" formControlName="eventLocation" name="location" type="text">
+            <input class="set-height" list="location" formControlName="eventLocation" name="location" type="text">
+            <datalist id="location" name="editEventLocation">
+              <option *ngFor="let a of locationSuggest" [value]="a">{{a}}</option>
+            </datalist>
           </td>
         </tr>
         <tr class="row-control">
@@ -114,7 +117,7 @@
           <td class="td-right" style="text-align: right;">
             <div style="height: 24px;"></div>
             <div class="submit-btn">
-              <button class="cancel-edit" (click)="cancelEdit()">Cancel</button>
+              <button class="cancel-edit" (click)="cancelEdit($event)">Cancel</button>
               <button type="submit">Save</button>
             </div>
           </td>
