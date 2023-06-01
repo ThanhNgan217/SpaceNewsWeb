@@ -37,3 +37,20 @@ public class Group
     public string? Email { get; set; }
 
 }
+public class Member
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+}
+
+public class GroupMember
+{
+    public int Id { get; set; }
+    public int? MemberID { get; set; }
+    public int? GroupID { get; set; }
+
+    //[JsonIgnore]
+
+    public virtual Member? Members { get; set; }
+}

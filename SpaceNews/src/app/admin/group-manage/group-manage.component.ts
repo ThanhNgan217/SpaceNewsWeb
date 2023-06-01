@@ -188,33 +188,11 @@ export class GroupDetailsDialog implements OnInit {
     // this.upcommingPost.forEach((p)=>this.posts.unshift(p))
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if ('topicChecked' in changes){
-  //     const topic = Number(changes['topicChecked'].currentValue);
-  //       this.pageIndex = 0;
-  //       this.changePage.emit(this.pageIndex);
-  //       // const topic = Number(changes['topicChecked'].currentValue);
-  //       // this.topicChecked = topic;
-  //       this.apiService.stopSearch();
-  //       this.ChangeTopic(topic);
-  //     // if('pageIndex'in changes){
-  //     //   this.getListPost(topic, this.pageIndex);
-  //     // }else this.getListPost(topic, 0);
-  //   }
-  //   else if('pageIndex' in changes){
-  //     if(this.keyWord){
-  //       this.getListPost(this.topicChecked, this.pageIndex, this.keyWord)
-  //     }
-  //       else {
-  //         this.getListPost(this.topicChecked, this.pageIndex, '');}
-  //   }
-  // }
-
   getPost(){
     let id = this.data.id;
     this.apiService.getListPosts(id).subscribe({
       next:data=>{
-        this.listPost = data;
+        this.posts = data;
       }
     })
   }

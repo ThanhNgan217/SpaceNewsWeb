@@ -201,14 +201,13 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.addEventForm.patchValue({eventType: eventType});
     // console.log(eventType)
     if(this.listTopic.find(t => t.name == eventType)){
-      console.log(eventType)
       let id = this.listTopic.find(t => t.name == eventType)?.id;
       this.selectedTopic = id? id : 0;
     }
     else {
       if(eventType !=""){
         let msg = `Add new event type "${eventType}"?`;
-        if(confirm(msg) == true){ // add new event type / topic
+        if(confirm(msg)){ // add new event type / topic
           this.postService.addEventType(eventType).subscribe({
             next:data =>{
               this.selectedTopic = data.id;

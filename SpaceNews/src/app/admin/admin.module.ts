@@ -75,7 +75,7 @@ const routes: Routes = [
     PastEventsComponent,
     GroupDetailsDialog,
     GroupEditDialog,
-    AddGroupComponent
+    AddGroupComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

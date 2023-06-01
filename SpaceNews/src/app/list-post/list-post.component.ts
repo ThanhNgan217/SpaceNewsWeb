@@ -132,8 +132,15 @@ export class ListPostComponent implements OnInit{
     // 691199000 ma = ... = 8days -1s
     this.posts.forEach((p)=>{
       let x = new Date(p.time);
-      if(x.getTime() - t <= 604800000 && x.getTime() - t >= -36399000){
-        if(x.getTime() - t <= 259200000) this.upcomming.push(p)
+      let week = t + 604800000; // current time + 7days
+      let days_3 = t + 259200000; // current time + 3days
+      // <= 7 days &&
+      // if(x.getTime() - t <= 604800000 && x.getTime() - t >= -36399000){
+      //   if(x.getTime() - t <= 259200000) this.upcomming.push(p)
+      //   else this.onWeek.push(p);
+      // }
+      if(x.getTime() <= week){
+        if(x.getTime() <= days_3) this.upcomming.push(p);
         else this.onWeek.push(p);
       }
     })
@@ -193,7 +200,7 @@ export class PostDialog implements OnInit{
 
   ngOnInit(): void {
     if(sessionStorage.getItem('pastEvents')=='1') this.isPastEvents = true;
-    if(sessionStorage.getItem('userID')){
+    if(sessionStorage.getItem('userRole')=='1'){
       this.isAdmin = true;
       sessionStorage.removeItem('prev');
       sessionStorage.setItem('prev',window.location.href);

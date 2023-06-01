@@ -158,6 +158,10 @@ export class PostsManageComponent implements OnInit {
     this.postService.getPost(id).subscribe({
       next:data =>{
         currPost = data;
+        let gr = data.groupID.split(',');
+        gr = gr.filter( g =>{this.listGroup.findIndex(x => x.id == g) != -1});
+        toggle = !data.showInSlider;
+        currPost.groupID = gr.join(',');
         toggle = data.priority==1 ? false:true;
         this.postService.piorityToggle(id, toggle, currPost).subscribe({
         })
@@ -175,13 +179,17 @@ export class PostsManageComponent implements OnInit {
     this.postService.getPost(id).subscribe({
       next:data =>{
         currPost = data;
+        let gr = data.groupID.split(',');
+        // case group deleted
+        gr = gr.filter( g =>{this.listGroup.findIndex(x => x.id == g) != -1});
         toggle = !data.showInSlider;
-        // console.log(toggle)
+        currPost.groupID = gr.join(',');
         this.postService.statusToggle(id, toggle, currPost).subscribe({
         })
       }
     });
   }
+
 
   //search posts
   ClickBtn(){

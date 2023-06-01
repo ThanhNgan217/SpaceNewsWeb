@@ -6,7 +6,7 @@
   <div class="add-event-form-block">
     <p class="add-event-title">Edit Event</p>
   <div class="form-content-container">
-    <form class="add-event-form" [formGroup]="addEventForm" autocomplete="off" (ngSubmit)="onSubmit()">
+    <form class="add-event-form" [formGroup]="addEventForm" autocomplete="off" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
       <table style="border:none">
         <tr class="row-control">
           <td class="td-left">
@@ -49,7 +49,7 @@
             <label class="location" for="location">Location</label>
           </td>
           <td class="td-right">
-            <input class="set-height" list="location" formControlName="eventLocation" name="location" type="text">
+            <input class="set-height" list="location" formControlName="eventLocation" name="location" type="text" (change)="handleLocation($event)">
             <datalist id="location" name="editEventLocation">
               <option *ngFor="let a of locationSuggest" [value]="a">{{a}}</option>
             </datalist>
@@ -118,7 +118,7 @@
             <div style="height: 24px;"></div>
             <div class="submit-btn">
               <button class="cancel-edit" (click)="cancelEdit($event)">Cancel</button>
-              <button type="submit">Save</button>
+              <button type="submit" (click)="cancel=true">Save</button>
             </div>
           </td>
         </tr>

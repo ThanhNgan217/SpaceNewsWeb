@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Editor, Toolbar } from 'ngx-editor';
 import { ApiService } from 'src/app/Service/api.service';
@@ -8,6 +8,7 @@ import { Group } from 'src/app/Group';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
 import {Location} from '@angular/common';
 import { MatOption } from '@angular/material/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) {}
@@ -31,7 +32,7 @@ export class EditEventComponent implements OnInit {
     topicID: 0,
     groupID: ''
   };
-
+  cancel = true;
   currTopicName : string | undefined;
 
   fileSrc : any;
@@ -42,6 +43,8 @@ export class EditEventComponent implements OnInit {
   fileName = '';
   selectedFile: ImageSnippet | undefined;
   locationSuggest: any;
+  oldLocation: string = '';
+  newLocation: string = '';
 
 
   checked = false;
@@ -82,7 +85,7 @@ export class EditEventComponent implements OnInit {
   html= '';
 
   ngOnInit(){
-    // console.log(this.previousUrl);
+    this.cancel = true;
     this.postID = Number(this._route.snapshot.paramMap.get('id'));
     this.editEventPromise
     .then((location)=>{
@@ -94,10 +97,6 @@ export class EditEventComponent implements OnInit {
       this.LoadGroups();
       this.LoadTopics();
     })
-    // this.LoadPost(this.postID);
-
-    // this.editor = new Editor();
-    // this.ListGroup();
   }
 
   //destory the editor
@@ -119,7 +118,7 @@ export class EditEventComponent implements OnInit {
         }
         let oldType = this.listTopic.find(t => t.id == this.selectedTopic)?.name
         // if not update event type, default event type is '1 : Out Door'
-
+        this.oldLocation = data.location;
         this.selectedGroup = data.groupID.split(',');
         if(data.priority == 1) this.checked = true;
         let gr =  data.groupID.split(',');
@@ -178,53 +177,61 @@ export class EditEventComponent implements OnInit {
 
 
   onSubmit(){
-    if(this.checked) this.addEventForm.patchValue({eventPiority:1})
-    else this.addEventForm.patchValue({eventPiority:0})
+    if(this.cancel){
+      console.log('onSubmit')
+      if(this.checked) this.addEventForm.patchValue({eventPiority:1})
+      else this.addEventForm.patchValue({eventPiority:0})
 
-    let gr = this.addEventForm.get('eventGroup')?.value;
-    if(this.selectAllGroup.selected){
-      gr?.shift();
-      console.log(gr);
-    }
+      let gr = this.addEventForm.get('eventGroup')?.value;
 
-    if(gr?.length == 0){
-      gr = ['']
-    }
-    this.addEventForm.patchValue({eventGroup:gr});
-    this.addEventForm.patchValue({eventType: this.selectedTopic});
+      // select All Groups => delete first value ("")
+      if(this.selectAllGroup.selected){
+        gr?.shift();
+      }
 
-    let data = Object(this.addEventForm.value);
-    // console.log(this.addEventForm.get('eventContent')?.value)
-    this.addEventForm.reset();
+      // no group relevants selected
+      if(gr?.length == 0){
+        gr = ['']
+      }
 
-    this.selectedTopic = 1;
-    this.selectedGroup = [''];
+      // check case group has removed and admin not change group relevants field
+      gr = gr?.filter((g)=>{
+        return this.groupsID.includes(g);
+      })
 
-    this.postService.editPost(data, this.postID, this.currPost.date, this.fileSrc, this.currPost.showInSlider)
-    .subscribe({
-      next:data=>{
-        alert('Saved change');
-        if(sessionStorage.getItem('prev')){
-          if(sessionStorage.getItem('prev')?.includes('posts')){
-            this.router.navigate(['/admin/posts']);
-            sessionStorage.removeItem('prev');
+      this.addEventForm.patchValue({eventGroup:gr});
+      this.addEventForm.patchValue({eventLocation: this.newLocation});
+      this.addEventForm.patchValue({eventType: this.selectedTopic});
+
+      let data = Object(this.addEventForm.value);
+      this.addEventForm.reset();
+      this.postService.editPost(data, this.postID, this.currPost.date, this.fileSrc, this.currPost.showInSlider)
+      .subscribe({
+        next:data=>{
+          alert('Saved change');
+          if(sessionStorage.getItem('prev')){
+            if(sessionStorage.getItem('prev')?.includes('posts')){
+              this.router.navigate(['/admin/posts']);
+              sessionStorage.removeItem('prev');
+            }
+            else{
+              this.router.navigate(['/']);
+              sessionStorage.removeItem('prev');
+            }
           }
           else{
-            this.router.navigate(['/']);
+             this.router.navigate(['/admin/posts']);
             sessionStorage.removeItem('prev');
           }
-        }
-        else{
-           this.router.navigate(['/admin/posts']);
-          sessionStorage.removeItem('prev');
-        }
-      },
-      error:err=>{alert(err.message)}
-    })
+        },
+        error:err=>{alert(err.message)}
+      })
+    }
   }
 
   cancelEdit(e: any){
-    if(e.target == "button"){
+    if(this.cancel){
+      console.log('cancel')
       if(sessionStorage.getItem('prev')){
         if(sessionStorage.getItem('prev')?.includes('posts')){
           this.router.navigate(['/admin/posts']);
@@ -236,7 +243,7 @@ export class EditEventComponent implements OnInit {
         }
       }
       else{
-         this.router.navigate(['/admin/posts']);
+        this.router.navigate(['/admin/posts']);
         sessionStorage.removeItem('prev');
       }
     }
@@ -272,29 +279,39 @@ export class EditEventComponent implements OnInit {
       let id = this.listTopic.find(t => t.name == eventType)?.id;
       this.selectedTopic = id? id : 0;
     }
-    else{
-      if(eventType !=""){
-        let msg = `Add new event type "${eventType}"?`;
-        if(confirm(msg) == true){ // add new event type / topic
-          this.postService.addEventType(eventType).subscribe({
-            next:data =>{
-              this.selectedTopic = data.id;
-            }
-          });
-        }
-        else{
-          console.log('a')
-          this.selectedTopic = this.currPost.topicID;
-          this.addEventForm.patchValue({eventType: this.currTopicName});
-        }
-      }else{
+    else if(eventType != ""){
+      let msg = `Add new event type "${eventType}"?`;
+      if(confirm(msg)){ // add new event type / topic
+        this.postService.addEventType(eventType).subscribe({
+          next:data =>{
+            this.selectedTopic = data.id;
+          }
+        });
+      }
+      else{
         this.selectedTopic = this.currPost.topicID;
-        this.addEventForm.patchValue({eventType: this.currTopicName});
+        this.addEventForm.patchValue({eventType: this.currTopicName})
       }
     }
-
+    else{
+      this.selectedTopic = this.currPost.topicID;
+      this.addEventForm.patchValue({eventType: this.currTopicName})
+    }
   }
 
+  handleLocation(e:any){
+    let location = e.target.value.trim();
+    if(location == "") {
+      this.newLocation = this.oldLocation;
+      console.log(this.oldLocation)
+      console.log(this.newLocation)
+      this.addEventForm.patchValue({eventLocation: this.oldLocation});
+    }
+    else {
+      this.newLocation = location;
+      this.addEventForm.patchValue({eventLocation: location});
+    }
+  }
 
   editEventPromise = new Promise((resolve, reject) =>{
     let location = new Set();
@@ -311,5 +328,3 @@ export class EditEventComponent implements OnInit {
   })
 
 }
-
-

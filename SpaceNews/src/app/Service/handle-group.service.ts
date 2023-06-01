@@ -12,6 +12,7 @@ interface formGroupData {
   providedIn: 'root'
 })
 export class HandleGroupService {
+  auth = sessionStorage.getItem('auth_token');
   constructor(private apiService:ApiService, private http:HttpClient) { }
 
   private httpOptions = {
@@ -32,12 +33,13 @@ export class HandleGroupService {
 
 
   addGroup(obj : formGroupData){
+    this.auth = sessionStorage.getItem('auth_token');
     let newGroup = {
       name: obj.groupName,
       email: obj.groupMail
     };
     console.log(newGroup);
-    return this.http.post(`${this.url}/api/Groups`, JSON.stringify(newGroup), this.httpOptions);
+    return this.http.post(`${this.url}/api/Groups`, JSON.stringify(newGroup), {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
   }
   searchGroup(keyWord='', pageIndex=0){
     return this.http.get<Group[]>(`https://localhost:7136/api/Groups?keyword=${keyWord}&pageIndex=${pageIndex}&pageSize=6`);
@@ -46,7 +48,7 @@ export class HandleGroupService {
     return this.http.get<Group[]>(`https://localhost:7136/api/Groups?pageIndex=${pageIndex}&pageSize=6`);
   }
   deleteGroup(val: number){
-    return this.http.delete(`${this.url}/api/Groups/${val}`);
+    return this.http.delete(`${this.url}/api/Groups/${val}`, {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
   }
   editGroup(obj: formGroupData, Id: number){
     let edittedGroup = {
@@ -54,8 +56,9 @@ export class HandleGroupService {
       email: obj.groupMail,
       id: Id
     };
-    return this.http.put<Group>(`${this.url}/api/Groups/${Id}`, edittedGroup);
+    return this.http.put<Group>(`${this.url}/api/Groups/${Id}`, JSON.stringify(edittedGroup), {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
 
   }
+
 
 }

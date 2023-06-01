@@ -15,5 +15,7 @@ public class ViewModelToEntityMappingProfile : Profile
         CreateMap<TopicCreateModel, Topic>();
         CreateMap<TopicUpdateModel, Topic>();
         CreateMap<GroupCreateModel, Group>();
+        CreateMap<MemberCreateModel, Member>();
+        CreateMap<MemberUpdateModel, Member>();
     }
 }

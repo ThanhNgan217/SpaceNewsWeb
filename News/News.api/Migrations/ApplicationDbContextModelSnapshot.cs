@@ -245,7 +245,43 @@ namespace News.api.Migrations
 
                     b.ToTable("Groups");
                 });
+            modelBuilder.Entity("News.api.Entities.Member", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<string>("Name")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("Email")
+                    .HasColumnType("nvarchar(max)");
+
+                b.HasKey("Id");
+
+                b.ToTable("Members", (string)null);
+            });
+
+            modelBuilder.Entity("News.api.Entities.MemberGroup", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<int?>("MemberID")
+                    .HasColumnType("int");
+
+                b.Property<int?>("GroupID")
+                    .HasColumnType("int");
+
+                b.HasKey("Id");
+
+                b.ToTable("Members_Groups", (string)null);
+            });
             modelBuilder.Entity("News.api.Entities.Post", b =>
                 {
                     b.Property<int>("Id")
