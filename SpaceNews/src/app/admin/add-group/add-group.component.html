@@ -19,58 +19,32 @@
     <form class="add-member-form" autocomplete="on" [formGroup]="addgroupMember">
       <div class = "member">
         <label for="member">Members </label>
-        <!-- <textarea class="input-field" type="text" id="member"
-          autocomplete="auto"
-          required
-          formControlName="groupMail"></textarea>  -->
 
-
-          <!-- <mat-icon matSuffix>mail_outline</mat-icon> -->
         <table>
-          <thead>
+
               <tr>
                 <td class="label"><label for="memberName">Name</label></td>
                 <td class="label"><label for="memberMail">Email </label></td>
                 <!-- <td><button> Remove </button></td> -->
               </tr>
-          </thead>
-          <tbody>
+              <tr>
+                <td class="input">
+                  <input type="text" id="memberName"
+                    required
+                    formControlName="memberName">
+                </td>
+                <td class="input"><input type="text" id="memberMail"
+                    required
+                    formControlName="memberMail"></td>
+                <td><button (click)="addHandler()"> Add </button></td>
 
-              <td class="input">
-                <input type="text" id="memberName"
-                  required
-                  formControlName="memberName">
-              </td>
-              <td class="input"><input type="text" id="memberMail"
-                  required
-                  formControlName="memberMail"></td>
-              <td><button (click)="addHandler()"> Add </button></td>
+              </tr>
+
               <tr *ngFor="let mem of members">
                 <td>{{mem.name}}</td>
                 <td>{{mem.email}}</td>
               </tr>
-              <!-- <td>
-              <mat-form-field class="example-full-width" style="width: 100%">
-                <mat-chip-list #chipList>
-                  <mat-chip style="margin-top:0.4em;" *ngFor="let option of searchOption" (removed)="removeOption(option)">
 
-                    <span>{{option.name}}</span>
-
-                    <mat-icon matChipRemove>cancel</mat-icon>
-                  </mat-chip>
-                  <input #autocompleteInput type="text" placeholder="Enter Name" aria-label="Number" matInput [formGroup]="addgroupMember"
-                    [matAutocomplete]="auto" [matChipInputFor]="chipList">
-                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                    <mat-option *ngFor="let option of autoCompleteList" [value]="option" (onSelectionChange)="filterMemberList($event)">
-                      {{option.name}}
-                    </mat-option>
-                  </mat-autocomplete>
-                </mat-chip-list>
-
-              </mat-form-field>
-            </td> -->
-
-          </tbody>
         </table>
       </div>
     </form>

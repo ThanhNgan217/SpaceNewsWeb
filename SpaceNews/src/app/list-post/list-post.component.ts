@@ -165,6 +165,7 @@ export class ListPostComponent implements OnInit{
 
   }
   showDialog(id : number){
+    console.log(id)
     let post = this.posts.find(p => p.id == id);
     if(sessionStorage.getItem('userID')) {
       this.handleHistory(id.toString());
@@ -181,7 +182,9 @@ export class ListPostComponent implements OnInit{
     this.apiService.getHistory(userID).subscribe({
       next:data =>{
         eventsID = data.eventsID? data.eventsID : '';
-        let arr = eventsID.split(',');
+        let arr : string[];
+        if(eventsID != '') arr= eventsID.split(',');
+        else arr = [];
         let index = arr.indexOf(postID);
         if(index > -1) arr.splice(index, 1);
         if(arr.length >= 12) arr.shift();

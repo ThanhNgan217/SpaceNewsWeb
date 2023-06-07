@@ -14,7 +14,7 @@
   height: calc(85*var(--ratio));
   left: calc(47*var(--ratio));
   margin: 50px 50px 0px;
-  cursor: pointer;
+
 }
 .logo img{
     float: left;
@@ -32,11 +32,7 @@
     margin: 0 0 0px;
 }
 .add-group-title {
-  position: absolute;
-  width: calc(587*var(--ratio));
-  height: calc(97*var(--ratio));
-  top: calc(160*var(--ratio));
-  left: calc(264*var(--ratio));
+  position: relative;
 }
 h3 {
   font-style: normal;
@@ -49,17 +45,17 @@ h3 {
   margin-top: calc(55*var(--ratio));
 }
 .home-content-container {
-  position: absolute;
-  top: calc(266*var(--ratio));
+  position: relative;
 }
 .name {
-  position: absolute;
+  position: relative;
   top: calc(9*var(--ratio));
   left: calc(264*var(--ratio));
   width: calc(587*var(--ratio));
   height: calc(26*var(--ratio));
+  margin-bottom: calc(23*var(--ratio));
 }
-.name label {
+.name label, .member label {
   position: absolute;
   font-style: normal;
   font-weight: 400;
@@ -69,7 +65,7 @@ h3 {
   color: #52575C;
   align-items: center;
   float: left;
-  top: calc(6*var(--ratio));
+  margin-top: calc(6*var(--ratio));
 }
 .name input {
   position: relative;
@@ -80,15 +76,15 @@ h3 {
   height:calc(26*var(--ratio));
   text-align: left;
 }
-.mail {
-  position: absolute;
-  top: calc(58*var(--ratio));
+.member {
+  position: relative;
+  /* top: calc(58*var(--ratio)); */
   left: calc(264*var(--ratio));
-  width: calc(587*var(--ratio));
-  height: calc(26*var(--ratio));
+  width: calc(572*var(--ratio));
+  /* height: calc(26*var(--ratio)); */
 }
 
-.mail label {
+.member label {
   position: absolute;
   top: calc(6*var(--ratio));
   font-style: normal;
@@ -102,32 +98,36 @@ h3 {
 }
 
 
-.mail input {
+.member table {
   position: relative;
+  width: calc(480*var(--ratio));
   left: calc(87*var(--ratio));
   background: #FFFFFF;
   border: 1px solid #B9B9B9;
-  width:calc(500*var(--ratio));
-  height:calc(26*var(--ratio));
   text-align: left;
+
+}
+table thead{
+  position: relative;
+  height: calc(26*var(--ratio));
 }
 
-.mail .material-icons {
+table tbody {
   position: relative;
-  display: flex;
-  float: right;
-  right: calc(4.12*var(--ratio));
-  top: calc(3.19*var(--ratio));
-  width: calc(24.75*var(--ratio));
-  height: calc(20.63*var(--ratio));
+}
+.member input {
+  width: calc(236*var(--ratio));
+
+}
+.material-icons {
   font-family: 'Material Icons' !important;
 }
-button {
-  position: absolute;
+button#submit {
+  position: relative;
   width: calc(100*var(--ratio));
   height: calc(50*var(--ratio));
-  top: calc(107*var(--ratio));
-  left: calc(751*var(--ratio));
+  top: calc(23*var(--ratio));
+  right: calc(290*var(--ratio));
 
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;

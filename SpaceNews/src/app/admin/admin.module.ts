@@ -32,7 +32,7 @@ import { AddGroupComponent } from './add-group/add-group.component';
 const routes: Routes = [
   { path: 'admin',
     component: AdminComponent,
-    // canActivate: [CanActivateGuard],
+    canActivate: [CanActivateGuard],
     children: [
       {
         path:'posts',
@@ -50,17 +50,17 @@ const routes: Routes = [
   {
     path:'admin/posts/add',
     component: AddEventComponent,
-    // canActivate: [CanActivateGuard],
+    canActivate: [CanActivateGuard],
   },
   {
     path:'admin/posts/edit/:id',
     component: EditEventComponent,
-    // canActivate: [CanActivateGuard],
+    canActivate: [CanActivateGuard],
   },
   {
     path:'admin/groups/add',
     component: AddGroupComponent,
-    // canActivate: [CanActivateGuard],
+    canActivate: [CanActivateGuard],
   }
 ];
 
