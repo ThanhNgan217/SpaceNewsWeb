@@ -17,5 +17,7 @@ public class ViewModelToEntityMappingProfile : Profile
         CreateMap<GroupCreateModel, Group>();
         CreateMap<MemberCreateModel, Member>();
         CreateMap<MemberUpdateModel, Member>();
+        CreateMap<ReadHistoryCreate, ReadHistory>();
+        CreateMap<ReadHistoryUpdate, ReadHistory>();
     }
 }

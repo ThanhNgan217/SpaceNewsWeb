@@ -233,7 +233,7 @@
   max-width: calc(440*var(--ratio));
   height: calc(810*var(--ratio));
 }
-.content-block-right .favourite-block{
+.content-block-right .bookmark-block{
   position: relative;
   top: 0;
   left: 0;
@@ -241,44 +241,16 @@
   margin-bottom: calc(var(--ratio)*15);
   text-align: center;
   max-width: calc(var(--ratio)*440);
-  height: calc(var(--ratio)*405);
+  height: calc(75*var(--ratio));
   background-color: var(--white);
+  display: flex;
+  justify-content: space-around;
 }
-.favourite-block p{
-  position: relative;
-  top: calc(var(--ratio)*26);
-  font-size: calc(var(--ratio) * 32);
-  line-height: calc(var(--ratio) * 24);
-  color: var(--blue);
-  z-index: 1;
-}
-.favourite-block table{
-  position: absolute;
-  width: auto;
-  height: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #000000;
+.bookmark-block p {
+  margin: auto 0;
   font-weight: 700;
-  font-size: calc(var(--ratio) * 16);
-  line-height: calc(var(--ratio) * 24);
-  border-spacing: calc(var(--ratio)*18);
-  width: calc(var(--ratio)*262);
-}
-.favourite-block table th{
-  text-align: start;
-}
-.favourite-block table td{
-  text-align: end;
-}
-.favourite-table .color-blue{
+  font-size: 18px;
   color: var(--blue);
-}
-.favourite-table i{
-  font-size: 20px;
-}
-.favourite-table i:hover{
   cursor: pointer;
 }
 

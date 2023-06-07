@@ -7,6 +7,7 @@ import { DomSanitizer} from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { HandlePostService } from '../Service/handle-post.service';
 import { Group } from '../Group';
+import { History } from '../content/content.component';
 
 @Component({
   selector: 'app-list-post',
@@ -134,11 +135,6 @@ export class ListPostComponent implements OnInit{
       let x = new Date(p.time);
       let week = t + 604800000; // current time + 7days
       let days_3 = t + 259200000; // current time + 3days
-      // <= 7 days &&
-      // if(x.getTime() - t <= 604800000 && x.getTime() - t >= -36399000){
-      //   if(x.getTime() - t <= 259200000) this.upcomming.push(p)
-      //   else this.onWeek.push(p);
-      // }
       if(x.getTime() <= week){
         if(x.getTime() <= days_3) this.upcomming.push(p);
         else this.onWeek.push(p);
@@ -170,9 +166,34 @@ export class ListPostComponent implements OnInit{
   }
   showDialog(id : number){
     let post = this.posts.find(p => p.id == id);
-    const dialogRef = this.dialog.open(PostDialog, {
-      data: post
+    if(sessionStorage.getItem('userID')) {
+      this.handleHistory(id.toString());
+    }
+    this.dialog.open(PostDialog, {
+      data: post,
+      maxWidth : '50%'
     });
+  }
+
+  handleHistory(postID : string){
+    let userID = sessionStorage.getItem('userID');
+    let eventsID : string ='';
+    this.apiService.getHistory(userID).subscribe({
+      next:data =>{
+        eventsID = data.eventsID? data.eventsID : '';
+        let arr = eventsID.split(',');
+        let index = arr.indexOf(postID);
+        if(index > -1) arr.splice(index, 1);
+        if(arr.length >= 12) arr.shift();
+        arr.push(postID);
+        let body : History = {
+          userID : userID,
+          eventsID : arr.join(','),
+        }
+        console.log(body);
+        this.apiService.addHistory(body).subscribe();
+      }
+    })
   }
 }
 

@@ -3,7 +3,7 @@
     public class MemberCreateModel
     {
         public string Name { get; set; }
-        public string Email { get; set; }
+        public string Email { get; set; } 
     }
     public class MemberUpdateModel : MemberCreateModel
     {

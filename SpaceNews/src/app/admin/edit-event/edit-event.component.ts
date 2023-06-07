@@ -1,5 +1,5 @@
-import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import { Editor, Toolbar } from 'ngx-editor';
 import { ApiService } from 'src/app/Service/api.service';
 import { Topic } from 'src/app/Topic';
@@ -8,7 +8,6 @@ import { Group } from 'src/app/Group';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
 import {Location} from '@angular/common';
 import { MatOption } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) {}
@@ -44,8 +43,6 @@ export class EditEventComponent implements OnInit {
   selectedFile: ImageSnippet | undefined;
   locationSuggest: any;
   oldLocation: string = '';
-  newLocation: string = '';
-
 
   checked = false;
   listTopic : Topic[] = [];
@@ -116,6 +113,8 @@ export class EditEventComponent implements OnInit {
         else{
           this.selectedTopic = 1;
         }
+        let d:any = data.date.toString();
+        d = d.split('T');
         let oldType = this.listTopic.find(t => t.id == this.selectedTopic)?.name
         // if not update event type, default event type is '1 : Out Door'
         this.oldLocation = data.location;
@@ -125,7 +124,7 @@ export class EditEventComponent implements OnInit {
         this.addEventForm.setValue({
           eventTitle: data.title,
           eventType: oldType,
-          eventDate: data.date,
+          eventDate: d[0],
           eventTime: data.date,
           eventLocation: data.location,
           eventImg: data.image,
@@ -166,7 +165,6 @@ export class EditEventComponent implements OnInit {
     else{
       this.addEventForm.patchValue({eventGroup :[]})
     }
-    console.log(this.addEventForm.get('eventGroup')?.value)
   }
   selectGroup(){
     if(this.selectAllGroup.selected) {
@@ -181,26 +179,21 @@ export class EditEventComponent implements OnInit {
       console.log('onSubmit')
       if(this.checked) this.addEventForm.patchValue({eventPiority:1})
       else this.addEventForm.patchValue({eventPiority:0})
-
       let gr = this.addEventForm.get('eventGroup')?.value;
-
       // select All Groups => delete first value ("")
       if(this.selectAllGroup.selected){
         gr?.shift();
       }
-
       // no group relevants selected
       if(gr?.length == 0){
         gr = ['']
       }
-
       // check case group has removed and admin not change group relevants field
       gr = gr?.filter((g)=>{
         return this.groupsID.includes(g);
       })
 
       this.addEventForm.patchValue({eventGroup:gr});
-      this.addEventForm.patchValue({eventLocation: this.newLocation});
       this.addEventForm.patchValue({eventType: this.selectedTopic});
 
       let data = Object(this.addEventForm.value);
@@ -302,13 +295,9 @@ export class EditEventComponent implements OnInit {
   handleLocation(e:any){
     let location = e.target.value.trim();
     if(location == "") {
-      this.newLocation = this.oldLocation;
-      console.log(this.oldLocation)
-      console.log(this.newLocation)
       this.addEventForm.patchValue({eventLocation: this.oldLocation});
     }
     else {
-      this.newLocation = location;
       this.addEventForm.patchValue({eventLocation: location});
     }
   }

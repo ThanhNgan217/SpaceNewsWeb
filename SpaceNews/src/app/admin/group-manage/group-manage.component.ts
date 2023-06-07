@@ -8,6 +8,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Post } from 'src/app/PostEvent';
 import { Member } from 'src/app/Member';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
+import { GroupMembers } from 'src/app/GroupMembers';
 
 interface User{
   id : string|null,
@@ -178,21 +179,56 @@ export class GroupDetailsDialog implements OnInit {
 
   // keyWordOrigin : string |undefined;
   listPost : Post[] = [];
+  listMember : GroupMembers[] = [];
+  members: Member[] = [];
 
 
 
   ngOnInit(): void{
     // this.getListPost();
-    this.getPost();
+    // this.getPost();
+    this.getMember();
     console.log(this.group);
     // this.upcommingPost.forEach((p)=>this.posts.unshift(p))
   }
 
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if ('topicChecked' in changes){
+  //     const topic = Number(changes['topicChecked'].currentValue);
+  //       this.pageIndex = 0;
+  //       this.changePage.emit(this.pageIndex);
+  //       // const topic = Number(changes['topicChecked'].currentValue);
+  //       // this.topicChecked = topic;
+  //       this.apiService.stopSearch();
+  //       this.ChangeTopic(topic);
+  //     // if('pageIndex'in changes){
+  //     //   this.getListPost(topic, this.pageIndex);
+  //     // }else this.getListPost(topic, 0);
+  //   }
+  //   else if('pageIndex' in changes){
+  //     if(this.keyWord){
+  //       this.getListPost(this.topicChecked, this.pageIndex, this.keyWord)
+  //     }
+  //       else {
+  //         this.getListPost(this.topicChecked, this.pageIndex, '');}
+  //   }
+  // }
+
   getPost(){
     let id = this.data.id;
-    this.apiService.getListPosts(id).subscribe({
+    this.apiService.getListPosts(id.toString()).subscribe({
       next:data=>{
-        this.posts = data;
+        this.listPost = data;
+      }
+    })
+  }
+
+  getMember(){
+    let id = this.data.id;
+    this.groupService.getMembersofGroups(Number(id)).subscribe({
+      next:data=>{
+        this.listMember = data;
+        console.log(this.listMember);
       }
     })
   }

@@ -18,6 +18,8 @@
   position: relative;
   overflow-y: visible;
   top: 0;
+
+  background-color: white;
 }
 mat-dialog-content{
   /* min-height: calc(var(--ratio)*800); */

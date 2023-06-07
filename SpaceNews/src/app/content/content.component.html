@@ -97,34 +97,9 @@
       </div>
     </div>
     <div class="content-block-right">
-      <div class="favourite-block" *ngIf="logged">
-        <p class="favourite-text">Favourite</p>
-        <table class="favourite-table">
-          <tr class="color-blue">
-            <th>News</th>
-            <td>30</td>
-          </tr>
-          <tr>
-            <th>Trading</th>
-            <td>30</td>
-          </tr>
-          <tr>
-            <th>Digital</th>
-            <td>30</td>
-          </tr>
-          <tr>
-            <th>Investing</th>
-            <td>30</td>
-          </tr>
-          <tr class="color-blue">
-            <th>READ LATER</th>
-            <td><i class="bi bi-book" style="color: #259CD7"></i></td>
-          </tr>
-          <tr class="color-blue">
-            <th>READ HISTORY</th>
-            <td><i class="bi bi-bookmark"></i></td>
-          </tr>
-        </table>
+      <div class="bookmark-block" *ngIf="logged">
+        <p class="bookmark">Bookmark <i class="bi bi-bookmark"></i></p>
+        <p class="readHistory" (click)="openHistory()">Read history <i class="bi bi-book"></i></p>
       </div>
       <!-- NO LOGIN : CALENDAR -->
       <div class="calendar"  >

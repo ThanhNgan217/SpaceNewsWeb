@@ -6,7 +6,7 @@
   <div class="add-event-form-block">
     <p class="add-event-title">Add Event</p>
   <div class="form-content-container">
-    <form class="add-event-form" [formGroup]="addEventForm" autocomplete="off" (ngSubmit)="onSubmit()" ngNativeValidate>
+    <form class="add-event-form" [formGroup]="addEventForm" autocomplete="off" (ngSubmit)="onSubmit()" ngNativeValidate (keydown.enter)="$event.preventDefault()">
       <!-- <div class="row-control">
 
       </div>
@@ -45,7 +45,7 @@
             </div>
           </td>
           <td class="td-right">
-            <input class="set-height" name="title" type="text" formControlName="eventTitle" required>
+            <input class="set-height" id="title" type="text" formControlName="eventTitle" required>
           </td>
         </tr>
         <tr class="row-control">
@@ -53,8 +53,8 @@
             <label for="type" class="type">Event Type</label>
           </td>
           <td class="td-right">
-            <input type="text" list="eventType" class="set-height" name="type" formControlName="eventType" (change)="handleTopic($event)" style="text-transform: capitalize;">
-            <datalist id="eventType">
+            <input type="text" list="event-type" class="set-height" id="type" formControlName="eventType" (change)="handleTopic($event)" style="text-transform: capitalize;">
+            <datalist id="event-type">
               <option *ngFor="let type of listTopic" [value]="type.name">{{type.name}}</option>
             </datalist>
             <!-- <select class="set-height" name="type" formControlName="eventType" [(ngModel)]="selectedTopic">
@@ -68,9 +68,9 @@
           </td>
           <td class="td-right">
             <div style="display: flex; justify-content: space-between;">
-              <input type="date" class="set-height" name="date" formControlName="eventDate" required/>
+              <input type="date" class="set-height" id="date" formControlName="eventDate" required/>
             <label for="time" class="time" style="margin: auto 0;">Time</label>
-            <input class="set-height" name="time" formControlName="eventTime" type="time" required/>
+            <input class="set-height" id="time" formControlName="eventTime" type="time" required/>
             </div>
           </td>
         </tr>
@@ -79,7 +79,7 @@
             <label class="location" for="location">Location</label>
           </td>
           <td class="td-right">
-            <input class="set-height" list="locationSuggest" formControlName="eventLocation" name="location" type="text" required autocomplete="true">
+            <input class="set-height" list="locationSuggest" formControlName="eventLocation" name="location" id="location" type="text" required autocomplete="true">
             <datalist id="locationSuggest">
               <option *ngFor="let a of location" [value]="a">{{a}}</option>
             </datalist>
@@ -91,7 +91,7 @@
           </td>
           <td class="td-right">
             <label for="inputImg" id="img-label">Choose file
-            <input (change)="onFileSelected($event)" #imageInput type="file" name="img" formControlName="eventImg" id="inputImg" accept="image/*" >
+            <input (change)="onFileSelected($event)" #imageInput type="file" name="img" formControlName="eventImg" id="inputImg" accept="image/*" required>
           </label>
             <!-- <input id="choose-file" formControlName="eventImg" name="image" type="file" onchange="console.log(event.target.files)"> -->
           </td>
@@ -109,7 +109,7 @@
         </tr>
         <tr class="row-control">
           <td class="td-left">
-            <label for="group" class="group">Relevant groups</label>
+            <label class="group">Relevant groups</label>
           </td>
           <td class="td-right">
             <mat-select class="set-height" formControlName="eventGroup" name="group" [(ngModel)]="selectedGroup" multiple>

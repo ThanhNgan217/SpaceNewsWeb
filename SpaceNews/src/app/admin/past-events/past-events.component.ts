@@ -52,6 +52,7 @@ export class PastEventsComponent implements OnInit {
     sessionStorage.setItem('pastEvents', '1');
     this.dialog.open(PostDialog, {
       data : post,
+      maxWidth : '50%'
     });
 
     // catch event navigation

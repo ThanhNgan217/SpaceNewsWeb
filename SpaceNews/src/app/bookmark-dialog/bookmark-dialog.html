@@ -1,0 +1,38 @@
+<button mat-dialog-close class="close-btn">X</button>
+<h3 mat-dialog-title class="title" *ngIf="openBookmark">Bookmark</h3>
+<h3 mat-dialog-title class="title" *ngIf="!openBookmark">
+  Read History
+  <button class="clear-history" (click)="deleteAllHistory()">Clear history</button>
+</h3>
+<mat-dialog-content>
+  <div class="no-events" *ngIf="listEvent.length == 0">Nothing here</div>
+  <div class="list-events" *ngIf="listEvent.length != 0">
+    <div class="list-post">
+      <div class="post-container" id="event-{{p.id}}" *ngFor="let p of listEvent">
+        <button class="delete-history" id="delete-{{p.id}}" (click)="deleteHistory(p.id)"><mat-icon>delete</mat-icon></button>
+        <div class="post">
+          <!-- <div class="post-router" routerLink="post/{{p.id}}"> -->
+          <div class="post-router" (click)="showEvent(p.id)">
+            <img src="{{p.image}}">
+            <div class="content-box">
+              <p class="list-post-title">{{p.title}}</p>
+              <pre class="list-post-description">{{p.time | date:'MMM d, y         h:mm a'}}</pre>
+            </div>
+          </div>
+          <div class="post-icon">
+            <!-- <mat-icon>star_border</mat-icon> -->
+            <!-- <span (click)="starClick(p.id)"><i class="bi bi-star" *ngIf="!isFavourite"></i><i class="bi bi-star-fill" *ngIf="isFavourite"></i></span> -->
+            <i class="bi bi-star" ></i>
+            <!-- <mat-icon>share</mat-icon> -->
+            <i class="bi bi-share"></i>
+            <!-- <mat-icon>more_vert</mat-icon> -->
+            <i class="bi bi-three-dots-vertical"></i>
+          </div>
+          <!-- <div class="edit-icon" *ngIf="isAdmin">
+            <mat-icon>edit</mat-icon>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>

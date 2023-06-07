@@ -1,6 +1,6 @@
 <div class="container">
   <h2 class="group">
-      GROUP DETAIL
+      GROUP DETAIL - {{group.name}}
   </h2>
   <table>
       <thead>
@@ -10,13 +10,9 @@
           </tr>
       </thead>
       <tbody>
-          <!-- <tr *ngFor= "let member of listMember">
-              <td>{{member.name}}</td>
-              <td>{{member.email}}</td>
-          </tr> -->
-          <tr>
-              <td>A</td>
-              <td>a@gmail.com</td>
+          <tr *ngFor= "let member of listMember">
+              <td>{{member.members.name}}</td>
+              <td>{{member.members.email}}</td>
           </tr>
 
       </tbody>
@@ -27,7 +23,7 @@
   </h2>
   <!-- list post component -->
     <div class="list-post">
-      <div class="post-container" *ngFor="let p of posts">
+      <div class="post-container" *ngFor="let p of listPost">
         <div class="post" [class.onweek]="isOnWeek(p.id)" [class.upcomming]="isUpcomming(p.id)">
           <!-- <div class="post-router" routerLink="post/{{p.id}}"> -->
             <div class="post-router">

@@ -21,7 +21,7 @@ interface formEventData {
 })
 export class HandlePostService {
   constructor(private apiService:ApiService, private http:HttpClient) { }
-  auth = sessionStorage.getItem('auth_token');
+  auth : any;
   private httpOptions = {
     //   // headers : new HttpHeaders({'accept':'*/*', 'Content-Type': 'application/json'})
     //   // headers : new HttpHeaders({'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuZ2FuQGdtYWlsLmNvbSIsImp0aSI6IjdkOWY4ZTA3LTBlNjgtNGI4Yi1hY2MxLWNhNDcxMDMzMWVlYyIsImlhdCI6MTY4MTExMTg2OSwicm9sIjoiYXBpX2FjY2VzcyIsImlkIjoiZjZiOWExOGMtZGM3NC00OWVjLTk5MmItNTNmYTdhYjYzNzEwIiwibmJmIjoxNjgxMTExODY4LCJleHAiOjE2ODExMTkwNjgsImlzcyI6IndlYkFwaSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDQ0OTMvIn0.LV2dR5DUE7UyBZHOEHO7fuvI4MbijK3vyjQDvLNKmp4'})
@@ -38,6 +38,7 @@ export class HandlePostService {
 
 
   addEventType(name : string){
+    this.auth = sessionStorage.getItem('auth_token');
     const words = name.split(" ");
 
     for(let i = 0; i < words.length; i++) {
@@ -75,6 +76,7 @@ export class HandlePostService {
 
   editPost(obj : formEventData, id : number, oldDate : Date, newImg : string, showInSlider : boolean = true){
     // let dateTime = `${obj.eventDate}T${obj.eventTime}`;
+    this.auth = sessionStorage.getItem('auth_token');
     let dateTime;
     let img : string = obj.eventImg;
     if(newImg != '' && newImg != undefined){
@@ -114,7 +116,7 @@ export class HandlePostService {
       type: '',
       id: id
     };
-    console.log(post)
+    console.log(post);
     return this.http.put<Post>(`${this.url}/api/Posts/${id}`, post, {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
   }
 
@@ -123,10 +125,12 @@ export class HandlePostService {
   }
 
   deletePost(id:number){
+    this.auth = sessionStorage.getItem('auth_token');
     return this.http.delete(`${this.url}/api/Posts/${id}`, {headers:{'Authorization':`Bearer ${this.auth}`}});
   }
 
   piorityToggle(id:number, toggle:boolean, postData:Post|undefined){
+    this.auth = sessionStorage.getItem('auth_token');
     let post = {
       date: postData?.date,
       time: postData?.time,
@@ -146,6 +150,7 @@ export class HandlePostService {
   }
 
   statusToggle(id:number, toggle:boolean, postData:Post|undefined){
+    this.auth = sessionStorage.getItem('auth_token');
     let post = {
       date: postData?.date,
       time: postData?.time,

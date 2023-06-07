@@ -7,10 +7,17 @@ import { Topic } from '../Topic';
 import { Post } from '../PostEvent';
 import { Group } from '../Group';
 import { __values } from 'tslib';
+import { Member } from '../Member';
+
+interface History{
+  userID : string | null,
+  eventsID : string | null
+}
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ApiService {
 
   private apiUrl = 'https://localhost:7136';
@@ -104,9 +111,48 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/api/Posts`, val);
   }
 
-
   // filter posts by group id
   getListPosts(groupId: string){
     return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?groupId=${groupId}&pageIndex=0&pageSize=9999`)
+  }
+
+
+  // Read History
+  getAllHistory(){
+    return this.http.get<History[]>(`${this.apiUrl}/api/ReadHistory`);
+  }
+
+  getHistory(id : string | null){
+    return this.http.get<History>(`${this.apiUrl}/api/ReadHistory/${id}`);
+  }
+
+  addHistory(body : History){
+    let auth = sessionStorage.getItem('auth_token');
+    let list : History;
+    let exist  = this.get(body.userID);
+    if(exist != ''){
+      return this.http.put<History>(`${this.apiUrl}/api/ReadHistory/${body.userID}`,JSON.stringify(body), {headers:{'Authorization':`Bearer ${auth}`,'Content-Type': 'application/json;charset=UTF-8'}})
+    }
+    else{
+      return this.http.post<History>(`${this.apiUrl}/api/ReadHistory`,JSON.stringify(body), {headers:{'Authorization':`Bearer ${auth}`,'Content-Type': 'application/json;charset=UTF-8'}})
+    }
+  }
+
+  get(id: string|null){
+    let result;
+    this.getHistory(id).subscribe({
+      next:data => {
+        result = data.userID;
+      },
+      error : err =>{
+        result = '';
+      }
+    })
+    return result;
+  }
+
+
+  getMembers(){
+    return this.http.get<Member[]>(`${this.apiUrl}/api/Members`);
   }
 }

@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace News.api.Entities;
 
@@ -53,4 +55,11 @@ public class GroupMember
     //[JsonIgnore]
 
     public virtual Member? Members { get; set; }
+}
+
+public class ReadHistory
+{
+    [Key]
+    public string UserID { get; set; }
+    public string? EventsID { get; set; }
 }

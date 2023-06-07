@@ -10,6 +10,7 @@ import { PostDialog } from 'src/app/list-post/list-post.component';
 import { DomSanitizer} from '@angular/platform-browser'
 import { PastEventsComponent } from '../past-events/past-events.component';
 import { Group } from 'src/app/Group';
+import { History } from 'src/app/content/content.component';
 
 interface User{
   id : string|null,
@@ -127,9 +128,32 @@ export class PostsManageComponent implements OnInit {
   // detail
   showDialog(id : number){
     let post = this.listPost.find(p => p.id == id);
+    this.handleHistory(id.toString());
     this.dialog.open(PostDialog, {
       data : post,
+      maxWidth : '50%'
     });
+  }
+
+  handleHistory(postID : string){
+    let userID = sessionStorage.getItem('userID');
+    let eventsID : string ='';
+    this.apiService.getHistory(userID).subscribe({
+      next:data =>{
+        eventsID = data.eventsID? data.eventsID : '';
+        let arr = eventsID.split(',');
+        let index = arr.indexOf(postID);
+        if(index > -1) arr.splice(index, 1);
+        if(arr.length >= 12) arr.shift();
+        arr.push(postID);
+        let body : History = {
+          userID : userID,
+          eventsID : arr.join(','),
+        }
+        console.log(body);
+        this.apiService.addHistory(body).subscribe();
+      }
+    })
   }
 
   // style attributes for content innerHTML

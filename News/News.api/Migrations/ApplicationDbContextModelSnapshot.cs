@@ -424,6 +424,27 @@ namespace News.api.Migrations
                 {
                     b.Navigation("Posts");
                 });
+
+            /////////////////////
+            modelBuilder.Entity("News.api.Entities.ReadHistory", b =>
+                {
+                    //b.HasOne("Microsoft.AspNetCore.Identity.AspNetUsers", null)
+                    //.WithMany()
+                    //.HasForeignKey("UserID");
+
+                    b.HasKey("UserID");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                
+
+                    b.Property<string>("EventsID")
+                        .HasColumnType("nvarchar(450)");
+                    b.HasKey("UserID");
+                    b.ToTable("ReadHistory");
+                });
 #pragma warning restore 612, 618
         }
     }

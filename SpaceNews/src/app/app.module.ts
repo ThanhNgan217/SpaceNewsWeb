@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
-import { ContentComponent } from './content/content.component';
+import { BookmarkDialog, ContentComponent } from './content/content.component';
 import { ListPostComponent, PostDialog } from './list-post/list-post.component';
 
 import { HttpClientModule } from '@angular/common/http';
@@ -35,6 +35,7 @@ import { AdminModule } from './admin/admin.module';
     ListPostComponent,
     PageNotFoundComponent,
     PostDialog,
+    BookmarkDialog
   ],
   imports: [
     BrowserModule,

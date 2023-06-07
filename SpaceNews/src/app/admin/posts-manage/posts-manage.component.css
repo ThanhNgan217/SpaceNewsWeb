@@ -103,8 +103,8 @@
 .chip{
   position: relative;
   display: inline-block;
-  min-width: 5.5em;
-  max-width: 8em;
+  min-width: 6em;
+  max-width: 8.5em;
   height: 3.2em;
   max-height: 4.5em;
   margin-right: 1.2em;
@@ -127,8 +127,9 @@
 }
 .text-box .chip.past-events{
   position: absolute;
-  left: -50%;
+  left: -55%;
   top: 50%;
+  padding: 0 5%;
   transform: translateY(-50%);
   border: grey solid 2px;
   border-radius: 20px;

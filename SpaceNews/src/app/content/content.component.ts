@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 // import { Post, listPost } from '../post';
@@ -13,6 +13,10 @@ import { Group } from '../Group';
 interface User{
   id : string|null,
   auth_token : string |null,
+}
+export interface History{
+  userID : string | null,
+  eventsID : string | null
 }
 
 @Component({
@@ -59,6 +63,9 @@ export class ContentComponent {
   urlShow = '';
   title = '';
   counter = 0;
+
+  //history
+  listID : string = '';
 
   //calendar handle
   bsInlineValue = new Date();
@@ -176,8 +183,12 @@ export class ContentComponent {
   }
   showDialog(id : number){
     let post = this.postsSlider.find(p => p.id == id);
+    if(sessionStorage.getItem('userID')) {
+      this.handleHistory(id.toString());
+    }
     this.dialog.open(PostDialog, {
       data : post,
+      maxWidth : '50%'
     });
   }
 
@@ -220,5 +231,189 @@ export class ContentComponent {
     // console.log(this.pageIndex)
   }
 
+  openHistory(){
+    this.dialog.open(BookmarkDialog, {
+      data: false,
+      width: '85vw',
+      height: '80vh',
+    });
+  }
+
+  handleHistory(postID : string){
+    let userID = sessionStorage.getItem('userID');
+    let eventsID : string ='';
+    this.apiService.getHistory(userID).subscribe({
+      next:data =>{
+        eventsID = data.eventsID? data.eventsID : '';
+        let arr = eventsID.split(',');
+        let index = arr.indexOf(postID);
+        if(index > -1) arr.splice(index, 1);
+        if(arr.length >= 12) arr.shift();
+        arr.push(postID);
+        let body : History = {
+          userID : userID,
+          eventsID : arr.join(','),
+        }
+        console.log(body);
+        this.apiService.addHistory(body).subscribe();
+      }
+    })
+  }
+
+}
+
+
+@Component({
+  selector: 'bookmark-dialog',
+  templateUrl: '../bookmark-dialog/bookmark-dialog.html',
+  styleUrls: ['../bookmark-dialog/bookmark-dialog.css'],
+})
+export class BookmarkDialog implements OnInit {
+  constructor(
+    public dialogRef: MatDialogRef<PostDialog>,
+    @Inject(MAT_DIALOG_DATA) public openBookmark: boolean,
+    private apiService: ApiService,
+    // @Inject(MAT_DIALOG_DATA) public grName: string,
+    // private handlePostService: HandlePostService,
+    public dialog: MatDialog,
+    // private sanitizer: DomSanitizer,
+    private router: Router
+  ) {}
+
+  listGroup : Group[] = [];
+  listEvent : Post[] = [];
+  eventsID : any;
+  userID : string | null = '';
+
+  ngOnInit(): void {
+    this.userID = sessionStorage.getItem('userID');
+    this.getListGroup();
+    if(this.openBookmark){ // true : bookmark ; false : read history
+
+    }
+    else{
+      this.handleHistory();
+
+    }
+  }
+
+  getListGroup(){
+    this.apiService.getGroup().subscribe({
+      next: data =>{
+        this.listGroup = data;
+      }
+    })
+  }
+
+  showEvent(id : number){
+    this.router.events.subscribe(() => {
+      this.dialogRef.close();
+    });
+    this.apiService.getPost(id).subscribe({
+      next:data =>{
+        let grsID = data.groupID.split(',');
+        let arr: string[] = [];
+        grsID.map( id =>{
+          let group = this.listGroup.find(g=>g.id == id);
+          if(group){
+            arr.push(group.name);
+          }
+        })
+        data.groupNames = arr;
+        this.dialog.open(PostDialog, {
+          data: data,
+          maxWidth : '50%'
+        })
+      }
+    })
+  }
+
+  addEListener(id:number){
+    setTimeout(()=>{ // delay 0.1s for element render
+      let element = document.getElementById(`event-${id}`);
+      let icon = document.getElementById(`delete-${id}`);
+        element?.addEventListener('mouseover', (e)=>{
+          icon?.classList.add('isHover')
+        })
+        element?.addEventListener('mouseout', (e)=>{
+          icon?.classList.remove('isHover')
+        })
+    }, 100)
+  }
+
+  deleteAllHistory(){
+    let body : History ={
+      userID : this.userID,
+      eventsID : ''
+    }
+    this.apiService.addHistory(body).subscribe();
+    this.handleHistory();
+  }
+
+  deleteHistory(eventId : number){
+    let newHistory = this.eventsID.split(',');
+    let index = newHistory.findIndex((i:string) => i == eventId.toString());
+    if(index > -1){
+      newHistory.splice(index, 1)
+    }
+    let body : History ={
+      userID : this.userID,
+      eventsID : newHistory.join(','),
+    }
+    this.apiService.addHistory(body).subscribe();
+    this.handleHistory();
+  }
+
+  handleHistory(){
+    this.apiService.getHistory(this.userID).subscribe({
+      next:data =>{
+        if(data.eventsID != ''){
+          let flag = false;
+          this.eventsID = data.eventsID;
+          let list : any[] = this.eventsID?.split(',').reverse();
+          let promise = new Promise((resolve, reject) =>{
+            list.forEach( (item: any) =>{
+              this.apiService.getPost(Number(item)).subscribe({
+                next:data =>{
+                  let index = list.findIndex( i => i == item);
+                  list[index] = data;
+                  this.listEvent = list;
+                  flag = list.every(p => typeof p == 'object')
+                  if(flag) resolve(list)
+                },
+                error: err=>{
+                  // in case event id not exist
+                  let a = list.findIndex(i => i==item);
+                  if (a > -1) {
+                    list.splice(a, 1);
+                  }
+                  let arr : string = list.join(',');
+                  let body : History= {
+                    userID : this.userID,
+                    eventsID : arr
+                  }
+                  this.apiService.addHistory(body).subscribe()
+                }
+              })
+
+            })
+          })
+          promise
+          .then((list)=>{
+            let newlist : any = list;
+            newlist.forEach((e:Post) =>{
+              this.addEListener(e.id)
+            })
+          })
+
+        }
+        else this.listEvent = [];
+
+      },
+      error: err =>{
+        this.listEvent = [];
+      }
+    })
+  }
 
 }

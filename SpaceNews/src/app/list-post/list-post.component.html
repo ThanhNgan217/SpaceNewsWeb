@@ -4,7 +4,7 @@
     <div class="post-container" *ngFor="let p of posts">
       <div class="post" [class.onweek]="isOnWeek(p.id)" [class.upcomming]="isUpcomming(p.id)">
         <!-- <div class="post-router" routerLink="post/{{p.id}}"> -->
-          <div class="post-router" (click)="showDialog(p.id)">
+        <div class="post-router" (click)="showDialog(p.id)">
           <img src="{{p.image}}">
           <div class="content-box">
             <p class="list-post-title">{{p.title}}</p>

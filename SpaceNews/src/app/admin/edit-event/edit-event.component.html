@@ -15,7 +15,7 @@
             </div>
           </td>
           <td class="td-right">
-            <input class="set-height" name="title" type="text" formControlName="eventTitle">
+            <input class="set-height" id="title" type="text" formControlName="eventTitle">
           </td>
         </tr>
         <tr class="row-control">
@@ -23,7 +23,7 @@
             <label for="type" class="type">Event Type</label>
           </td>
           <td class="td-right">
-            <input type="text" list="eventType" class="set-height" name="type" formControlName="eventType" (change)="handleTopic($event)" style="text-transform: capitalize;" required>
+            <input type="text" list="eventType" class="set-height" id="type" formControlName="eventType" (change)="handleTopic($event)" style="text-transform: capitalize;" required>
             <datalist id="eventType">
               <option *ngFor="let type of listTopic" [value]="type.name">{{type.name}}</option>
             </datalist>
@@ -38,9 +38,9 @@
           </td>
           <td class="td-right">
             <div style="display: flex; justify-content: space-between;">
-              <input type="date" class="set-height" name="date" formControlName="eventDate" value="{{currPost.date|date:'yyyy-MM-dd'}}"/>
+              <input type="date" class="set-height" id="date" formControlName="eventDate" value="{{currPost.date|date:'yyyy-MM-dd'}}"/>
             <label for="time" class="time" style="margin: auto 0;">Time</label>
-            <input class="set-height" name="time" formControlName="eventTime" type="time" value="{{currPost.date | date:'HH:mm'}}"/>
+            <input class="set-height" id="time" formControlName="eventTime" type="time" value="{{currPost.date | date:'HH:mm'}}"/>
             </div>
           </td>
         </tr>
@@ -49,8 +49,8 @@
             <label class="location" for="location">Location</label>
           </td>
           <td class="td-right">
-            <input class="set-height" list="location" formControlName="eventLocation" name="location" type="text" (change)="handleLocation($event)">
-            <datalist id="location" name="editEventLocation">
+            <input class="set-height" list="locationSuggest" formControlName="eventLocation" name="location" id="location" type="text" required autocomplete="true">
+            <datalist id="locationSuggest">
               <option *ngFor="let a of locationSuggest" [value]="a">{{a}}</option>
             </datalist>
           </td>
@@ -79,7 +79,7 @@
         </tr>
         <tr class="row-control">
           <td class="td-left">
-            <label for="group" class="group">Relevant group</label>
+            <label class="group">Relevant group</label>
           </td>
           <td class="td-right">
             <!-- <select class="set-height" formControlName="eventGroup" name="group" [(ngModel)]="selectedGroup">
