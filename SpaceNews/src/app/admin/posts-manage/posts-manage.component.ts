@@ -27,6 +27,7 @@ export class PostsManageComponent implements OnInit {
   listGroup : Group[] = [];
   idTopic = 0;
 
+  eventsQuantity = 0;
   listPost : Post[] = [];
   topicChecked = 0;
   pageIndex = 0;
@@ -50,6 +51,7 @@ export class PostsManageComponent implements OnInit {
 
   ngOnInit(): void {
     // this.setUser();
+    this.getNumpages();
     this.LoadTopics();
     this.searchForm = this.fb.group({
       keyWord:""
@@ -79,6 +81,15 @@ export class PostsManageComponent implements OnInit {
         }
       })
     }
+  }
+
+  getNumpages(){
+    this.apiService.getEventQuantity().subscribe(data => {
+      if(data % 6 != 0) this.eventsQuantity = Math.floor(data/6);
+      else this.eventsQuantity = Math.floor(data/6)-1;
+      console.log(data)
+      console.log(this.eventsQuantity)
+    });
   }
 
   getListGroup(){
@@ -254,7 +265,7 @@ export class PostsManageComponent implements OnInit {
     this.getListPost();
   }
   pageNext(){
-    if(this.pageIndex < 9)this.pageIndex += 1;
+    if(this.pageIndex < this.eventsQuantity)this.pageIndex += 1;
     else return;
     this.getListPost();
   }

@@ -39,6 +39,7 @@ export class ContentComponent {
   //     url:'/assets/img/event-img/event3.png'
   //   }
   // ]
+  eventsQuantity = 0;
 
   ListTopic : Topic[] = [];
   listGroup: Group[] = [];
@@ -81,6 +82,8 @@ export class ContentComponent {
     this.bsInlineRangeValue = [this.bsInlineValue, this.maxDate];
   }
   ngOnInit(){
+    this.getNumPages();
+    // this.eventsQuantity = 9; // 10 pages
     this.getListGroup();
     this.LoadSlider();
     this.LoadTopics();
@@ -107,6 +110,15 @@ export class ContentComponent {
     this.idShow = this.postsSlider[this.index].id;
     this.urlShow = this.postsSlider[this.index].image;
     this.title = this.postsSlider[this.index].title;
+  }
+
+  getNumPages(){
+    this.apiService.getEventQuantity().subscribe(data => {
+      if(data % 9 != 0) this.eventsQuantity = Math.floor(data/9);
+      else this.eventsQuantity = Math.floor(data/9)-1;
+      console.log(data)
+      console.log(this.eventsQuantity)
+    });
   }
 
   //slider handle'
@@ -226,7 +238,7 @@ export class ContentComponent {
     // console.log(this.pageIndex)
   }
   pageNext(){
-    if(this.pageIndex < 9)this.pageIndex += 1;
+    if(this.pageIndex < this.eventsQuantity)this.pageIndex += 1;
     else return;
     // console.log(this.pageIndex)
   }

@@ -64,6 +64,11 @@ export class ApiService {
     return this.http.post<Account>(`${this.apiUrl}/api/Auth/login`, body, this.httpOptions)
   }
 
+  getEventQuantity(pastEvent : boolean = false){
+    if(pastEvent == false)return this.http.get<number>(`${this.apiUrl}/api/Posts/Quantity?previousTime=false`);
+    else return this.http.get<number>(`${this.apiUrl}/api/Posts/Quantity?previousTime=true`);
+  }
+
   getTopic(){
     return this.http.get<Topic[]>(`${this.apiUrl}/api/Topics`);
   }

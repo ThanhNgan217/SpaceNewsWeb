@@ -10,6 +10,8 @@ using System.Linq.Expressions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Text.RegularExpressions;
 using System.Drawing.Printing;
+using System.Diagnostics.Metrics;
+using Microsoft.CodeAnalysis.Elfie.Extensions;
 
 namespace News.api.Controllers
 {
@@ -99,6 +101,23 @@ namespace News.api.Controllers
 
             return post;
         }
+
+        // GET : api/posts/false // count post
+        [HttpGet("Quantity")]
+        public async Task<ActionResult<int>> CountPosts(bool? previousTime = false)
+        {
+            DateTime currentDay = DateTime.UtcNow.Date;
+            var query = _context.Posts.AsQueryable();
+            if (previousTime == false && previousTime != null)
+            {
+                query = query.Where(s => s.Date >= currentDay);
+            }
+            else query = query.Where(s => s.Date < currentDay);
+            var result = query.Count();
+            return result;
+        }
+
+
 
         // POST: api/posts
         [HttpPost]

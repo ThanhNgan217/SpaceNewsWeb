@@ -21,6 +21,7 @@ export class PastEventsComponent implements OnInit {
   pageIndex = 0;
   posts : Post[] = [];
   listGroup : Group[] = [];
+  eventsQuantity = 0;
 
   constructor(
     public dialogRef: MatDialogRef<PastEventsComponent>,
@@ -36,6 +37,7 @@ export class PastEventsComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.getNumPages();
     this.LoadTopics();
     this.getListGroup();
     this.getListPost();
@@ -60,6 +62,15 @@ export class PastEventsComponent implements OnInit {
     .subscribe(() => {
     this.dialogRef.close();
   });
+  }
+
+  getNumPages(){
+    this.apiService.getEventQuantity(true).subscribe(data => {
+      if(data % 12 != 0) this.eventsQuantity = Math.floor(data/12);
+      else this.eventsQuantity = Math.floor(data/12)-1;
+      console.log(data)
+      console.log(this.eventsQuantity)
+    });
   }
 
   LoadTopics(){
@@ -118,7 +129,7 @@ export class PastEventsComponent implements OnInit {
     this.getListPost(this.idTopic, this.pageIndex);
   }
   pageNext(){
-    if(this.pageIndex < 9)this.pageIndex += 1;
+    if(this.pageIndex < this.eventsQuantity)this.pageIndex += 1;
     else return;
     this.getListPost(this.idTopic, this.pageIndex);
   }
