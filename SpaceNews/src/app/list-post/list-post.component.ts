@@ -2,7 +2,7 @@ import { Component, SecurityContext, EventEmitter, Inject, Input, OnInit, Output
 // import { Post, listPost } from '../post';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Post } from '../PostEvent';
-import { ApiService } from '../Service/api.service';
+import { ApiService, Bookmark } from '../Service/api.service';
 import { DomSanitizer} from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { HandlePostService } from '../Service/handle-post.service';
@@ -18,11 +18,13 @@ export class ListPostComponent implements OnInit{
   @Input() topicChecked = 0;
   @Input() pageIndex = 0;
   @Input() keyWord : string|undefined;
+  @Input() dialogClosed = false;
   @Output() changePage = new EventEmitter();
   @Output() topicChange = new EventEmitter();
 
+  listBookmark: any = [];
   isAdmin = false;
-
+  userID : string |null='';
   listGroup: Group[] = [];
   posts : Post[] = [];//will show
   onWeek: Post[] = [];// <= 7days
@@ -40,7 +42,9 @@ export class ListPostComponent implements OnInit{
   // keyWord : string|undefined;
 
   ngOnInit(): void{
-    if(sessionStorage.getItem('userID')) this.isAdmin = true;
+    this.userID = sessionStorage.getItem('userID');
+    this.getBookmark(this.userID);
+    if(this.userID != '') this.isAdmin = true;
     this.getListGroup();
     // this.getListPost(this.topicChecked, this.pageIndex, this.keyWord);
     // this.posts = this.listPost;
@@ -48,6 +52,10 @@ export class ListPostComponent implements OnInit{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if('dialogClosed' in changes && this.dialogClosed == true){
+      console.log('dialogClosed')
+      this.getListPost(this.topicChecked, this.pageIndex, this.keyWord);
+    }
     if ('topicChecked' in changes){
       const topic = Number(changes['topicChecked'].currentValue);
         this.pageIndex = 0;
@@ -74,6 +82,67 @@ export class ListPostComponent implements OnInit{
     }
   }
 
+  // star icon
+  addEventListener(id:number){
+    let user = sessionStorage.getItem('userID');
+    if(user){ // logged
+      let star = document.getElementById(`bookmark-${id}`);
+      let starFill = document.getElementById(`bookmark-checked-${id}`);
+      let eventsID :string[]|undefined = [];
+      //add bookmark
+      star?.addEventListener("click", ()=>{
+        this.apiService.getBookmarks(user).subscribe({
+          next : data =>{
+            if(data.eventsID != '') eventsID = data.eventsID?.split(',');
+            else eventsID = [];
+            eventsID?.push(id.toString());
+            starFill?.classList.toggle('icon-hide');
+            star?.classList.toggle('icon-hide');
+            let body : Bookmark ={
+              userID : user,
+              eventsID : eventsID?.join(',')
+            }
+
+            this.apiService.addBookmark(body).subscribe();
+          }
+        })
+      })
+      // remove bookmark
+      starFill?.addEventListener("click", ()=>{
+        this.apiService.getBookmarks(user).subscribe({
+          next:data =>{
+            starFill?.classList.toggle('icon-hide');
+            star?.classList.toggle('icon-hide');
+            eventsID = data.eventsID?.split(',');
+            eventsID = eventsID?.filter(i => i != id.toString());
+            let body : Bookmark ={
+              userID : user,
+              eventsID : eventsID?.join(',')
+            }
+
+            this.apiService.addBookmark(body).subscribe();
+          }
+        });
+      })
+
+    }
+  }
+
+  //is event in bookmarks
+  hideIcon(id:number) {
+    let index = this.listBookmark.findIndex((b:any) => b == id)
+    if(index > -1) return true;
+    else return false;
+  }
+
+  getBookmark(id:string|null){
+    this.apiService.getBookmarks(id).subscribe({
+      next:data =>{
+        this.listBookmark = data.eventsID?.split(',');
+      }
+    });
+  }
+
   getListGroup(){
     this.apiService.getGroup().subscribe({
       next: data =>{
@@ -91,6 +160,7 @@ export class ListPostComponent implements OnInit{
           this.posts = data;
           this.getGrNames();
           this.handlePosts();
+          this.getBookmark(this.userID);
         }
       })
     }
@@ -101,6 +171,7 @@ export class ListPostComponent implements OnInit{
           this.posts = data;
           this.getGrNames();
           this.handlePosts();
+          this.getBookmark(this.userID);
         }
       })
     }
@@ -124,7 +195,6 @@ export class ListPostComponent implements OnInit{
   handlePosts(){
     let currDate = new Date();
     let t = currDate.getTime();
-
     // onWeek list
     // 259200000 ms = 72h = 3days
     // 345600000 ms = 96h = 4days
@@ -138,6 +208,11 @@ export class ListPostComponent implements OnInit{
       if(x.getTime() <= week){
         if(x.getTime() <= days_3) this.upcomming.push(p);
         else this.onWeek.push(p);
+      }
+      if(sessionStorage.getItem('userID')){
+        setTimeout(()=>{
+          this.addEventListener(p.id);
+        }, 100)
       }
     })
 
@@ -160,10 +235,7 @@ export class ListPostComponent implements OnInit{
 
   // favourite
   isFavourite = false;
-  starClick(id : number){
-    this.isFavourite = !this.isFavourite;
 
-  }
   showDialog(id : number){
     console.log(id)
     let post = this.posts.find(p => p.id == id);

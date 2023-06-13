@@ -13,6 +13,10 @@ interface History{
   userID : string | null,
   eventsID : string | null
 }
+export interface Bookmark{
+  userID : string | null,
+  eventsID : string | null | undefined
+}
 
 @Injectable({
   providedIn: 'root'
@@ -121,6 +125,35 @@ export class ApiService {
     return this.http.get<Post[]>(`${this.apiUrl}/api/Posts?groupId=${groupId}&pageIndex=0&pageSize=9999`)
   }
 
+  // Bookmarks
+  getAllBookmarks(){
+    return this.http.get<Bookmark[]>(`${this.apiUrl}/api/Bookmark`);
+  }
+  getBookmarks(userID : string|null){
+    return this.http.get<Bookmark>(`${this.apiUrl}/api/Bookmark/${userID}`);
+  }
+  addBookmark(body : Bookmark){
+    let auth = sessionStorage.getItem('auth_token');
+    let exist  = this.bookmarkHandle(body.userID);
+    if(exist != ''){
+      return this.http.put<Bookmark>(`${this.apiUrl}/api/Bookmark/${body.userID}`,JSON.stringify(body), {headers:{'Authorization':`Bearer ${auth}`,'Content-Type': 'application/json;charset=UTF-8'}})
+    }
+    else{
+      return this.http.post<Bookmark>(`${this.apiUrl}/api/Bookmark`,JSON.stringify(body), {headers:{'Authorization':`Bearer ${auth}`,'Content-Type': 'application/json;charset=UTF-8'}})
+    }
+  }
+  bookmarkHandle(userID:string|null){
+    let result;
+    this.getBookmarks(userID).subscribe({
+      next:data => {
+        result = data.userID;
+      },
+      error : err =>{
+        result = '';
+      }
+    })
+    return result;
+  }
 
   // Read History
   getAllHistory(){
@@ -134,7 +167,7 @@ export class ApiService {
   addHistory(body : History){
     let auth = sessionStorage.getItem('auth_token');
     let list : History;
-    let exist  = this.get(body.userID);
+    let exist  = this.historyHandle(body.userID);
     if(exist != ''){
       return this.http.put<History>(`${this.apiUrl}/api/ReadHistory/${body.userID}`,JSON.stringify(body), {headers:{'Authorization':`Bearer ${auth}`,'Content-Type': 'application/json;charset=UTF-8'}})
     }
@@ -143,7 +176,7 @@ export class ApiService {
     }
   }
 
-  get(id: string|null){
+  historyHandle(id: string|null){
     let result;
     this.getHistory(id).subscribe({
       next:data => {

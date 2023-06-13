@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 // import { Post, listPost } from '../post';
 import { Post } from '../PostEvent';
-import { ApiService } from '../Service/api.service';
+import { ApiService, Bookmark } from '../Service/api.service';
 import { PostDialog } from '../list-post/list-post.component'
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Topic } from '../Topic';
@@ -40,6 +40,8 @@ export class ContentComponent {
   //   }
   // ]
   eventsQuantity = 0;
+
+  dialogClosed = false;
 
   ListTopic : Topic[] = [];
   listGroup: Group[] = [];
@@ -116,8 +118,6 @@ export class ContentComponent {
     this.apiService.getEventQuantity().subscribe(data => {
       if(data % 9 != 0) this.eventsQuantity = Math.floor(data/9);
       else this.eventsQuantity = Math.floor(data/9)-1;
-      console.log(data)
-      console.log(this.eventsQuantity)
     });
   }
 
@@ -244,11 +244,31 @@ export class ContentComponent {
   }
 
   openHistory(){
-    this.dialog.open(BookmarkDialog, {
+    const dialogRef = this.dialog.open(BookmarkDialog, {
       data: false,
       width: '85vw',
       height: '80vh',
     });
+    dialogRef.afterOpened().subscribe( ()=>{
+      this.dialogClosed = false;
+    })
+    dialogRef.afterClosed().subscribe(data =>{
+      this.dialogClosed = true;
+    })
+  }
+
+  openBookmark(){
+    const dialogRef =  this.dialog.open(BookmarkDialog, {
+      data: true,
+      width: '85vw',
+      height: '80vh',
+    });
+    dialogRef.afterOpened().subscribe( ()=>{
+      this.dialogClosed = false;
+    })
+    dialogRef.afterClosed().subscribe((data)=>{
+      this.dialogClosed = true;
+    })
   }
 
   handleHistory(postID : string){
@@ -290,23 +310,84 @@ export class BookmarkDialog implements OnInit {
     public dialog: MatDialog,
     // private sanitizer: DomSanitizer,
     private router: Router
-  ) {}
+  ) {
+    // this.dialogRef.afterClosed().subscribe(() => {console.log('closed')})
+  }
 
   listGroup : Group[] = [];
   listEvent : Post[] = [];
-  eventsID : any;
+  eventsID : any; // History
+  bookmarkID : any; // Bookmark
   userID : string | null = '';
-
+  listBookmark: any = [];
   ngOnInit(): void {
     this.userID = sessionStorage.getItem('userID');
     this.getListGroup();
     if(this.openBookmark){ // true : bookmark ; false : read history
-
+      this.handleBookmark();
     }
     else{
+      this.getBookmark(this.userID);
       this.handleHistory();
-
     }
+  }
+
+  // star icon
+  addEventListener(id:number){
+    let star = document.getElementById(`readHistory-bookmark-${id}`);
+    let starFill = document.getElementById(`readHistory-bookmark-checked-${id}`);
+    let eventsID :string[]|undefined = [];
+    //add bookmark
+    star?.addEventListener("click", ()=>{
+      this.apiService.getBookmarks(this.userID).subscribe({
+        next : data =>{
+          if(data.eventsID != '') eventsID = data.eventsID?.split(',');
+          else eventsID = [];
+          eventsID?.push(id.toString());
+          starFill?.classList.toggle('icon-hide');
+          star?.classList.toggle('icon-hide');
+          let body : Bookmark ={
+            userID : this.userID,
+            eventsID : eventsID?.join(',')
+          }
+          console.log(id, body.eventsID)
+          this.apiService.addBookmark(body).subscribe();
+        }
+      })
+    })
+    // remove bookmark
+    starFill?.addEventListener("click", ()=>{
+      this.apiService.getBookmarks(this.userID).subscribe({
+        next:data =>{
+          starFill?.classList.toggle('icon-hide');
+          star?.classList.toggle('icon-hide');
+          eventsID = data.eventsID?.split(',');
+          eventsID = eventsID?.filter(i => i != id.toString());
+          let body : Bookmark ={
+            userID : this.userID,
+            eventsID : eventsID?.join(',')
+          }
+          console.log(id, body.eventsID)
+
+          this.apiService.addBookmark(body).subscribe();
+        }
+      });
+    })
+
+  }
+
+  // handle star icon
+  getBookmark(id:string|null){
+    this.apiService.getBookmarks(id).subscribe({
+      next:data =>{
+        this.listBookmark = data.eventsID?.split(',');
+      }
+    });
+  }
+  hideIcon(id:number) {
+    let index = this.listBookmark.findIndex((b:any) => b == id)
+    if(index > -1) return true;
+    else return false;
   }
 
   getListGroup(){
@@ -340,6 +421,87 @@ export class BookmarkDialog implements OnInit {
     })
   }
 
+  handleBookmark(){
+    this.apiService.getBookmarks(this.userID).subscribe({
+      next:data =>{
+        if(data.eventsID != ''){
+          let flag = false;
+          this.bookmarkID = data.eventsID;
+          let list : any[] = this.bookmarkID?.split(',').reverse();
+          let promise = new Promise((resolve, reject) =>{
+            list.forEach( (item: any) =>{
+              this.apiService.getPost(Number(item)).subscribe({
+                next:data =>{
+                  let index = list.findIndex( i => i == item);
+                  list[index] = data;
+                  this.listEvent = list;
+                  flag = list.every(p => typeof p == 'object')
+                  if(flag) resolve(list)
+                },
+                error: err=>{
+                  // in case event id not exist
+                  let a = list.findIndex(i => i==item);
+                  if (a > -1) {
+                    list.splice(a, 1);
+                  }
+                  let arr : string = list.join(',');
+                  let body : Bookmark= {
+                    userID : this.userID,
+                    eventsID : arr
+                  }
+                  this.apiService.addBookmark(body).subscribe()
+                }
+              })
+
+            })
+          })
+          promise
+          .then((list)=>{
+            let newlist : any = list;
+            newlist.forEach((e:Post) =>{
+              this.addEListener(e.id)
+            })
+          })
+
+        }
+        else this.listEvent = [];
+
+      },
+      error: err =>{
+        this.listEvent = [];
+      }
+    })
+  }
+  handleDelete(eventID: number){
+    if(this.openBookmark){ // remove bookmark
+      let newBookmark = this.bookmarkID.split(',');
+      let index = newBookmark.findIndex((i:string) => i == eventID.toString());
+      if(index > -1){
+        newBookmark.splice(index, 1)
+      }
+      let body : Bookmark ={
+        userID : this.userID,
+        eventsID : newBookmark.join(','),
+      }
+      console.log('delete')
+      this.apiService.addBookmark(body).subscribe();
+      this.handleBookmark();
+    }
+    else{ // delete history
+      let newHistory = this.eventsID.split(',');
+      let index = newHistory.findIndex((i:string) => i == eventID.toString());
+      if(index > -1){
+        newHistory.splice(index, 1)
+      }
+      let body : History ={
+        userID : this.userID,
+        eventsID : newHistory.join(','),
+      }
+      this.apiService.addHistory(body).subscribe();
+      this.handleHistory();
+    }
+  }
+
   addEListener(id:number){
     setTimeout(()=>{ // delay 0.1s for element render
       let element = document.getElementById(`event-${id}`);
@@ -353,27 +515,23 @@ export class BookmarkDialog implements OnInit {
     }, 100)
   }
 
-  deleteAllHistory(){
-    let body : History ={
-      userID : this.userID,
-      eventsID : ''
+  handleDeleteAll(){
+    if(this.openBookmark){
+      let body : Bookmark ={
+        userID : this.userID,
+        eventsID : ''
+      }
+      this.apiService.addBookmark(body).subscribe();
+      this.handleBookmark();
     }
-    this.apiService.addHistory(body).subscribe();
-    this.handleHistory();
-  }
-
-  deleteHistory(eventId : number){
-    let newHistory = this.eventsID.split(',');
-    let index = newHistory.findIndex((i:string) => i == eventId.toString());
-    if(index > -1){
-      newHistory.splice(index, 1)
+    else{
+      let body : History ={
+        userID : this.userID,
+        eventsID : ''
+      }
+      this.apiService.addHistory(body).subscribe();
+      this.handleHistory();
     }
-    let body : History ={
-      userID : this.userID,
-      eventsID : newHistory.join(','),
-    }
-    this.apiService.addHistory(body).subscribe();
-    this.handleHistory();
   }
 
   handleHistory(){
@@ -415,6 +573,9 @@ export class BookmarkDialog implements OnInit {
             let newlist : any = list;
             newlist.forEach((e:Post) =>{
               this.addEListener(e.id)
+              setTimeout(()=>{
+                this.addEventListener(e.id);
+              }, 100)
             })
           })
 
@@ -428,4 +589,7 @@ export class BookmarkDialog implements OnInit {
     })
   }
 
+  closeDialog(){
+    this.dialogRef.close('close');
+  }
 }

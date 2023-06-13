@@ -63,3 +63,10 @@ public class ReadHistory
     public string UserID { get; set; }
     public string? EventsID { get; set; }
 }
+
+public class Bookmark
+{
+    [Key]
+    public string UserID { get; set; }
+    public string? EventsID { get; set; }
+}

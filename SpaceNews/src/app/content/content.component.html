@@ -24,7 +24,7 @@
           <!-- </div> -->
         </div>
       </div>
-      <app-list-post [keyWord]="keyWord" [topicChecked] = "idTopic" [pageIndex]="pageIndex" (changePage)="changePage($event)" (topicChange)="topicChange($event)"></app-list-post>
+      <app-list-post [keyWord]="keyWord" [topicChecked] = "idTopic" [pageIndex]="pageIndex" [dialogClosed]="dialogClosed" (changePage)="changePage($event)" (topicChange)="topicChange($event)"></app-list-post>
       <!-- <app-event-list [topicChecked] = "topicChecked"></app-event-list> -->
       <div class="block-paginator">
         <div class="paginator">
@@ -103,7 +103,7 @@
     </div>
     <div class="content-block-right">
       <div class="bookmark-block" *ngIf="logged">
-        <p class="bookmark">Bookmark <i class="bi bi-bookmark"></i></p>
+        <p class="bookmark" (click)="openBookmark()">Bookmark <i class="bi bi-bookmark"></i></p>
         <p class="readHistory" (click)="openHistory()">Read history <i class="bi bi-book"></i></p>
       </div>
       <!-- NO LOGIN : CALENDAR -->

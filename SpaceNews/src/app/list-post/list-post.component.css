@@ -148,6 +148,7 @@ mat-button-toggle{
 }
 
 .post{
+  position: relative;
   width: calc(245*var(--ratio));
   min-height: calc(320.32*var(--ratio));
   border-radius: 4px;
@@ -180,13 +181,17 @@ mat-button-toggle{
   margin: calc(11*var(--ratio)) 0;
 }
 .post .post-icon{
+  position: absolute;
+  bottom: 5%;
   float: left;
-  margin: 0 5%;
+  margin: 0 6%;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: space-between;
   width: 45%;
   height: calc(44*var(--ratio));
+}
+.icon-hide{
+  display: none;
 }
 /* .post-icon mat-icon{
     font-family: 'Material Icons' !important;
@@ -195,16 +200,15 @@ mat-button-toggle{
     height: 24px;
     font-size: 25px;
 } */
-.post-icon i, span{
+.post-icon i,.svg-icon ,span{
   font-family: 'Material Icons' !important;
   color: #52575C;
-  width: 20px;
-  height: 20px;
-  font-size: 22px;
-}
-.post-icon i:hover{
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
   cursor: pointer;
 }
+
 .edit-icon{
   margin-left: 25%;
   float: left;
