@@ -1,26 +1,12 @@
-<!-- <div class="header">
-    <div class="logo">
-        <img src ="/assets/img/logo.png">
-        <p>NEWS DC19 PROGRAM 1</p>
-    </div>
-    <div class="admin">
-        <img src="/assets/img/avatar.png" >
-        <button mat-button [matMenuTriggerFor]="menu"></button>
-        <mat-menu #menu="matMenu" xPosition="before">
-            <button mat-menu-item routerLink="/post">Posts</button>
-            <button mat-menu-item>Log out</button>
-        </mat-menu>
-    </div>
-</div> -->
 <div class="main-content-container">
   <div class="add-group">
       <p>List Group</p>
       <button class="btn btn-primary"
-      routerLink="add">Add Group</button>
+      routerLink="./add">Add Group</button>
   </div>
   <div class="list-groups-container">
       <div class="search-block">
-          <form class="search" [formGroup]="searchForm" autocomplete="off" (ngSubmit)="ClickBtn()">
+          <form class="search" [formGroup]="searchForm" autocomplete="on" (ngSubmit)="ClickBtn()">
               <mat-form-field class="searchbar-form-field" appearance="standard">
                   <input type="text" matInput
                           placeholder="What your Group you want to Search"
@@ -39,7 +25,7 @@
               <mat-list-item class="groups-container" *ngFor="let group of groups">
                   <div class="group">
                       <div class="program" mat-line>{{group.name}}</div>
-                      <div class="group-content-container">
+                      <div class="group-content-container" >
                           <div class="group-events" mat-line> events coming soon</div><br>
                           <div class="group-post" mat-line> posts</div><br>
                           <div class="group-last-event" mat-line>last event </div>
@@ -48,7 +34,7 @@
                           <button class="detail" (click)="groupDetail(group.id)">
                               Detail
                           </button>
-                          <button class="edit" (click)="editGroup(group.id)">
+                          <button class="edit" routerLink="edit/{{group.id}}">
                               Edit
                           </button>
                           <button class="delete" (click)="deleteGroup(group.id)">
@@ -125,28 +111,3 @@
 
 
 </div>
-<!-- <div class="my-labels-container">
-  <p>MY LABELS</p>
-  <div class="my-labels">
-      <label id="news">News</label>
-      <label id="trade">Trading</label>
-      <label id="digital">Digital</label>
-      <label id="invest">Investing</label>
-      <div class="read-later">
-          <label>READ LATER</label>
-          <mat-icon>bookmark_border</mat-icon>
-      </div>
-      <div class="history">
-          <label>READ HISTORY</label>
-          <mat-icon>import_contacts</mat-icon>
-      </div>
-  </div>
-</div> -->
-<div class="footer">
-  <p>Privacy Policy / Personal Information / Terms of Service</p>
-</div>
-
-
-
-
-

@@ -17,4 +17,5 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<GroupMember> GroupMembers { get; set; }
     public DbSet<ReadHistory> ReadHistory { get; set; }
     public DbSet<Bookmark> Bookmark { get; set; }
+
 }

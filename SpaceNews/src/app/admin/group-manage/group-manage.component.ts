@@ -9,10 +9,18 @@ import { Post } from 'src/app/PostEvent';
 import { Member } from 'src/app/Member';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
 import { GroupMembers } from 'src/app/GroupMembers';
+import { HandleMemberService } from 'src/app/Service/handle-member.service';
 
 interface User{
   id : string|null,
   auth_token : string |null,
+}
+interface Groups {
+  id: string,
+  name: string,
+  upComing: number,
+  totalPost: number,
+  lastEvent: Date
 }
 @Component({
   selector: 'app-group-manage',
@@ -26,25 +34,22 @@ export class GroupManageComponent implements OnInit {
   searchForm = new FormGroup({
     keyWord : new FormControl<string>("")
   });
-  members: Member[] = [];
-  groups: Group[] = [];
+  groups: GroupMembers[] = [];
+  listGroup: Group[] = [];
+  listPost: Post[] = [];
   showSearch = false;
   searchResults: Group[] = [];
   keyWord : string|undefined = '';
 
-  user : User = {
-    id : '',
-    auth_token : ''
-  }
-
-
-  constructor(private groupService: HandleGroupService, private fb: FormBuilder, public dialog: MatDialog) { }
+  constructor(private groupService: HandleGroupService, private fb: FormBuilder, private apiService: ApiService, public dialog: MatDialog) { }
   ngOnInit(): void {
     this.searchForm = this.fb.group({
       keyWord:""
     })
     this.getListGroups();
-    // this.getListMembers();
+    // this.getPost();
+    // console.log(this.groups);
+
   }
 
 
@@ -70,17 +75,13 @@ export class GroupManageComponent implements OnInit {
     }
   }
 
-  // getListMembers(){
-  //   this.groups.forEach(p => p.id{
-
-  //   })
-  // }
-
   getListGroups() {
     if(this.showSearch == true){
       this.groupService.searchGroup(this.keyWord, this.pageIndex).subscribe({
         next:data =>{
           this.groups = data;
+          // this.getPost();
+          // console.log(this.getPost());
         }
       });
     }
@@ -88,16 +89,43 @@ export class GroupManageComponent implements OnInit {
       this.groupService.loadListGroup(this.pageIndex).subscribe({
         next:data=>{
           this.groups = data;
-          // this.handleGroup();
           console.log(this.groups);
+          // this.getPost();
+          // console.log(this.getPost());
         }
       })
     }
-
   }
 
+
+
+
+  // getPost(){
+  //   let total: number;
+  //   // console.log(this.groups);
+  //   this.groups.forEach(p => {
+  //     this.apiService.getListPosts(String(p.id)).subscribe({
+  //       next:data=>{
+  //         this.listPost = data;
+  //         total = this.listPost.length;
+  //         console.log(total)
+  //         // console.log(data);
+  //       }
+  //     });
+  //     this.listGroup.push({
+  //       id: p.id,
+  //       name: p.name,
+  //       upComing: 0,
+  //       totalPost: total,
+  //       lastEvent: new Date()
+  //     });
+  //     console.log(this.listGroup);
+  //   })
+
+  // }
+
   //handle detail-btn
-  groupDetail(id:string){
+  groupDetail(id:number){
     let group = this.groups.find(p => p.id ==id);
     const dialogRef = this.dialog.open(GroupDetailsDialog, {
       data : group
@@ -105,18 +133,10 @@ export class GroupManageComponent implements OnInit {
     // console.log(group)
   }
 
-  //handle edit-btn
-  editGroup(id:string){
-    let group = this.groups.find(p => p.id == id);
-    // console.log(group?.id);
-    const dialogRef = this.dialog.open(GroupEditDialog, {
-      data : group
-    });
-  }
 
   //handle delete-btn
-  deleteGroup(id:string){
-    this.groupService.deleteGroup(Number(id)).subscribe(group =>{
+  deleteGroup(id:number){
+    this.groupService.deleteGroup(id).subscribe(group =>{
       this.getListGroups();
     });
     // console.log(id)
@@ -139,11 +159,9 @@ export class GroupManageComponent implements OnInit {
 
   haveResults(){
     if(this.groups.length == 0){
-      // console.log(this.groups.length);
       return false;
     }
     else{
-      // console.log(this.groups.length);
     } return true;
   }
 
@@ -154,83 +172,69 @@ export class GroupManageComponent implements OnInit {
   styleUrls: ['../group-details-dialog/group-details-dialog.css']
 })
 export class GroupDetailsDialog implements OnInit {
-  // @Input() topicChecked = 0;
   @Input() pageIndex = 0;
-  // @Input() keyWord : string|undefined;
   @Output() changePage = new EventEmitter();
-  // @Output() topicChange = new EventEmitter();
 
   constructor(
     public dialogRef: MatDialogRef<GroupDetailsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Group,
     private groupService : HandleGroupService,
     private apiService:ApiService,
-    private postService: HandlePostService
+    private postService: HandlePostService,
+    private memberService: HandleMemberService
   ) {}
   group = this.data;
-
-
-
-  isAdmin = true;
 
   posts : Post[] = [];//will show
   onWeek: Post[] = [];// <= 7days
   upcomming : Post[] = [];// <= 3days
 
-  // keyWordOrigin : string |undefined;
   listPost : Post[] = [];
   listMember : GroupMembers[] = [];
   members: Member[] = [];
 
-
-
   ngOnInit(): void{
-    // this.getListPost();
-    // this.getPost();
     this.getMember();
     console.log(this.group);
+    this.getPost();
     // this.upcommingPost.forEach((p)=>this.posts.unshift(p))
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if ('topicChecked' in changes){
-  //     const topic = Number(changes['topicChecked'].currentValue);
-  //       this.pageIndex = 0;
-  //       this.changePage.emit(this.pageIndex);
-  //       // const topic = Number(changes['topicChecked'].currentValue);
-  //       // this.topicChecked = topic;
-  //       this.apiService.stopSearch();
-  //       this.ChangeTopic(topic);
-  //     // if('pageIndex'in changes){
-  //     //   this.getListPost(topic, this.pageIndex);
-  //     // }else this.getListPost(topic, 0);
-  //   }
-  //   else if('pageIndex' in changes){
-  //     if(this.keyWord){
-  //       this.getListPost(this.topicChecked, this.pageIndex, this.keyWord)
-  //     }
-  //       else {
-  //         this.getListPost(this.topicChecked, this.pageIndex, '');}
-  //   }
-  // }
+
+
 
   getPost(){
     let id = this.data.id;
-    this.apiService.getListPosts(id.toString()).subscribe({
+    this.apiService.getListPosts(id).subscribe({
       next:data=>{
         this.listPost = data;
+        this.handlePosts();
+        console.log(data);
       }
     })
   }
 
   getMember(){
-    let id = this.data.id;
+    let id = this.data.id; //groupId
+    let listIDs: string[] = [];
     this.groupService.getMembersofGroups(Number(id)).subscribe({
       next:data=>{
         this.listMember = data;
-        console.log(this.listMember);
-      }
-    })
+        for (const key in data) {
+          if(key == 'memberID'){
+            let IDs = data[key];
+            listIDs = String(IDs).split(',');
+          }
+        }
+        listIDs.forEach(p => {
+          this.memberService.getMember(Number(p)).subscribe({
+            next:data =>{
+              this.members.push(data)
+            }
+          })
+        })
+      }})
+
   }
 
 
@@ -263,70 +267,10 @@ export class GroupDetailsDialog implements OnInit {
     else return false;
   }
 
-
-  // ChangeTopic(id:number){
-  //   // this.changePage.emit(this.pageIndex);
-  //   this.getListPost(id);
-  // }
-
   // favourite
   isFavourite = false;
   starClick(id : number){
     this.isFavourite = !this.isFavourite;
 
-  }
-}
-
-
-@Component({
-  selector: 'group-edit-dialog',
-  templateUrl: '../group-edit-dialog/group-edit-dialog.html',
-  styleUrls: ['../group-edit-dialog/group-edit-dialog.css']
-})
-export class GroupEditDialog implements OnInit{
-  editGroupForm = new FormGroup({
-    groupName: new FormControl('', Validators.required),
-    groupMail: new FormControl('', Validators.required),
-  });
-
-  constructor(
-    public dialogRef: MatDialogRef<GroupEditDialog>,
-    private fb: FormBuilder,
-    private groupService: HandleGroupService,
-    private router: Router,
-    private apiService: ApiService,
-    @Inject(MAT_DIALOG_DATA) public data: Group,
-
-  ) {}
-
-
-  group = this.data;
-  ngOnInit(): void {
-    // this.groupID = this.group.id;
-    this.LoadGroup(Number(this.group.id));
-    // this.updateGroup()
-    console.log(this.group);
-  }
-  LoadGroup(id:number){
-    this.apiService.getGroup().subscribe({
-      next: data =>{
-        console.log(data);
-        // this.editGroupForm.setValue({
-        //   groupName: data.groupName,
-        //   groupMail: data.email})
-      }
-    })
-  }
-
-  onSubmit(){
-    // let data = Object(this.editGroupForm.value);
-    // this.editGroupForm.reset();
-    // this.groupService.editGroup(data, this.group.id).subscribe({
-    //   next:data=>{
-    //     alert('Saved Change');
-    //   },
-    //   error:err=>{console.log(err)}
-    // })
-    // this.router.navigateByUrl('/group')
   }
 }

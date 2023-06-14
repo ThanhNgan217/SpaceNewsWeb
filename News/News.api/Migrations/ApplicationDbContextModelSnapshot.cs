@@ -264,7 +264,7 @@ namespace News.api.Migrations
                 b.ToTable("Members", (string)null);
             });
 
-            modelBuilder.Entity("News.api.Entities.MemberGroup", b =>
+            modelBuilder.Entity("News.api.Entities.GroupMember", b =>
             {
                 b.Property<int>("Id")
                     .ValueGeneratedOnAdd()
@@ -272,11 +272,11 @@ namespace News.api.Migrations
 
                 SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                b.Property<int?>("MemberID")
-                    .HasColumnType("int");
+                b.Property<string?>("MemberID")
+                    .HasColumnType("nvarchar(450)");
 
-                b.Property<int?>("GroupID")
-                    .HasColumnType("int");
+                b.Property<string?>("Name")
+                    .HasColumnType("nvarchar(max)");
 
                 b.HasKey("Id");
 

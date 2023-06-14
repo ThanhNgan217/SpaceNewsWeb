@@ -49,12 +49,9 @@ public class Member
 public class GroupMember
 {
     public int Id { get; set; }
-    public int? MemberID { get; set; }
-    public int? GroupID { get; set; }
+    public string Name { get; set; }
+    public string? MemberID { get; set; }
 
-    //[JsonIgnore]
-
-    public virtual Member? Members { get; set; }
 }
 
 public class ReadHistory

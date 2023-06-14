@@ -41,5 +41,10 @@ export class HandleMemberService {
   searchMembers(keyword=''){
     return this.http.get<Member[]>(`${this.url}/api/Members?keyword=${keyword}`);
   }
-
+  getMembers(){
+    return this.http.get<Member[]>(`${this.url}/api/Members`);
+  }
+  getMember(id: Number){
+    return this.http.get<Member>(`${this.url}/api/Members/${id}`);
+  }
 }

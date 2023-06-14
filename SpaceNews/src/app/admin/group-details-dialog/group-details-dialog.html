@@ -10,9 +10,9 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor= "let member of listMember">
-              <td>{{member.members.name}}</td>
-              <td>{{member.members.email}}</td>
+          <tr *ngFor= "let member of members">
+              <td>{{member.name}}</td>
+              <td>{{member.email}}</td>
           </tr>
 
       </tbody>
@@ -33,14 +33,14 @@
               <pre class="list-post-description">{{p.time | date:'MMM d, y            h:mm a'}}</pre>
             </div>
           </div>
-          <div class="post-icon">
-            <!-- <mat-icon>star_border</mat-icon> -->
-            <!-- <span (click)="starClick(p.id)"><i class="bi bi-star" *ngIf="!isFavourite"></i><i class="bi bi-star-fill" *ngIf="isFavourite"></i></span> -->
+          <!-- <div class="post-icon">
+            <mat-icon>star_border</mat-icon>
+            <span (click)="starClick(p.id)"><i class="bi bi-star" ngIf="!isFavourite"></i><i class="bi bi-star-fill" ngIf="isFavourite"></i></span>
             <i class="bi bi-star" ></i>
-            <!-- <mat-icon>share</mat-icon> -->
+            <mat-icon>share</mat-icon>
             <i class="bi bi-share"></i>
-            <!-- <mat-icon>more_vert</mat-icon> -->
+            <mat-icon>more_vert</mat-icon>
             <i class="bi bi-three-dots-vertical"></i>
-          </div>
+          </div> -->
 
 </div>

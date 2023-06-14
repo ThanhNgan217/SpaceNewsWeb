@@ -31,9 +31,15 @@
     color: var(--blue);
     margin: 0 0 0px;
 }
-.add-group-title {
+.add-group-form{
   position: relative;
+  width: calc(628*var(--ratio));
+  height: auto;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
 }
+
 h3 {
   font-style: normal;
   font-weight: 600;
@@ -45,99 +51,87 @@ h3 {
   margin-top: calc(55*var(--ratio));
 }
 .home-content-container {
-  position: relative;
+  width: 100%;}
+
+.home-content-container form{
+  width: 100%;
 }
-.name {
-  position: relative;
-  top: calc(9*var(--ratio));
-  left: calc(264*var(--ratio));
-  width: calc(587*var(--ratio));
-  height: calc(26*var(--ratio));
-  margin-bottom: calc(23*var(--ratio));
+
+form table{
+  width: auto;
+  /* / height: 550px; / */
+  border-spacing: 0px;
 }
-.name label, .member label {
-  position: absolute;
-  font-style: normal;
-  font-weight: 400;
+table .td-left, label{
+  width: 130px;
+  text-align: left;
   font-size: 14px;
   line-height: 14px;
-  letter-spacing: 0.2px;
-  color: #52575C;
-  align-items: center;
-  float: left;
-  margin-top: calc(6*var(--ratio));
+  vertical-align: center;
 }
-.name input {
-  position: relative;
-  left: calc(87*var(--ratio));
-  background: #FFFFFF;
-  border: 1px solid #B9B9B9;
-  width: calc(500*var(--ratio));
-  height:calc(26*var(--ratio));
+table .td-left2{
+  width: 130px;
   text-align: left;
-}
-.member {
-  position: relative;
-  /* top: calc(58*var(--ratio)); */
-  left: calc(264*var(--ratio));
-  width: calc(572*var(--ratio));
-  /* height: calc(26*var(--ratio)); */
-}
-
-.member label {
-  position: absolute;
-  top: calc(6*var(--ratio));
-  font-style: normal;
-  font-weight: 400;
   font-size: 14px;
   line-height: 14px;
-  letter-spacing: 0.2px;
-  color: #52575C;
-  align-items: center;
-  float: left;
+  padding-top: 2%;
+  vertical-align: top;
 }
-
-
-.member table {
+.td-left div{
+  width: 130px;
+}
+table .td-right{
   position: relative;
-  width: calc(480*var(--ratio));
-  left: calc(87*var(--ratio));
-  background: #FFFFFF;
-  border: 1px solid #B9B9B9;
-  text-align: left;
-
+  vertical-align: center;
+  left: 5%;
 }
-table thead{
+table .td-right2{
   position: relative;
-  height: calc(26*var(--ratio));
+  vertical-align: top;
+  left: 5%;
 }
-
-table tbody {
+table .td-right3{
   position: relative;
+  vertical-align: top;
+  left: 5%;
 }
-.member input {
-  width: calc(236*var(--ratio));
-
+table input#name{
+  width: 500px;
 }
-.material-icons {
-  font-family: 'Material Icons' !important;
+table input#memberName{
+  width: 240px;
+  margin-right: 20px;
 }
-button#submit {
-  position: relative;
-  width: calc(100*var(--ratio));
-  height: calc(50*var(--ratio));
-  top: calc(23*var(--ratio));
-  right: calc(290*var(--ratio));
-
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.2px;
+table input#memberMail{
+  width: 240px;
+}
+table .set-height{
+  height: 26px;
+}
+table button#submit{
+  width: 100px;
+  height: 50px;
   font-size: 14px;
   line-height: 18px;
-  color: var(--blue);
-  background-color: #FAF9F7;
-  border: 2px solid var(--blue);
+  font-weight: 600;
+  border: solid 2px var(--blue);
   border-radius: 10px;
-  text-align: center;
-  float: right;
+  background-color: white;
+  color: var(--blue);
+}
+table button#member{
+  width: 30px;
+  height: 26px;
+  font-size: 14px;
+  /* / line-height: 18px; / */
+  font-weight: 600;
+  /* / border: solid 2px var(--blue); / */
+  border: solid 2px white;
+  border-radius: 8px;
+  background-color: white;
+  color: var(--blue);
+  margin-left: 20px;
+}
+table button:hover{
+  cursor: pointer;
 }

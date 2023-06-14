@@ -1,0 +1,8 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "",
+"LaunchCommand": "",
+"WorkingDirectory": "C:\\Users\\intern.htthanhngan\\Desktop\\SpaceNewsWeb\\News\\News.api",
+"MaxTimeoutInSeconds": "120"
+}
+}

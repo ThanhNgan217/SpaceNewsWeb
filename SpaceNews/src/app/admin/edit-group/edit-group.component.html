@@ -1,0 +1,71 @@
+<div>
+  <div class="logo">
+    <img src ="/assets/img/logo.png"  width="150.81px" height="68px">
+    <p>NEWS DC19 PROGRAM 1</p>
+</div>
+<div class="add-group-form">
+  <h3>Edit Group</h3>
+  <div class="home-content-container">
+      <form class="add-group-form" autocomplete="off" [formGroup]="addGroupForm" ngNativeValidate (keydown.enter)="$event.preventDefault()">
+        <table style="border:none">
+          <tr class="row-control">
+            <td class="td-left">
+              <label for="name" class="name">Group Name</label>
+            </td>
+            <td class="td-right">
+              <input type="text" list="group-name" class="set-height" id="name" formControlName="groupName"  style="text-transform: capitalize;">
+              <datalist id="group-name">
+                <option *ngFor="let group of groups" [value]="group.name">{{group.name}}</option>
+              </datalist>
+            </td>
+          </tr>
+          <tr class="row-control">
+            <td class="td-left2">
+              <label for="member">Members </label>
+            </td>
+            <td class="td-right2">
+              <thead>
+                <tr>
+                  <td class="label"><label for="memberName">Name</label></td>
+                  <td class="label"><label for="memberMail">Email </label></td>
+                </tr>
+              </thead>
+              <tbody>
+                  <td class="input">
+                      <input type="text" id="memberName" list="member-name" class="set-height"
+                          required
+                          formControlName="memberName">
+                      <datalist id="member-name">
+                          <option *ngFor="let member of allMembers" [value]="member.name">{{member.name}}</option>
+                      </datalist>
+                  </td>
+                  <td class="input">
+                      <input type="text" id="memberMail" list="member-email" class="set-height"
+                          required
+                          formControlName="memberMail">
+                      <datalist id="member-email">
+                          <option *ngFor="let member of allMembers" [value]="member.email">{{member.email}}</option>
+                      </datalist>
+                  </td>
+                  <td><button (click)="addHandler()" id="member">+</button></td>
+                  <tr *ngFor="let mem of members">
+                      <td>{{mem.name}}</td>
+                      <td>{{mem.email}}</td>
+                      <td><button (click)="removeMember(mem.id)" id="member">X</button></td>
+                  </tr>
+              </tbody>
+            </td>
+          </tr>
+          <tr class="row-control">
+            <td class="td-left"></td>
+            <td class="td-right3" style="text-align: right;">
+              <div class="submit-btn">
+                <button type="submit" id="submit" (click)="onSubmit()">Add now</button>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </form>
+  </div>
+</div>

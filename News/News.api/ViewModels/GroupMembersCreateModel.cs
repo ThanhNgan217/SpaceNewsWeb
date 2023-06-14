@@ -2,8 +2,8 @@
 {
     public class GroupMemberCreateModel
     {
-        public int? MemberID { get; set; }
-        public int? GroupID { get; set; }
+        public string? MemberID { get; set; }
+        public string? name { get; set; }
 
     }
     public class GroupMemberUpdateModel : GroupMemberCreateModel

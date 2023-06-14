@@ -3,19 +3,19 @@ import { ApiService } from './api.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Group } from '../Group';
 import { GroupMembers } from '../GroupMembers';
+import { Member } from '../Member';
 
 interface formGroupData {
   groupName:'',
-  groupMail:''
+  // groupMail:'',
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class HandleGroupService {
-  auth = sessionStorage.getItem('auth_token');
   constructor(private apiService:ApiService, private http:HttpClient) { }
-
+  auth = sessionStorage.getItem('auth_token');
   private httpOptions = {
     //   // headers : new HttpHeaders({'accept':'*/*', 'Content-Type': 'application/json'})
     //   // headers : new HttpHeaders({'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuZ2FuQGdtYWlsLmNvbSIsImp0aSI6IjdkOWY4ZTA3LTBlNjgtNGI4Yi1hY2MxLWNhNDcxMDMzMWVlYyIsImlhdCI6MTY4MTExMTg2OSwicm9sIjoiYXBpX2FjY2VzcyIsImlkIjoiZjZiOWExOGMtZGM3NC00OWVjLTk5MmItNTNmYTdhYjYzNzEwIiwibmJmIjoxNjgxMTExODY4LCJleHAiOjE2ODExMTkwNjgsImlzcyI6IndlYkFwaSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDQ0OTMvIn0.LV2dR5DUE7UyBZHOEHO7fuvI4MbijK3vyjQDvLNKmp4'})
@@ -30,8 +30,8 @@ export class HandleGroupService {
 
   url = 'https://localhost:7136';
 
-
-
+  searchOption: Member[] = [];
+  // memberData: Member[]
 
   addGroup(obj : formGroupData, indx: string){
     let newGroup = {
@@ -41,32 +41,34 @@ export class HandleGroupService {
 
     return this.http.post(`${this.url}/api/GroupMembers`, JSON.stringify(newGroup), this.httpOptions);
   }
-  searchGroup(keyWord='', pageIndex=0){
-    return this.http.get<Group[]>(`https://localhost:7136/api/Groups?keyword=${keyWord}&pageIndex=${pageIndex}&pageSize=6`);
+  searchGroup(keyWord='', pageIndex: number){
+    return this.http.get<GroupMembers[]>(`${this.url}/api/GroupMembers?keyword=${keyWord}&pageIndex=${pageIndex}&pageSize=6`);
   }
   loadListGroup(pageIndex = 0){
-    return this.http.get<Group[]>(`https://localhost:7136/api/Groups?pageIndex=${pageIndex}&pageSize=6`);
+    return this.http.get<GroupMembers[]>(`${this.url}/api/GroupMembers?pageIndex=${pageIndex}&pageSize=6`);
   }
-  deleteGroup(val: number){
-    return this.http.delete(`${this.url}/api/Groups/${val}`, {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
-  }
-  editGroup(obj: formGroupData, Id: number){
-    let edittedGroup = {
-      name: obj.groupName,
-      email: obj.groupMail,
-      id: Id
-    };
-    return this.http.put<Group>(`${this.url}/api/Groups/${Id}`, JSON.stringify(edittedGroup), {headers:{'Authorization':`Bearer ${this.auth}`,'Content-Type': 'application/json;charset=UTF-8'}});
-
-  }
-
-  getMembersofGroups(groupId: number){
-    return this.http.get<GroupMembers[]>(`${this.url}/api/GroupMembers?groupId=${groupId}`)
-  }
-
   loadAllGroups(){
     return this.http.get<GroupMembers[]>(`${this.url}/api/GroupMembers?pageIndex=0&pageSize=9999`);
   }
+  deleteGroup(val: number){
+    return this.http.delete(`${this.url}/api/GroupMembers/${val}`);
+  }
+  editGroup(obj: formGroupData, indx: string, Id: number){
+    let edittedGroup = {
+      name: obj.groupName,
+      memberID: indx,
+      id: Id
+    };
+    return this.http.put<GroupMembers>(`${this.url}/api/GroupMembers/${Id}`, edittedGroup);
+
+  }
+  getMembersofGroups(groupId: number){
+    return this.http.get<GroupMembers[]>(`${this.url}/api/GroupMembers/${groupId}`)
+  }
+  getGroup(id:number){
+    return this.http.get<GroupMembers>(`${this.url}/api/GroupMembers/${id}`);
+  }
+
 
 
 }

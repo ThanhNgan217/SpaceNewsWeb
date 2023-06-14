@@ -21,5 +21,7 @@ public class ViewModelToEntityMappingProfile : Profile
         CreateMap<ReadHistoryUpdate, ReadHistory>();
         CreateMap<BookmarkCreateModel, Bookmark>();
         CreateMap<BookmarkUpdate, Bookmark>();
+        CreateMap<GroupMemberCreateModel, GroupMember>();
+        CreateMap<GroupMemberUpdateModel, GroupMember>();
     }
 }

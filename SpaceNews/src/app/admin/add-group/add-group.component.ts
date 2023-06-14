@@ -1,12 +1,10 @@
-import { Component, OnInit, ElementRef, ViewChild, Inject, Output, EventEmitter } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';import {ErrorStateMatcher} from '@angular/material/core';
-import { Group } from 'src/app/Group';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from '../../Service/api.service';
 import { HandleGroupService } from 'src/app/Service/handle-group.service';
-import { Route, Router } from '@angular/router';
-import {Observable} from 'rxjs';
+import { Router } from '@angular/router';
 import { Member } from 'src/app/Member';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { HandleMemberService } from 'src/app/Service/handle-member.service';
 import { GroupMembers } from 'src/app/GroupMembers';
 
@@ -18,26 +16,13 @@ import { GroupMembers } from 'src/app/GroupMembers';
 export class AddGroupComponent implements OnInit{
   addGroupForm = new FormGroup({
     groupName: new FormControl(''),
-    // groupMember: new FormGroup({
-    //   memberName: new FormControl(''),
-    //   memberMail: new FormControl('')
-    // }),
-  });
-
-  addgroupMember= new FormGroup({
     memberName: new FormControl(''),
     memberMail: new FormControl('')
-  })
+  });
 
   members: Member[] = []; // members add to group
   allMembers: Member[] = []; // all members (added to db)
   groups: GroupMembers[] = [];
-
-  searchOption: Member[] = [];
-  // @ViewChild('memberInput') memberInput: ElementRef<HTMLInputElement>;
-  memberName: string ='';
-  memberMail: string ='';
-  // @Output() onSelectedOption = new EventEmitter();
 
 
 
@@ -53,23 +38,18 @@ export class AddGroupComponent implements OnInit{
   ngOnInit(): void {
     this.addGroupForm = this.fb.group({
       groupName: ['', Validators.required],
-      // groupMember: this.fb.group({
-      //   memberName: ['', Validators.required],
-      //   memberMail: ['', Validators.required]
-      // })
-    });
-    this.addgroupMember = this.fb.group({
       memberName: ['', Validators.required],
       memberMail: ['', Validators.required]
-    })
+    });
+
     this.loadMembers();
+    this.loadGroups();
 
   }
   loadMembers(){
-    this.apiService.getMembers().subscribe({
+    this.memberService.getMembers().subscribe({
       next:data => {
         this.allMembers = data;
-        console.log(data);
       }
     })
   }
@@ -77,26 +57,29 @@ export class AddGroupComponent implements OnInit{
     this.groupService.loadAllGroups().subscribe({
       next:data=>{
         this.groups = data;
-        // console.log(this.groups);
       }
     })
   }
-
-
-
-
+  fillMember(){
+    let memberName = this.addGroupForm.get('memberName')?.value;
+    let memberMail = this.allMembers.find(p => p.name == memberName)?.email;
+    console.log(memberMail)
+    this.addGroupForm.patchValue({memberMail: memberMail})
+  }
   addHandler(){
-    let member = Object(this.addgroupMember.value);
-    console.log(member);
-    //list members of group
+    let memberName = this.addGroupForm.get('memberName')?.value;
+    // let memberMail = this.allMembers.find(p => p.name == memberName)?.email;
+    // console.log(memberMail)
+    // this.addGroupForm.patchValue({memberMail: memberMail})
+    let memberMail = this.addGroupForm.get('memberMail')?.value;
+    console.log(memberName);
     this.members.push({
-      name : member.memberName,
-      email: member.memberMail,
-      id: +1
+      name : String(memberName),
+      email: String(memberMail),
+      id: 0
     });
     //add new members
     let listNewMembers = this.addMember();
-    console.log(listNewMembers);
     listNewMembers.forEach(p=>{
       this.memberService.addMember(p).subscribe({
         next:data=>{
@@ -107,8 +90,6 @@ export class AddGroupComponent implements OnInit{
   }
   //add to new members to database
   addMember(){
-    let m: Member;
-    let mem: Member;
     let listNewMembers: Member[] = []; // list of New members
 
     this.members.forEach(p=>{
@@ -116,26 +97,26 @@ export class AddGroupComponent implements OnInit{
       if (found == null){
         listNewMembers.push(p);
       }
-      else{
-        console.log(found);
-      }
     })
 
     return listNewMembers
   }
   getlistMemberId(){
     let listMemberId: Number[] = [] //list Id of members add to group
+    this.memberService.getMembers();
     this.members.forEach(p=>{
       this.allMembers.forEach(x=>{
         if(p.name === x.name && p.email === x.email){
-          console.log(x.id);
           listMemberId.push(x.id)
         }
       })
-      // listMemberId.push(indx);
     })
-    console.log(listMemberId);
     return listMemberId;
+  }
+
+  removeMember(id: number){
+    let index = this.members.findIndex(m => m.id === id);
+    this.members.splice(index, 1);
   }
 
 
@@ -144,48 +125,14 @@ export class AddGroupComponent implements OnInit{
     this.addGroupForm.reset();
     let listMemberId = this.getlistMemberId();
     this.getlistMemberId();
-
-
     //add new group
     this.groupService.addGroup(groupName, listMemberId.toString()).subscribe({
       next:data=>{
         alert('Success');
-        console.log(data);
         this.loadGroups();
+        this.router.navigate(['admin/groups']);
       },
       error:err=>{console.log(err)}
     });
-
   }
-
-
-
-
 }
-
-// @Component({
-//   selector: 'warning-dialog',
-//   templateUrl: '../warning-dialog/warning-dialog.html',
-//   styleUrls: ['../warning-dialog/warning-dialog.css']
-// })
-// export class WarningDialog {
-//   constructor(
-//     public dialogRef: MatDialogRef<WarningDialog>,
-//     @Inject(MAT_DIALOG_DATA) public data: Member,
-//     private groupService : HandleGroupService,
-//   ) {}
-
-
-//   addMember(){
-//     this.groupService.addMembers(this.data).subscribe({
-//       next:data => {
-//         alert('Member is added');
-//       },
-//       error: err => {console.log(err)}
-//     })
-//     this.onNoClick();
-//   }
-//   onNoClick(): void {
-//     this.dialogRef.close();
-//   }
-// }
