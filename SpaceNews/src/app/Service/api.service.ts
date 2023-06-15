@@ -113,7 +113,7 @@ export class ApiService {
   }
 
   getGroup(){
-    return this.http.get<Group[]>('https://localhost:7136/api/Groups');
+    return this.http.get<Group[]>(`${this.apiUrl}/api/GroupMembers?pageIndex=0&pageSize=999`);
   }
 
   addPost(val: any){

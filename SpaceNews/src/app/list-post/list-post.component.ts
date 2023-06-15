@@ -42,6 +42,7 @@ export class ListPostComponent implements OnInit{
   // keyWord : string|undefined;
 
   ngOnInit(): void{
+    this.keyWord = '';
     this.userID = sessionStorage.getItem('userID');
     this.getBookmark(this.userID);
     if(this.userID != '') this.isAdmin = true;
@@ -69,6 +70,7 @@ export class ListPostComponent implements OnInit{
       // }else this.getListPost(topic, 0);
     }
     else if('keyWord' in changes){
+      console.log(this.keyWord)
       let str = /%20/g;
       this.keyWordOrigin = this.keyWord?.replace(str,' ');
       this.getListPost(this.topicChecked,this.pageIndex, this.keyWord);

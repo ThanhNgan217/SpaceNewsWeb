@@ -138,7 +138,7 @@ namespace News.api.Controllers
             }
             else
             {
-                var existingGroupIdList = _context.Groups.Select(s => s.Id).ToList();
+                var existingGroupIdList = _context.GroupMembers.Select(s => s.Id).ToList();
                 if (existingGroupIdList == null)
                 {
                     return NotFound();
@@ -198,7 +198,7 @@ namespace News.api.Controllers
             }
             else
             {
-                var existingGroupIdList = _context.Groups.Select(s => s.Id).ToList();
+                var existingGroupIdList = _context.GroupMembers.Select(s => s.Id).ToList();
                 
                 int[] groupIds = post.GroupID.Split(',').Select(int.Parse).ToArray();
 
