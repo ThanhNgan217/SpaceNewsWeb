@@ -52,12 +52,16 @@ export class PastEventsComponent implements OnInit {
   showDialog(id : number){
     let post = this.posts.find(p => p.id == id);
     sessionStorage.setItem('pastEvents', '1');
-    this.dialog.open(PostDialog, {
+    const dialogRef = this.dialog.open(PostDialog, {
       data : post,
       maxWidth : '50%'
     });
 
-    // catch event navigation
+    // reload list post after close post dialog (case delete event)
+    dialogRef.afterClosed().subscribe(data =>{
+      this.getListPost(this.idTopic, this.pageIndex);
+    })
+    // catch event navigation (click edit button)
     this.router.events
     .subscribe(() => {
     this.dialogRef.close();
