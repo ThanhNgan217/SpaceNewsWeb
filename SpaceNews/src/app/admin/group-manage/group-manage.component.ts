@@ -16,7 +16,7 @@ interface User{
   auth_token : string |null,
 }
 interface Groups {
-  id: string,
+  id: number,
   name: string,
   upComing: number,
   totalPost: number,
@@ -35,8 +35,9 @@ export class GroupManageComponent implements OnInit {
     keyWord : new FormControl<string>("")
   });
   groups: GroupMembers[] = [];
-  listGroup: Group[] = [];
+  listGroup: Groups[] = [];
   listPost: Post[] = [];
+
   showSearch = false;
   searchResults: Group[] = [];
   keyWord : string|undefined = '';
@@ -80,7 +81,7 @@ export class GroupManageComponent implements OnInit {
       this.groupService.searchGroup(this.keyWord, this.pageIndex).subscribe({
         next:data =>{
           this.groups = data;
-          // this.getPost();
+          this.getPost();
           // console.log(this.getPost());
         }
       });
@@ -90,39 +91,58 @@ export class GroupManageComponent implements OnInit {
         next:data=>{
           this.groups = data;
           console.log(this.groups);
-          // this.getPost();
-          // console.log(this.getPost());
+          this.getPost();
+
         }
       })
     }
   }
 
+  handlePosts(){
+    let currDate = new Date();
+    let t = currDate.getTime();
+    let upcomming : Post[] = [];
+    // onWeek list
+    // 259200000 ms = 72h = 3days
+    // 345600000 ms = 96h = 4days
+    // 345599999 ms = 96h - 1s = 4days - 1s
+    // 604800000 ms = 168h = 7days
+    // 691199000 ma = ... = 8days -1s
+    this.listPost.forEach((p)=>{
+      let x = new Date(p.time);
+      if(x.getTime() - t <= 604800000 && x.getTime() - t >= -36399000){
+        if(x.getTime() - t <= 259200000) upcomming.push(p)
+
+      }
+    })
+   return upcomming.length
+  }
+
+  getPost(){
+    this.listGroup.length = 0;
+    let lastevent;
+    // console.log(this.groups);
+    this.groups.forEach(p=>{
+      this.apiService.getListPosts(String(p.id)).subscribe({
+        next:data => {
+          this.listPost = data;
+          lastevent = data.slice(-1)[0];
+          let upcomming = this.handlePosts();
+          this.listGroup.push({
+            id: p.id,
+            name: p.name,
+            upComing: upcomming,
+            totalPost: this.listPost.length,
+            lastEvent: lastevent.date,
+          });
+        }
+      });
 
 
+      console.log(this.listGroup);
+    })
 
-  // getPost(){
-  //   let total: number;
-  //   // console.log(this.groups);
-  //   this.groups.forEach(p => {
-  //     this.apiService.getListPosts(String(p.id)).subscribe({
-  //       next:data=>{
-  //         this.listPost = data;
-  //         total = this.listPost.length;
-  //         console.log(total)
-  //         // console.log(data);
-  //       }
-  //     });
-  //     this.listGroup.push({
-  //       id: p.id,
-  //       name: p.name,
-  //       upComing: 0,
-  //       totalPost: total,
-  //       lastEvent: new Date()
-  //     });
-  //     console.log(this.listGroup);
-  //   })
-
-  // }
+  }
 
   //handle detail-btn
   groupDetail(id:number){

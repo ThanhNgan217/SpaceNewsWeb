@@ -22,13 +22,13 @@
       <div class="display-groups">
           <h4 class="no-results-found" [class.show]="!haveResults()">No results found</h4>
           <mat-list >
-              <mat-list-item class="groups-container" *ngFor="let group of groups">
+              <mat-list-item class="groups-container" *ngFor="let group of listGroup">
                   <div class="group">
                       <div class="program" mat-line>{{group.name}}</div>
                       <div class="group-content-container" >
-                          <div class="group-events" mat-line> events coming soon</div><br>
-                          <div class="group-post" mat-line> posts</div><br>
-                          <div class="group-last-event" mat-line>last event </div>
+                          <div class="group-events" mat-line>{{group.upComing}} events coming soon</div><br>
+                          <div class="group-post" mat-line>{{group.totalPost}} posts</div><br>
+                          <div class="group-last-event" mat-line>last event {{group.lastEvent | date:'d/MM/y'}}</div>
                       </div>
                       <div class="group-button">
                           <button class="detail" (click)="groupDetail(group.id)">

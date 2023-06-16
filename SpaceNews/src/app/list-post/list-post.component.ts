@@ -44,8 +44,8 @@ export class ListPostComponent implements OnInit{
   ngOnInit(): void{
     this.keyWord = '';
     this.userID = sessionStorage.getItem('userID');
-    this.getBookmark(this.userID);
-    if(this.userID != '') this.isAdmin = true;
+
+    if(sessionStorage.getItem('userID')) this.getBookmark(this.userID);
     this.getListGroup();
     // this.getListPost(this.topicChecked, this.pageIndex, this.keyWord);
     // this.posts = this.listPost;
@@ -54,7 +54,7 @@ export class ListPostComponent implements OnInit{
 
   ngOnChanges(changes: SimpleChanges): void {
     if('dialogClosed' in changes && this.dialogClosed == true){
-      console.log('dialogClosed')
+      // console.log('dialogClosed')
       this.getListPost(this.topicChecked, this.pageIndex, this.keyWord);
     }
     if ('topicChecked' in changes){
@@ -70,7 +70,6 @@ export class ListPostComponent implements OnInit{
       // }else this.getListPost(topic, 0);
     }
     else if('keyWord' in changes){
-      console.log(this.keyWord)
       let str = /%20/g;
       this.keyWordOrigin = this.keyWord?.replace(str,' ');
       this.getListPost(this.topicChecked,this.pageIndex, this.keyWord);
@@ -162,7 +161,8 @@ export class ListPostComponent implements OnInit{
           this.posts = data;
           this.getGrNames();
           this.handlePosts();
-          this.getBookmark(this.userID);
+          if(sessionStorage.getItem('userID')) this.getBookmark(this.userID);
+
         }
       })
     }
@@ -173,7 +173,7 @@ export class ListPostComponent implements OnInit{
           this.posts = data;
           this.getGrNames();
           this.handlePosts();
-          this.getBookmark(this.userID);
+          if(sessionStorage.getItem('userID')) this.getBookmark(this.userID);
         }
       })
     }
@@ -239,7 +239,6 @@ export class ListPostComponent implements OnInit{
   isFavourite = false;
 
   showDialog(id : number){
-    console.log(id)
     let post = this.posts.find(p => p.id == id);
     if(sessionStorage.getItem('userID')) {
       this.handleHistory(id.toString());
@@ -267,7 +266,7 @@ export class ListPostComponent implements OnInit{
           userID : userID,
           eventsID : arr.join(','),
         }
-        console.log(body);
+        // console.log(body);
         this.apiService.addHistory(body).subscribe();
       }
     })

@@ -101,18 +101,23 @@ export class ContentComponent {
         else return;
       }
     })
-    this.autoChangeSlider;
+    // this.autoChangeSlider;
 
     // console.log(this.logged, this.user);
   }
 
   myInterval= () => {
-    if(this.index == this.counter-1) this.index = 0;
-    else this.index++;
-    this.idShow = this.postsSlider[this.index].id;
-    this.urlShow = this.postsSlider[this.index].image;
-    this.title = this.postsSlider[this.index].title;
+    let length = this.postsSlider.length;
+    if(length > 0){
+      if(this.index == this.counter-1) this.index = 0;
+      else this.index++;
+      this.idShow = this.postsSlider[this.index].id;
+      this.urlShow = this.postsSlider[this.index].image;
+      this.title = this.postsSlider[this.index].title;
+
+    }
   }
+  autoChangeSlider = setInterval(this.myInterval, 3500);
 
   getNumPages(){
     this.apiService.getEventQuantity().subscribe(data => {
@@ -132,6 +137,7 @@ export class ContentComponent {
         this.urlShow = this.postsSlider[0].image;
         this.title = this.postsSlider[0].title;
         this.counter = this.postsSlider.length;
+        this.autoChangeSlider;
       }
     })
   }
@@ -204,7 +210,6 @@ export class ContentComponent {
     });
   }
 
-  autoChangeSlider = setInterval(this.myInterval, 3500);
 
   //logged
   setUser(){
@@ -286,7 +291,7 @@ export class ContentComponent {
           userID : userID,
           eventsID : arr.join(','),
         }
-        console.log(body);
+        // console.log(body);
         this.apiService.addHistory(body).subscribe();
       }
     })
@@ -350,7 +355,7 @@ export class BookmarkDialog implements OnInit {
             userID : this.userID,
             eventsID : eventsID?.join(',')
           }
-          console.log(id, body.eventsID)
+          // console.log(id, body.eventsID)
           this.apiService.addBookmark(body).subscribe();
         }
       })
@@ -367,7 +372,7 @@ export class BookmarkDialog implements OnInit {
             userID : this.userID,
             eventsID : eventsID?.join(',')
           }
-          console.log(id, body.eventsID)
+          // console.log(id, body.eventsID)
 
           this.apiService.addBookmark(body).subscribe();
         }
@@ -483,7 +488,7 @@ export class BookmarkDialog implements OnInit {
         userID : this.userID,
         eventsID : newBookmark.join(','),
       }
-      console.log('delete')
+      // console.log('delete')
       this.apiService.addBookmark(body).subscribe();
       this.handleBookmark();
     }

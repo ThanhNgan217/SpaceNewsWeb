@@ -87,8 +87,8 @@ export class PostsManageComponent implements OnInit {
     this.apiService.getEventQuantity().subscribe(data => {
       if(data % 6 != 0) this.eventsQuantity = Math.floor(data/6);
       else this.eventsQuantity = Math.floor(data/6)-1;
-      console.log(data)
-      console.log(this.eventsQuantity)
+      // // console.log(data)
+      // console.log(this.eventsQuantity)
     });
   }
 
@@ -161,7 +161,7 @@ export class PostsManageComponent implements OnInit {
           userID : userID,
           eventsID : arr.join(','),
         }
-        console.log(body);
+        // console.log(body);
         this.apiService.addHistory(body).subscribe();
       }
     })

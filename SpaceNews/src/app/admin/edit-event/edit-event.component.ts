@@ -176,7 +176,7 @@ export class EditEventComponent implements OnInit {
 
   onSubmit(){
     if(this.cancel){
-      console.log('onSubmit')
+      // console.log('onSubmit')
       if(this.checked) this.addEventForm.patchValue({eventPiority:1})
       else this.addEventForm.patchValue({eventPiority:0})
       let gr = this.addEventForm.get('eventGroup')?.value;
@@ -224,7 +224,7 @@ export class EditEventComponent implements OnInit {
 
   cancelEdit(e: any){
     if(this.cancel){
-      console.log('cancel')
+      // console.log('cancel')
       if(sessionStorage.getItem('prev')){
         if(sessionStorage.getItem('prev')?.includes('posts')){
           this.router.navigate(['/admin/posts']);
@@ -268,7 +268,7 @@ export class EditEventComponent implements OnInit {
     this.addEventForm.patchValue({eventType: eventType});
     // console.log(eventType)
     if(this.listTopic.find(t => t.name == eventType)){
-      console.log(eventType)
+      // console.log(eventType)
       let id = this.listTopic.find(t => t.name == eventType)?.id;
       this.selectedTopic = id? id : 0;
     }

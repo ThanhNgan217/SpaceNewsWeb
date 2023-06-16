@@ -162,7 +162,7 @@ export class AddEventComponent implements OnInit, OnDestroy{
     this.addEventForm.patchValue({eventType: this.selectedTopic});
 
     let data = Object(this.addEventForm.value);
-    console.log(data);
+    // console.log(data);
 
     // reset form values
     this.selectedTopic = 1;

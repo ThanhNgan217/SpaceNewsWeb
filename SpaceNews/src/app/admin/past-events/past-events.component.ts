@@ -72,8 +72,8 @@ export class PastEventsComponent implements OnInit {
     this.apiService.getEventQuantity(true).subscribe(data => {
       if(data % 12 != 0) this.eventsQuantity = Math.floor(data/12);
       else this.eventsQuantity = Math.floor(data/12)-1;
-      console.log(data)
-      console.log(this.eventsQuantity)
+      // console.log(data)
+      // console.log(this.eventsQuantity)
     });
   }
 

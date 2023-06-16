@@ -82,8 +82,8 @@ export class LoginPageComponent implements OnInit {
         sessionStorage.setItem('userID',data.id);
         sessionStorage.setItem('auth_token',data.auth_token);
         sessionStorage.setItem('userRole',data.role);
-        console.log('useraccount', this.userAccount);
         if(data.role == '1'){
+          console.log('start')
           setTimeout(()=>{
             alert('Login session expired, Please login again')
             sessionStorage.clear();
