@@ -3,7 +3,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { Editor, Toolbar } from 'ngx-editor';
 import { ApiService } from 'src/app/Service/api.service';
 import { Topic } from 'src/app/Topic';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { Group } from 'src/app/Group';
 import { HandlePostService } from 'src/app/Service/handle-post.service';
 import { MatOption } from '@angular/material/core';
@@ -46,7 +46,13 @@ export class AddEventComponent implements OnInit, OnDestroy{
   });
 
 
-  constructor(private fb: FormBuilder, private apiService: ApiService, private postService:HandlePostService, private router : Router) {}
+  constructor(private fb: FormBuilder, private apiService: ApiService, private postService:HandlePostService, private router : Router) {
+    this.router.events.forEach((event)=>{
+      if(event instanceof NavigationStart){
+        clearTimeout(this.sessionTimeout);
+      }
+    })
+  }
   @ViewChild('selectAllGroup')
   private selectAllGroup !: MatOption;
 
@@ -77,12 +83,29 @@ export class AddEventComponent implements OnInit, OnDestroy{
       this.initForm();
     })
 
+    let userRole = sessionStorage.getItem('userRole');
+
+      this.expiredLoginSession();
 
     // console.log(this.router.url)
     this.editor = new Editor();
     this.selectedTopic = 1;
     // this.ListGroup();
   }
+
+  // expired login session
+  expiredLoginSession(){
+    let currTime = new Date();
+    let expired = sessionStorage.getItem('expiredTime');
+    let expiredTime = Number(expired) - currTime.getTime();
+    this.sessionTimeout = setTimeout(()=>{
+      alert('Login session expired, Please login again');
+      sessionStorage.clear();
+      this.router.navigate(['/login']);
+    }, expiredTime);
+  }
+
+  sessionTimeout = setTimeout(()=>{});
 
   initForm(){
     this.addEventForm = this.fb.group({

@@ -84,6 +84,7 @@ export class EditEventComponent implements OnInit {
   ngOnInit(){
     this.cancel = true;
     this.postID = Number(this._route.snapshot.paramMap.get('id'));
+    this.expiredLoginSession();
     this.editEventPromise
     .then((location)=>{
       this.locationSuggest = location;
@@ -95,6 +96,20 @@ export class EditEventComponent implements OnInit {
       this.LoadTopics();
     })
   }
+
+  // expired login session
+  expiredLoginSession(){
+    let currTime = new Date();
+    let expired = sessionStorage.getItem('expiredTime');
+    let expiredTime = Number(expired) - currTime.getTime();
+    this.sessionTimeout = setTimeout(()=>{
+      alert('Login session expired, Please login again');
+      sessionStorage.clear();
+      this.router.navigate(['/login']);
+    }, expiredTime);
+  }
+
+  sessionTimeout = setTimeout(()=>{});
 
   //destory the editor
   ngOnDestroy(): void {

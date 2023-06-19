@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HandleGroupService } from 'src/app/Service/handle-group.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { Member } from 'src/app/Member';
 import { MatDialog } from '@angular/material/dialog';
 import { HandleMemberService } from 'src/app/Service/handle-member.service';
@@ -36,7 +36,13 @@ export class EditGroupComponent implements OnInit{
     private memberService: HandleMemberService,
     private _route: ActivatedRoute,
     public dialog: MatDialog)
-    {}
+    {
+      this.router.events.forEach((event)=>{
+        if(event instanceof NavigationStart){
+          clearTimeout(this.sessionTimeout);
+        }
+      })
+    }
 
   ngOnInit(): void {
     this.groupID = Number(this._route.snapshot.paramMap.get('id'));
@@ -49,8 +55,23 @@ export class EditGroupComponent implements OnInit{
     this.loadMembers();
     this.loadGroups();
     this.LoadGroup(this.groupID);
-
+    this.expiredLoginSession();
   }
+
+  // expired login session
+  expiredLoginSession(){
+    let currTime = new Date();
+    let expired = sessionStorage.getItem('expiredTime');
+    let expiredTime = Number(expired) - currTime.getTime();
+    this.sessionTimeout = setTimeout(()=>{
+      alert('Login session expired, Please login again');
+      sessionStorage.clear();
+      this.router.navigate(['/login']);
+    }, expiredTime);
+  }
+
+  sessionTimeout = setTimeout(()=>{});
+
   //load groups
   LoadGroup(id : number){
     this.groupService.getGroup(id).subscribe({

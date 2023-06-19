@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 
 interface User{
   id : string|null,
@@ -18,15 +18,36 @@ export class AdminComponent implements OnInit {
     id : '',
     auth_token : ''
   }
-  constructor(private router:Router) { }
+
+  constructor(private router:Router) {
+    this.router.events.forEach((event)=>{
+      if(event instanceof NavigationStart){
+        clearTimeout(this.sessionTimeout);
+      }
+    })
+   }
 
   ngOnInit(): void {
     this.setUser();
-
+    this.expiredLoginSession();
   }
 
+  // expired login session
+  expiredLoginSession(){
+    let currTime = new Date();
+    let expired = sessionStorage.getItem('expiredTime');
+    let expiredTime = Number(expired) - currTime.getTime();
+    this.sessionTimeout = setTimeout(()=>{
+      console.log('admin')
+      alert('Login session expired, Please login again');
+      sessionStorage.clear();
+      this.router.navigate(['/login']);
+    }, expiredTime);
+  }
 
-    Logout(){
+  sessionTimeout = setTimeout(()=>{});
+
+  Logout(){
     sessionStorage.removeItem('userID');
     sessionStorage.removeItem('auth_token');
     sessionStorage.removeItem('userRole');

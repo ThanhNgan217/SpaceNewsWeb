@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 // import { Post, listPost } from '../post';
 import { Post } from '../PostEvent';
@@ -82,6 +82,11 @@ export class ContentComponent {
   constructor(private router : Router, private apiService: ApiService, private http: HttpClient, public dialog: MatDialog) {
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsInlineRangeValue = [this.bsInlineValue, this.maxDate];
+    this.router.events.forEach((event)=>{
+      if(event instanceof NavigationStart){
+        clearTimeout(this.sessionTimeout);
+      }
+    })
   }
   ngOnInit(){
     this.getNumPages();
@@ -101,10 +106,26 @@ export class ContentComponent {
         else return;
       }
     })
-    // this.autoChangeSlider;
 
-    // console.log(this.logged, this.user);
+    let userRole = sessionStorage.getItem('userRole');
+    if(userRole == '1'){
+      this.expiredLoginSession();
+    }
   }
+
+  // expired login session
+  expiredLoginSession(){
+    let currTime = new Date();
+    let expired = sessionStorage.getItem('expiredTime');
+    let expiredTime = Number(expired) - currTime.getTime();
+    this.sessionTimeout = setTimeout(()=>{
+      alert('Login session expired, Please login again');
+      sessionStorage.clear();
+      this.router.navigate(['/login']);
+    }, expiredTime);
+  }
+
+  sessionTimeout = setTimeout(()=>{});
 
   myInterval= () => {
     let length = this.postsSlider.length;
@@ -327,6 +348,7 @@ export class BookmarkDialog implements OnInit {
   listBookmark: any = [];
   ngOnInit(): void {
     this.userID = sessionStorage.getItem('userID');
+
     this.getListGroup();
     if(this.openBookmark){ // true : bookmark ; false : read history
       this.handleBookmark();
@@ -336,6 +358,8 @@ export class BookmarkDialog implements OnInit {
       this.handleHistory();
     }
   }
+
+
 
   // star icon
   addEventListener(id:number){
